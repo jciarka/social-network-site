@@ -1,4 +1,5 @@
 ﻿using BD2.API.Database.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +53,23 @@ namespace BD2.API.Database.Repositories.Concrete
             return (await _ctx.SaveChangesAsync()) > 0;
         }
 
+        public async Task<bool> DeleteAsync(Guid id)
+        {
+            var item = await _ctx.Authors.FindAsync(id);
 
+            if (item == null)
+            {
+                return false;
+            }
+
+            _ctx.Authors.Remove(item);
+            return await _ctx.SaveChangesAsync() > 0;
+        }
+
+        public IQueryable<Author> All()
+        {
+            return _ctx.Authors.AsQueryable();
+        }
 
     }
 }

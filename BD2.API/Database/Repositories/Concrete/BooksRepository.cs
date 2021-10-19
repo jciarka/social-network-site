@@ -34,7 +34,7 @@ namespace BD2.API.Database.Repositories
             {
                 return (await _ctx.SaveChangesAsync()) > 0 ? true : false;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
