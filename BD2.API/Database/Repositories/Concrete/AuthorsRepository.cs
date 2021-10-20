@@ -24,10 +24,10 @@ namespace BD2.API.Database.Repositories.Concrete
 
         public async Task<bool> AddAsync(Author author)
         {
-            if (author.Id != default)
-            {
-                return false;
-            }
+            //if (author.Id != default)
+            //{
+            //    return false;
+            //}
 
             _ctx.Authors.Add(author);
             try
@@ -42,10 +42,10 @@ namespace BD2.API.Database.Repositories.Concrete
 
         public async Task<bool> AddRangeAsync(IEnumerable<Author> authors)
         {
-            if (authors.Any(x => x.Id != default))
-            {
-                return false;
-            }
+            //if (authors.Any(x => x.Id != default))
+            //{
+            //    return false;
+            //}
 
             foreach (var author in authors)
             {
