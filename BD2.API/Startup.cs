@@ -2,6 +2,7 @@ using BD2.API.Configuration;
 using BD2.API.Database;
 using BD2.API.Database.Entities;
 using BD2.API.Database.Repositories;
+using BD2.API.Database.Repositories.Concrete;
 using BD2.API.Database.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -36,6 +37,7 @@ namespace BD2.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IBooksRepository, BooksRepository>();
+            services.AddTransient<IAuthorsRepository, AuthorsRepository>(); 
 
             // services.AddTransient<IRepo, Repo>();
             var tokenConfiguration = new TokenConfiguration { SecurityKey = "qwertyuiopasdfghjklzxcvbnm" };
