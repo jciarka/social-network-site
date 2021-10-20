@@ -1,4 +1,5 @@
 ﻿using BD2.API.Database.Entities;
+using BD2.API.Database.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BD2.API.Database.Repositories.Concrete
 {
-    public class AuthorsRepository
+    public class AuthorsRepository : IAuthorsRepository
     {
         private readonly AppDbContext _ctx;
 
@@ -51,6 +52,20 @@ namespace BD2.API.Database.Repositories.Concrete
                 _ctx.Authors.Add(author);
             }
             return (await _ctx.SaveChangesAsync()) > 0;
+        }
+
+        public async Task<bool> UpdateAsync(Author author)
+        {
+            var item = _ctx.Authors.Find(author.Id);
+
+            if (item == null)
+            {
+                return false;
+            }
+
+            _ctx.Entry(item).CurrentValues.SetValues(author);
+            return (await _ctx.SaveChangesAsync()) > 0;
+
         }
 
         public async Task<bool> DeleteAsync(Guid id)
