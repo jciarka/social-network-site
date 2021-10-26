@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BD2.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20211026184941_SocialMediaProposition")]
+    [Migration("20211026191034_SocialMediaProposition")]
     partial class SocialMediaProposition
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -105,7 +105,7 @@ namespace BD2.API.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.ToTable("AccountImage");
+                    b.ToTable("AccountImages");
                 });
 
             modelBuilder.Entity("BD2.API.Database.Entities.Author", b =>
@@ -162,7 +162,7 @@ namespace BD2.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Chat");
+                    b.ToTable("Chats");
                 });
 
             modelBuilder.Entity("BD2.API.Database.Entities.ChatAccount", b =>
@@ -190,7 +190,7 @@ namespace BD2.API.Migrations
 
                     b.HasIndex("ChatId1");
 
-                    b.ToTable("ChatAccount");
+                    b.ToTable("ChatAccounts");
                 });
 
             modelBuilder.Entity("BD2.API.Database.Entities.ChatEntry", b =>
@@ -225,7 +225,7 @@ namespace BD2.API.Migrations
 
                     b.HasIndex("ChatId1");
 
-                    b.ToTable("ChatEntry");
+                    b.ToTable("ChatEntries");
                 });
 
             modelBuilder.Entity("BD2.API.Database.Entities.Friendship", b =>
@@ -243,7 +243,7 @@ namespace BD2.API.Migrations
 
                     b.HasIndex("SecondFriendId");
 
-                    b.ToTable("Friendship");
+                    b.ToTable("Friendships");
 
                     b.HasCheckConstraint("NotSelfFriends_Friendship_constraint", "FirstFriendId <> SecondFriendId");
                 });
@@ -269,7 +269,7 @@ namespace BD2.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Group");
+                    b.ToTable("Groups");
                 });
 
             modelBuilder.Entity("BD2.API.Database.Entities.GroupAccount", b =>
@@ -297,7 +297,7 @@ namespace BD2.API.Migrations
 
                     b.HasIndex("GroupId1");
 
-                    b.ToTable("GroupAccount");
+                    b.ToTable("GroupAccounts");
                 });
 
             modelBuilder.Entity("BD2.API.Database.Entities.Image", b =>
@@ -307,7 +307,7 @@ namespace BD2.API.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWSEQUENTIALID()");
 
-                    b.Property<byte[]>("File")
+                    b.Property<byte[]>("Binary")
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("MimeType")
@@ -325,7 +325,7 @@ namespace BD2.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Image");
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("BD2.API.Database.Entities.Invitation", b =>
@@ -345,7 +345,7 @@ namespace BD2.API.Migrations
 
                     b.HasIndex("InvitedId");
 
-                    b.ToTable("Invitation");
+                    b.ToTable("Invitations");
 
                     b.HasCheckConstraint("NotSelfInvited_Friendship_constraint", "InvitingId <> InvitedId");
                 });
@@ -403,7 +403,7 @@ namespace BD2.API.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Post");
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("BD2.API.Database.Entities.PostComment", b =>
@@ -421,7 +421,7 @@ namespace BD2.API.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("PostComment");
+                    b.ToTable("PostComments");
                 });
 
             modelBuilder.Entity("BD2.API.Database.Entities.PostImage", b =>
@@ -441,7 +441,7 @@ namespace BD2.API.Migrations
 
                     b.HasIndex("PostId1");
 
-                    b.ToTable("PostImage");
+                    b.ToTable("PostImages");
                 });
 
             modelBuilder.Entity("BD2.API.Database.Entities.PostReaction", b =>
@@ -459,7 +459,7 @@ namespace BD2.API.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("PostReaction");
+                    b.ToTable("PostReactions");
                 });
 
             modelBuilder.Entity("BD2.API.Database.Entities.PostView", b =>
@@ -477,7 +477,7 @@ namespace BD2.API.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("PostView");
+                    b.ToTable("PostViews");
                 });
 
             modelBuilder.Entity("BD2.API.Database.Entities.Role", b =>

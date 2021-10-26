@@ -12,7 +12,7 @@ namespace BD2.API.Database.Entities
     public class Image
     {
         public Guid Id { get; set; }
-        public byte[] File { get; set; }
+        public byte[] Binary { get; set; }
         public string MimeType { get; set; }
         public DateTime PostDate { get; set; }
         public Guid PostId { get; set; }

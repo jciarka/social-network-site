@@ -8,7 +8,7 @@ namespace BD2.API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Chat",
+                name: "Chats",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWSEQUENTIALID ()"),
@@ -17,11 +17,11 @@ namespace BD2.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Chat", x => x.Id);
+                    table.PrimaryKey("PK_Chats", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Friendship",
+                name: "Friendships",
                 columns: table => new
                 {
                     FirstFriendId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -30,16 +30,16 @@ namespace BD2.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Friendship", x => new { x.FirstFriendId, x.SecondFriendId });
+                    table.PrimaryKey("PK_Friendships", x => new { x.FirstFriendId, x.SecondFriendId });
                     table.CheckConstraint("NotSelfFriends_Friendship_constraint", "FirstFriendId <> SecondFriendId");
                     table.ForeignKey(
-                        name: "FK_Friendship_AspNetUsers_FirstFriendId",
+                        name: "FK_Friendships_AspNetUsers_FirstFriendId",
                         column: x => x.FirstFriendId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Friendship_AspNetUsers_SecondFriendId",
+                        name: "FK_Friendships_AspNetUsers_SecondFriendId",
                         column: x => x.SecondFriendId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -47,7 +47,7 @@ namespace BD2.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Group",
+                name: "Groups",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWSEQUENTIALID ()"),
@@ -57,26 +57,26 @@ namespace BD2.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Group", x => x.Id);
+                    table.PrimaryKey("PK_Groups", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Image",
+                name: "Images",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWSEQUENTIALID()"),
-                    File = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    Binary = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     MimeType = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     PostDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Image", x => x.Id);
+                    table.PrimaryKey("PK_Images", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Invitation",
+                name: "Invitations",
                 columns: table => new
                 {
                     InvitingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -85,16 +85,16 @@ namespace BD2.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Invitation", x => new { x.InvitingId, x.InvitedId });
+                    table.PrimaryKey("PK_Invitations", x => new { x.InvitingId, x.InvitedId });
                     table.CheckConstraint("NotSelfInvited_Friendship_constraint", "InvitingId <> InvitedId");
                     table.ForeignKey(
-                        name: "FK_Invitation_AspNetUsers_InvitedId",
+                        name: "FK_Invitations_AspNetUsers_InvitedId",
                         column: x => x.InvitedId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Invitation_AspNetUsers_InvitingId",
+                        name: "FK_Invitations_AspNetUsers_InvitingId",
                         column: x => x.InvitingId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -102,7 +102,7 @@ namespace BD2.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ChatAccount",
+                name: "ChatAccounts",
                 columns: table => new
                 {
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -113,29 +113,29 @@ namespace BD2.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ChatAccount", x => new { x.ChatId, x.AccountId });
+                    table.PrimaryKey("PK_ChatAccounts", x => new { x.ChatId, x.AccountId });
                     table.ForeignKey(
-                        name: "FK_ChatAccount_AspNetUsers_AccountId",
+                        name: "FK_ChatAccounts_AspNetUsers_AccountId",
                         column: x => x.AccountId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ChatAccount_Chat_ChatId",
+                        name: "FK_ChatAccounts_Chats_ChatId",
                         column: x => x.ChatId,
-                        principalTable: "Chat",
+                        principalTable: "Chats",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ChatAccount_Chat_ChatId1",
+                        name: "FK_ChatAccounts_Chats_ChatId1",
                         column: x => x.ChatId1,
-                        principalTable: "Chat",
+                        principalTable: "Chats",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ChatEntry",
+                name: "ChatEntries",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWSEQUENTIALID ()"),
@@ -147,29 +147,29 @@ namespace BD2.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ChatEntry", x => x.Id);
+                    table.PrimaryKey("PK_ChatEntries", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ChatEntry_AspNetUsers_AccountId",
+                        name: "FK_ChatEntries_AspNetUsers_AccountId",
                         column: x => x.AccountId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ChatEntry_Chat_ChatId",
+                        name: "FK_ChatEntries_Chats_ChatId",
                         column: x => x.ChatId,
-                        principalTable: "Chat",
+                        principalTable: "Chats",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ChatEntry_Chat_ChatId1",
+                        name: "FK_ChatEntries_Chats_ChatId1",
                         column: x => x.ChatId1,
-                        principalTable: "Chat",
+                        principalTable: "Chats",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "GroupAccount",
+                name: "GroupAccounts",
                 columns: table => new
                 {
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -180,29 +180,29 @@ namespace BD2.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GroupAccount", x => new { x.GroupId, x.AccountId });
+                    table.PrimaryKey("PK_GroupAccounts", x => new { x.GroupId, x.AccountId });
                     table.ForeignKey(
-                        name: "FK_GroupAccount_AspNetUsers_AccountId",
+                        name: "FK_GroupAccounts_AspNetUsers_AccountId",
                         column: x => x.AccountId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_GroupAccount_Group_GroupId",
+                        name: "FK_GroupAccounts_Groups_GroupId",
                         column: x => x.GroupId,
-                        principalTable: "Group",
+                        principalTable: "Groups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_GroupAccount_Group_GroupId1",
+                        name: "FK_GroupAccounts_Groups_GroupId1",
                         column: x => x.GroupId1,
-                        principalTable: "Group",
+                        principalTable: "Groups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Post",
+                name: "Posts",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWSEQUENTIALID ()"),
@@ -221,23 +221,23 @@ namespace BD2.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Post", x => x.Id);
+                    table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Post_AspNetUsers_OwnerId",
+                        name: "FK_Posts_AspNetUsers_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Post_Group_GroupId",
+                        name: "FK_Posts_Groups_GroupId",
                         column: x => x.GroupId,
-                        principalTable: "Group",
+                        principalTable: "Groups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AccountImage",
+                name: "AccountImages",
                 columns: table => new
                 {
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -245,23 +245,23 @@ namespace BD2.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AccountImage", x => new { x.ImageId, x.AccountId });
+                    table.PrimaryKey("PK_AccountImages", x => new { x.ImageId, x.AccountId });
                     table.ForeignKey(
-                        name: "FK_AccountImage_AspNetUsers_AccountId",
+                        name: "FK_AccountImages_AspNetUsers_AccountId",
                         column: x => x.AccountId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AccountImage_Image_ImageId",
+                        name: "FK_AccountImages_Images_ImageId",
                         column: x => x.ImageId,
-                        principalTable: "Image",
+                        principalTable: "Images",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PostComment",
+                name: "PostComments",
                 columns: table => new
                 {
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -270,23 +270,23 @@ namespace BD2.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PostComment", x => new { x.AccountId, x.PostId });
+                    table.PrimaryKey("PK_PostComments", x => new { x.AccountId, x.PostId });
                     table.ForeignKey(
-                        name: "FK_PostComment_AspNetUsers_AccountId",
+                        name: "FK_PostComments_AspNetUsers_AccountId",
                         column: x => x.AccountId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PostComment_Post_PostId",
+                        name: "FK_PostComments_Posts_PostId",
                         column: x => x.PostId,
-                        principalTable: "Post",
+                        principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PostImage",
+                name: "PostImages",
                 columns: table => new
                 {
                     PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -295,29 +295,29 @@ namespace BD2.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PostImage", x => new { x.ImageId, x.PostId });
+                    table.PrimaryKey("PK_PostImages", x => new { x.ImageId, x.PostId });
                     table.ForeignKey(
-                        name: "FK_PostImage_Image_ImageId",
+                        name: "FK_PostImages_Images_ImageId",
                         column: x => x.ImageId,
-                        principalTable: "Image",
+                        principalTable: "Images",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PostImage_Post_PostId",
+                        name: "FK_PostImages_Posts_PostId",
                         column: x => x.PostId,
-                        principalTable: "Post",
+                        principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PostImage_Post_PostId1",
+                        name: "FK_PostImages_Posts_PostId1",
                         column: x => x.PostId1,
-                        principalTable: "Post",
+                        principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PostReaction",
+                name: "PostReactions",
                 columns: table => new
                 {
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -326,23 +326,23 @@ namespace BD2.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PostReaction", x => new { x.AccountId, x.PostId });
+                    table.PrimaryKey("PK_PostReactions", x => new { x.AccountId, x.PostId });
                     table.ForeignKey(
-                        name: "FK_PostReaction_AspNetUsers_AccountId",
+                        name: "FK_PostReactions_AspNetUsers_AccountId",
                         column: x => x.AccountId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PostReaction_Post_PostId",
+                        name: "FK_PostReactions_Posts_PostId",
                         column: x => x.PostId,
-                        principalTable: "Post",
+                        principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PostView",
+                name: "PostViews",
                 columns: table => new
                 {
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -351,150 +351,150 @@ namespace BD2.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PostView", x => new { x.AccountId, x.PostId });
+                    table.PrimaryKey("PK_PostViews", x => new { x.AccountId, x.PostId });
                     table.ForeignKey(
-                        name: "FK_PostView_AspNetUsers_AccountId",
+                        name: "FK_PostViews_AspNetUsers_AccountId",
                         column: x => x.AccountId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PostView_Post_PostId",
+                        name: "FK_PostViews_Posts_PostId",
                         column: x => x.PostId,
-                        principalTable: "Post",
+                        principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AccountImage_AccountId",
-                table: "AccountImage",
+                name: "IX_AccountImages_AccountId",
+                table: "AccountImages",
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChatAccount_AccountId",
-                table: "ChatAccount",
+                name: "IX_ChatAccounts_AccountId",
+                table: "ChatAccounts",
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChatAccount_ChatId1",
-                table: "ChatAccount",
+                name: "IX_ChatAccounts_ChatId1",
+                table: "ChatAccounts",
                 column: "ChatId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChatEntry_AccountId",
-                table: "ChatEntry",
+                name: "IX_ChatEntries_AccountId",
+                table: "ChatEntries",
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChatEntry_ChatId",
-                table: "ChatEntry",
+                name: "IX_ChatEntries_ChatId",
+                table: "ChatEntries",
                 column: "ChatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChatEntry_ChatId1",
-                table: "ChatEntry",
+                name: "IX_ChatEntries_ChatId1",
+                table: "ChatEntries",
                 column: "ChatId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friendship_SecondFriendId",
-                table: "Friendship",
+                name: "IX_Friendships_SecondFriendId",
+                table: "Friendships",
                 column: "SecondFriendId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GroupAccount_AccountId",
-                table: "GroupAccount",
+                name: "IX_GroupAccounts_AccountId",
+                table: "GroupAccounts",
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GroupAccount_GroupId1",
-                table: "GroupAccount",
+                name: "IX_GroupAccounts_GroupId1",
+                table: "GroupAccounts",
                 column: "GroupId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invitation_InvitedId",
-                table: "Invitation",
+                name: "IX_Invitations_InvitedId",
+                table: "Invitations",
                 column: "InvitedId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Post_GroupId",
-                table: "Post",
-                column: "GroupId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Post_OwnerId",
-                table: "Post",
-                column: "OwnerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PostComment_PostId",
-                table: "PostComment",
+                name: "IX_PostComments_PostId",
+                table: "PostComments",
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostImage_PostId",
-                table: "PostImage",
+                name: "IX_PostImages_PostId",
+                table: "PostImages",
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostImage_PostId1",
-                table: "PostImage",
+                name: "IX_PostImages_PostId1",
+                table: "PostImages",
                 column: "PostId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostReaction_PostId",
-                table: "PostReaction",
+                name: "IX_PostReactions_PostId",
+                table: "PostReactions",
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostView_PostId",
-                table: "PostView",
+                name: "IX_Posts_GroupId",
+                table: "Posts",
+                column: "GroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_OwnerId",
+                table: "Posts",
+                column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PostViews_PostId",
+                table: "PostViews",
                 column: "PostId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AccountImage");
+                name: "AccountImages");
 
             migrationBuilder.DropTable(
-                name: "ChatAccount");
+                name: "ChatAccounts");
 
             migrationBuilder.DropTable(
-                name: "ChatEntry");
+                name: "ChatEntries");
 
             migrationBuilder.DropTable(
-                name: "Friendship");
+                name: "Friendships");
 
             migrationBuilder.DropTable(
-                name: "GroupAccount");
+                name: "GroupAccounts");
 
             migrationBuilder.DropTable(
-                name: "Invitation");
+                name: "Invitations");
 
             migrationBuilder.DropTable(
-                name: "PostComment");
+                name: "PostComments");
 
             migrationBuilder.DropTable(
-                name: "PostImage");
+                name: "PostImages");
 
             migrationBuilder.DropTable(
-                name: "PostReaction");
+                name: "PostReactions");
 
             migrationBuilder.DropTable(
-                name: "PostView");
+                name: "PostViews");
 
             migrationBuilder.DropTable(
-                name: "Chat");
+                name: "Chats");
 
             migrationBuilder.DropTable(
-                name: "Image");
+                name: "Images");
 
             migrationBuilder.DropTable(
-                name: "Post");
+                name: "Posts");
 
             migrationBuilder.DropTable(
-                name: "Group");
+                name: "Groups");
         }
     }
 }
