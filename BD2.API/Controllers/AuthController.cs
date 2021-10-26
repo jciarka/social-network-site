@@ -21,14 +21,14 @@ namespace BD2.API.Controllers
     [Route("api/[controller]")]
     public class AuthController : ExtendedControllerBase
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<Account> _userManager;
         private readonly RoleManager<Role> _roleManager;
         private readonly TokenConfiguration _tokenConfiguration;
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly AppDbContext _authDbContext;
 
         public AuthController(
-            UserManager<User> userManager,
+            UserManager<Account> userManager,
             TokenConfiguration tokenConfiguration
             )
         {
@@ -70,7 +70,7 @@ namespace BD2.API.Controllers
             }
 
             // 3. Create user
-            var newUser = new User()
+            var newUser = new Account()
             {
                 UserName = request.Email,
                 Firstname = request.Firstname,
@@ -148,7 +148,7 @@ namespace BD2.API.Controllers
             });
         }
 
-        private async Task<string> GenerateToken(User existingUser)
+        private async Task<string> GenerateToken(Account existingUser)
         {
             // Get description key
             var key = Encoding.ASCII.GetBytes(_tokenConfiguration.SecurityKey);

@@ -66,7 +66,7 @@ namespace BD2.API
                 jwt.TokenValidationParameters = validationConfiguration;
             });
 
-            services.AddIdentity<User, Role>(
+            services.AddIdentity<Account, Role>(
                     options => options.SignIn.RequireConfirmedAccount = true )
                     .AddEntityFrameworkStores<AppDbContext>();
 

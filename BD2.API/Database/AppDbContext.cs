@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BD2.API.Database
 {
-    public class AppDbContext : IdentityDbContext<User, Role, Guid>
+    public class AppDbContext : IdentityDbContext<Account, Role, Guid>
     {
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
