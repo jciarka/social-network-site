@@ -14,88 +14,84 @@ code {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
 
 .dropdown {
   position: relative;
   display: inline-block;
-  }
+}
 
-  .dropdown-content {
+.dropdown-content {
   display: none;
   position: absolute;
   right: 20px;
   background-color: #f9f9f9;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   border-radius: 0px;
   z-index: 1;
-  }
+}
 
-
-  .dropdown:hover .dropdown-content {
+.dropdown:hover .dropdown-content {
   display: block;
-  }
+}
 
-  .dropdown-content a {
+.dropdown-content a {
   border-radius: 20px;
   color: black;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
-  }
+}
 
-  .dropdown-content a:hover {background-color: #f1f1f1}
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
 
-  .dropdown:hover .dropdown-content {
+.dropdown:hover .dropdown-content {
   display: block;
-  }
+}
 
+.nav-button {
+  position: relative;
+  top: 5px;
+}
 
-  .nav-button
-  {
-      position: relative; 
-      top: 5px;
-  }
+.prompt {
+  position: relative;
+  bottom: 5px;
+  color: rgb(0, 51, 51);
+}
 
-  .prompt
-  {
-      position: relative;
-      bottom: 5px;
-      color: rgb(0, 51, 51);
-  }
+.card-horizontal {
+  display: flex;
+  flex: 1 1 auto;
+}
 
-  .card-horizontal {
-      display: flex;
-      flex: 1 1 auto;
-  }
-
-  a {
+a {
   color: black;
   text-decoration: none;
-  }
+}
 
-  a:hover {
+a:hover {
   color: black;
   text-decoration: none;
-  }
-
+}
 
 /* Style do widoku product details -- gwiazdeczki ---*/
 .rating {
   display: flex;
-  transform:rotateY(180deg);
+  transform: rotateY(180deg);
 }
 
 .rating input {
@@ -103,40 +99,38 @@ code {
 }
 
 .rating label {
-  display:block;
+  display: block;
   cursor: pointer;
   width: 25px;
 }
 
-
 .rating label:before {
-    content: '\f005';
-    font-family: fontAwesome;
-    color: darkgrey;
-    position: absolute;
-    display: block;
-    top: -4px;
-    font-size: 20px;
+  content: "\f005";
+  font-family: fontAwesome;
+  color: darkgrey;
+  position: absolute;
+  display: block;
+  top: -4px;
+  font-size: 20px;
 }
 
 .rating label:after {
-    content: '\f005';
-    font-family: fontAwesome;
-    color: rgb(0, 119, 255);
-    position: relative;
-    display: block;
-    opacity: 0;
-    top: -7px;
-    right: 4px;
-    font-size: 25px;
-    transition: .5s;
-    text-shadow: 0 2pc 5pc rgba(0,0,0,.5);
-    margin-bottom: -10px;
-
+  content: "\f005";
+  font-family: fontAwesome;
+  color: rgb(0, 119, 255);
+  position: relative;
+  display: block;
+  opacity: 0;
+  top: -7px;
+  right: 4px;
+  font-size: 25px;
+  transition: 0.5s;
+  text-shadow: 0 2pc 5pc rgba(0, 0, 0, 0.5);
+  margin-bottom: -10px;
 }
 
-.rating label:hover:after, 
-.rating label:hover~label:after {
+.rating label:hover:after,
+.rating label:hover ~ label:after {
   opacity: 1;
 }
 
@@ -144,25 +138,25 @@ code {
   opacity: 1;
 }
 
-.comment-section{
+.comment-section {
   margin-top: 20px;
   padding: 20px;
   border: 1px solid lightgrey;
   background-color: white;
   padding: 20px;
-  width: 100%;  
+  width: 100%;
 }
 
-.comment-bubble{
+.comment-bubble {
   margin-top: 5px;
   border-top: 1px solid rgb(100, 100, 100);
-  background-color:white;
+  background-color: white;
 
   width: 100%;
   min-height: 100px;
 }
 
-.comment-bubble-header{
+.comment-bubble-header {
   width: 100%;
   background-color: rgb(230, 230, 230);
   padding-top: 6px;
@@ -179,3 +173,36 @@ code {
 .comment-bubble-content {
   padding: 10px;
 }
+
+.dropzone {
+  background: rgb(236, 236, 236);
+  border: 2px dashed grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.images-panel {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-object {
+  display: block;
+  width: 200px;
+  height: 200px;
+  border: 2px solid black;
+  margin: 5px
+}
+
+.image-exit-icon {
+  color: red;
+  font-size: 20px;
+  position: relative;
+  top: 40px;
+  left: 170px;
+}
+
