@@ -15,9 +15,10 @@ namespace BD2.API.Database.Repositories.Concrete
         private readonly AppDbContext _ctx;
         private readonly IImagesRepository _irepo;
 
-        public PostsRepository(IImagesRepository irepo)
+        public PostsRepository(IImagesRepository irepo, AppDbContext ctx)
         {
             _irepo = irepo;
+            _ctx = ctx;
         }
 
         public PostsRepository(AppDbContext ctx)

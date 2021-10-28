@@ -2,6 +2,7 @@ using BD2.API.Configuration;
 using BD2.API.Database;
 using BD2.API.Database.Entities;
 using BD2.API.Database.Repositories;
+using BD2.API.Database.Repositories.Concrete;
 using BD2.API.Database.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -36,6 +37,8 @@ namespace BD2.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IBooksRepository, BooksRepository>();
+            services.AddTransient<IImagesRepository, ImagesRepository>();
+            services.AddTransient<IPostsRepository, PostsRepository>();
 
             // services.AddTransient<IRepo, Repo>();
             var tokenConfiguration = new TokenConfiguration { SecurityKey = "qwertyuiopasdfghjklzxcvbnm" };
@@ -90,6 +93,14 @@ namespace BD2.API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BD2.API", Version = "v1" });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "Add Authorization header",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                });
             });
         }
 

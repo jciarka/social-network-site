@@ -179,7 +179,7 @@ namespace BD2.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(PostUpdateModel model) // dodawanie nowych encji
+        public async Task<IActionResult> Post([FromBody]PostUpdateModel model) // dodawanie nowych encji
         {
             if (UserId == null)
             {
