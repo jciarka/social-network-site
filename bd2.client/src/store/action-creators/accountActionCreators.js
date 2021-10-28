@@ -9,7 +9,7 @@ export const login = (email, password) => {
         password: password,
       });
 
-      console.log(result)
+      console.log(result);
 
       if (result && result.data && result.data.success) {
         dispatch({
@@ -21,6 +21,8 @@ export const login = (email, password) => {
             token: result.data.token,
           },
         });
+        axios.defaults.headers.common["Authorization"] =
+          "bearer " + result.data.token;
       } else {
         dispatch({
           type: "SET_ERRORS",
@@ -45,6 +47,7 @@ export const logout = (login, password) => {
     dispatch({
       type: "LOG_OUT",
     });
+    axios.defaults.headers.common["Authorization"] = null
   };
 };
 

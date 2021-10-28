@@ -9,8 +9,6 @@ const Header = () => {
   const dispach = useDispatch();
   const { login, logout } = bindActionCreators(actionCreators, dispach);
 
-  console.log(account);
-
   return (
     <>
       {/*<!-- NAVBAR -->*/}

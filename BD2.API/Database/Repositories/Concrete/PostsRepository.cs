@@ -127,6 +127,8 @@ namespace BD2.API.Database.Repositories.Concrete
                     PostId = postId
                 };
 
+                _ctx.PostImages.Add(postImage);
+
                 success = (await _ctx.SaveChangesAsync()) > 0 ? true : false;
 
                 if (!success)

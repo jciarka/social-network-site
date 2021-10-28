@@ -204,11 +204,21 @@ namespace BD2.API.Controllers
                 });
             }
 
+            post = await _repo.FindAsync(post.Id);
+
+            var postModel = new
+            {
+                Post = post,
+                Images = post.Images.Select(x => x.ImageId),
+                Owner = _mapper.Map<UserModel>(post.Owner),
+                Group = post.Group
+            };
+
             return Ok(new
             {
                 Success = true,
                 Errors = (List<string>)null,
-                Model = post
+                Model = postModel
             });
         }
 
@@ -325,7 +335,7 @@ namespace BD2.API.Controllers
 
         [HttpPost]
         [Route("images/{postId}")]
-        public async Task<IActionResult> AddImage(Guid postId, [FromForm]IFormFile file)
+        public async Task<IActionResult> AddImage(Guid postId, [FromForm]IFormFile image)
         {
             if (UserId == null)
             {
@@ -347,7 +357,7 @@ namespace BD2.API.Controllers
                 });
             }
 
-            var imageId = await _repo.AddImageAsync(postId, file);
+            var imageId = await _repo.AddImageAsync(postId, image);
 
             if (imageId == Guid.Empty)
             {

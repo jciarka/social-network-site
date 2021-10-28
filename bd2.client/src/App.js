@@ -2,14 +2,12 @@ import Header from "./components/Header.js";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import LoginForm from "./pages/account/LoginForm";
 import CreateAccountForm from "./pages/account/CreateAccountForm";
-import ImagePicker from "./components/general/ImagePicker";
+import PostEditor from "./components/post/PostEditor";
 
 import { useState } from "react";
 
 const App = () => {
   // const serverUrl = "http://localhost:8080/"
-
-  const [files, setFiles] = useState([]);
 
   return (
     <Router>
@@ -27,9 +25,7 @@ const App = () => {
         )}
       />
 
-      <div className="container justify-content-center">
-        <ImagePicker files={files} setFiles={setFiles} className="m-3" style={{ height: "100px" }} />
-      </div>
+      <PostEditor />
 
       {/* <Route path="/" exact render={(props) => <Browser />} />
 
