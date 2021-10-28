@@ -12,6 +12,7 @@ namespace BD2.API.Database.Entities
     {
         public Guid AccountId { get; set; }
 
+        [JsonIgnore]
         public Account Account { get; set; }
         public Guid ChatId { get; set; }
         [JsonIgnore]

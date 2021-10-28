@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace BD2.API.Database.Entities
@@ -14,8 +15,9 @@ namespace BD2.API.Database.Entities
         
         public DateTime CreatedDate { get; set; }
         public DateTime? LastPostDate { get; set; }
-
+        [JsonIgnore]
         public ICollection<GroupAccount> Members { get; set; }
+        [JsonIgnore]
         public ICollection<Post> Posts { get; set; }
     }
 

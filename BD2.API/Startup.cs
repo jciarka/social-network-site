@@ -75,6 +75,8 @@ namespace BD2.API
                     Configuration.GetConnectionString("dbConnection")
                 ));
 
+            services.AddAutoMapper(AppMapperConfiguration.Configuration);
+
             // Enable model validation
             services.AddControllers()
                     .ConfigureApiBehaviorOptions(options =>

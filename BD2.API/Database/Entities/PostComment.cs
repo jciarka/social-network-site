@@ -10,6 +10,7 @@ namespace BD2.API.Database.Entities
 {
     public class PostComment
     {
+        [JsonIgnore]
         public Account Account { get; set; }
         public Guid AccountId { get; set; }
 
@@ -17,7 +18,9 @@ namespace BD2.API.Database.Entities
         public Post Post { get; set; }
         public Guid PostId { get; set; }
 
+
         public string Text { get; set; }
+        public DateTime CommentDate { get; set; }
     }
 
     public class CommentConfig : IEntityTypeConfiguration<PostComment>
@@ -32,9 +35,13 @@ namespace BD2.API.Database.Entities
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
             builder.HasOne(x => x.Post)
-                .WithMany()
+                .WithMany(x => x.Comments)
                 .HasForeignKey(x => x.PostId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+            
+            builder.Property(x => x.CommentDate)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("GETDATE()");
         }
     }
 }

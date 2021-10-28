@@ -42,17 +42,17 @@ namespace BD2.API.Database.Repositories
         }
 
 
-        public async Task<bool> AddRangeAsync(IEnumerable<Book> entities)
+        public async Task<int> AddRangeAsync(IEnumerable<Book> entities)
         {
             if (entities.Any(x => x.Id != default))
             {
-                return false;
+                return 0;
             }
             foreach (var entity in entities)
             {
                 _ctx.Books.Add(entity);
             }
-            return (await _ctx.SaveChangesAsync()) > 0 ? true : false;
+            return await _ctx.SaveChangesAsync();
         }
 
         public async Task<bool> UpdateAsync(Book entity)
@@ -67,7 +67,6 @@ namespace BD2.API.Database.Repositories
             _ctx.Entry(found).CurrentValues.SetValues(entity);
             return (await _ctx.SaveChangesAsync()) > 0 ? true : false;
         }
-
 
         public async Task<bool> DeleteAsync(Guid id)
         {

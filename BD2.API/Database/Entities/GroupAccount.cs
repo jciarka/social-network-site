@@ -11,6 +11,7 @@ namespace BD2.API.Database.Entities
     public class GroupAccount
     {
         public Guid AccountId { get; set; }
+        [JsonIgnore]
         public Account Account { get; set; }
 
         public Guid GroupId { get; set; }

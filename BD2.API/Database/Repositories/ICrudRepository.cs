@@ -9,7 +9,7 @@ namespace BD2.API.Database.Repositories
     {
         public Task<T> FindAsync(Guid id);
         public Task<bool> AddAsync(T entity);
-        public Task<bool> AddRangeAsync(IEnumerable<T> entities);
+        public Task<int> AddRangeAsync(IEnumerable<T> entities);
         public Task<bool> UpdateAsync(T entity);
         public Task<bool> DeleteAsync(Guid id);
         public IQueryable<T> All();

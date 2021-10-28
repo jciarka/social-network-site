@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace BD2.API.Database.Entities
@@ -22,21 +23,28 @@ namespace BD2.API.Database.Entities
         public int PositiveReactionsCount { get; set; }
         public int NegativeReactionCount { get; set; }
 
+        [JsonIgnore]
+        public ICollection<PostComment> Comments { get; set; }
+        [JsonIgnore]
+        public ICollection<PostImage> Images { get; set; }
+        [JsonIgnore]
+        public ICollection<PostView> Views { get; set; }
+        [JsonIgnore]
+        public ICollection<PostReaction> Reactions { get; set; }
+
         public DateTime? LastCommentDate { get; set; }
         public DateTime? LastReactionDate { get; set; }
         public DateTime? LastOwnerViewDate { get; set; }
 
         // Account
         public Guid OwnerId { get; set; }
+        [JsonIgnore]
         public Account Owner { get; set; }
 
         // Post 
         public Guid? GroupId { get; set; }
+        [JsonIgnore]
         public Group Group { get; set; }
-
-        // images
-        public ICollection<PostImage> Images { get; set; }
-
     }
 
     public class PostConfig : IEntityTypeConfiguration<Post>

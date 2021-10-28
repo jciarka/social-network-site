@@ -15,7 +15,6 @@ namespace BD2.API.Database.Entities
         public byte[] Binary { get; set; }
         public string MimeType { get; set; }
         public DateTime PostDate { get; set; }
-        public Guid PostId { get; set; }
     }
 
     public class ImageConfig : IEntityTypeConfiguration<Image>

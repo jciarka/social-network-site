@@ -10,6 +10,7 @@ namespace BD2.API.Database.Entities
 {
     public class PostView
     {
+        [JsonIgnore]
         public Account Account { get; set; }
         public Guid AccountId { get; set; }
 
@@ -32,9 +33,13 @@ namespace BD2.API.Database.Entities
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
             builder.HasOne(x => x.Post)
-                .WithMany()
+                .WithMany(x => x.Views)
                 .HasForeignKey(x => x.PostId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.Property(x => x.ViewDate)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("GETDATE()");
         }
     }
 }

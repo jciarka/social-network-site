@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace BD2.API.Database.Entities
@@ -10,8 +11,10 @@ namespace BD2.API.Database.Entities
     public class Invitation
     {
         public Guid InvitingId { get; set; }
+        [JsonIgnore]
         public Account Inviting { get; set; }
         public Guid InvitedId { get; set; }
+        [JsonIgnore]
         public Account Invited { get; set; }
 
         public DateTime InvitationSendAt { get; set; }
@@ -29,7 +32,7 @@ namespace BD2.API.Database.Entities
                 .OnDelete(DeleteBehavior.ClientCascade);
 
             builder.HasOne(x => x.Invited)
-                .WithMany()
+                .WithMany(x => x.Invitations)
                 .HasForeignKey(x => x.InvitedId)
                 .OnDelete(DeleteBehavior.ClientCascade);
 

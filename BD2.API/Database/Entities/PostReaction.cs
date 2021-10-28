@@ -10,6 +10,7 @@ namespace BD2.API.Database.Entities
 {
     public class PostReaction
     {
+        [JsonIgnore]
         public Account Account { get; set; }
         public Guid AccountId { get; set; }
 
@@ -17,6 +18,7 @@ namespace BD2.API.Database.Entities
         public Post Post { get; set; }
         public Guid PostId { get; set; }
 
+        public DateTime ReactionDate { get; set; }
         public ReactionType Type { get; set; }
     }
 
@@ -32,9 +34,13 @@ namespace BD2.API.Database.Entities
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
             builder.HasOne(x => x.Post)
-                .WithMany()
+                .WithMany(x => x.Reactions)
                 .HasForeignKey(x => x.PostId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.Property(x => x.ReactionDate)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("GETDATE()");
         }
     }
 
