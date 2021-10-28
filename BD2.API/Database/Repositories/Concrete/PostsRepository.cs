@@ -96,15 +96,16 @@ namespace BD2.API.Database.Repositories.Concrete
             return _ctx.Posts.AsQueryable();
         }
 
-        public async Task<bool> AddImageAsync(Guid postId, IFormFile file)
+        public async Task<Guid> AddImageAsync(Guid postId, IFormFile file)
         {
             if (!file.ContentType.StartsWith("image/")) return false;
 
+            Image image;
             using (var transaction = _ctx.Database.BeginTransaction())
             using (MemoryStream memStream = new MemoryStream())
             {
                 await file.CopyToAsync(memStream);
-                var image = new Image()
+                image = new Image()
                 {
                     Binary = memStream.ToArray(),
                     MimeType = file.ContentType
@@ -116,7 +117,7 @@ namespace BD2.API.Database.Repositories.Concrete
                 if (!success)
                 {
                     transaction.Rollback();
-                    return false;
+                    return Guid.Empty;
                 }
 
                 var postImage = new PostImage()
@@ -130,12 +131,12 @@ namespace BD2.API.Database.Repositories.Concrete
                 if (!success)
                 {
                     transaction.Rollback();
-                    return false;
+                    return Guid.Empty;
                 }
 
                 transaction.Commit();
             }
-            return true;
+            return image.Id;
         }
 
         public async Task<bool> DeleteImageAsync(Guid postId, Guid imageId)

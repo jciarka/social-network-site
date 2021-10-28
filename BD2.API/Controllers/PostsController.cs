@@ -4,6 +4,7 @@ using BD2.API.Database.Repositories.Interfaces;
 using BD2.API.Models.Auth;
 using BD2.API.Models.Posts;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,12 +18,14 @@ namespace BD2.API.Controllers
     public class PostsController : ExtendedControllerBase
     {
         private readonly IPostsRepository _repo;
+        private readonly IImagesRepository _irepo;
         private readonly IMapper _mapper;
 
-        public PostsController(IPostsRepository repo, IMapper mapper)
+        public PostsController(IPostsRepository repo, IMapper mapper, IImagesRepository irepo)
         {
             _repo = repo;
             _mapper = mapper;
+            _irepo = irepo;
         }
 
         [AllowAnonymous]
@@ -280,7 +283,7 @@ namespace BD2.API.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> Delete(Guid id) // dodawanie nowych encji
+        public async Task<IActionResult> Delete(Guid id)
         {
             var post = await _repo.FindAsync(id);
 
@@ -310,6 +313,71 @@ namespace BD2.API.Controllers
                 {
                     Success = false,
                     Errors = new List<string> { "Nie udało sie usunąć postu" },
+                });
+            }
+
+            return Ok(new
+            {
+                Success = true,
+                Errors = (List<string>)null,
+            });
+        }
+
+        [HttpPost]
+        [Route("images/{postId}")]
+        public async Task<IActionResult> AddImage(Guid postId, [FromForm]IFormFile file)
+        {
+            if (UserId == null)
+            {
+                return Unauthorized(new
+                {
+                    Success = false,
+                    Errors = new List<string> { "Błąd uwieżytelniania, zaloguj się ponownie i spróbuj jeszcze raz" }
+                });
+            }
+
+            var post = await _repo.FindAsync(postId);
+
+            if (post == null)
+            {
+                return NotFound(new
+                {
+                    Success = false,
+                    Errors = new List<string> { "Nie znaleziono postu o podanym id" },
+                });
+            }
+
+            var imageId = await _repo.AddImageAsync(postId, file);
+
+            if (imageId == Guid.Empty)
+            {
+                return BadRequest(new
+                {
+                    Success = false,
+                    Errors = new List<string> { "Nie udało sie dodać zdjęcia" },
+                });
+            }
+
+            return Ok(new
+            {
+                Model = imageId, 
+                Success = true,
+                Errors = (List<string>)null,
+            });
+        }
+
+        [HttpDelete]
+        [Route("images/{imageId}")]
+        public async Task<IActionResult> AddImage(Guid imageId)
+        {
+            var success = await _irepo.DeleteAsync(imageId);
+
+            if (success == false)
+            {
+                return BadRequest(new
+                {
+                    Success = false,
+                    Errors = new List<string> { "Nie udało sie usunąc zdjęcia" },
                 });
             }
 

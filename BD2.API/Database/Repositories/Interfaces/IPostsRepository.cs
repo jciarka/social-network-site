@@ -14,7 +14,7 @@ namespace BD2.API.Database.Repositories.Interfaces
         public Task<IEnumerable<Post>> FindFriendsPosts(Guid watcherId);
 
         // images
-        public Task<bool> AddImageAsync(Guid postId, IFormFile image);
+        public Task<Guid> AddImageAsync(Guid postId, IFormFile image);
         public Task<IEnumerable<Guid>> FindImagesAsync(Guid postId);
         public Task<bool> DeleteImageAsync(Guid postId, Guid imageId);
     }
