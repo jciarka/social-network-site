@@ -96,9 +96,9 @@ namespace BD2.API.Database.Repositories.Concrete
             return _ctx.Posts.AsQueryable();
         }
 
-        public async Task<Guid> AddImageAsync(Guid postId, IFormFile file)
+        public async Task<Guid> AddImageAsync (Guid postId, IFormFile file)
         {
-            if (!file.ContentType.StartsWith("image/")) return false;
+            if (!file.ContentType.StartsWith("image/")) return Guid.Empty;
 
             Image image;
             using (var transaction = _ctx.Database.BeginTransaction())
