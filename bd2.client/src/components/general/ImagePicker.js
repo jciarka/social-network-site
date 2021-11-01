@@ -37,7 +37,7 @@ const ImagePicker = ({
                 setFiles(files.filter((file, index) => index !== i))
               }
             ></i>
-            <img src={URL.createObjectURL(x)} className="image-object" />
+            <img src={URL.createObjectURL(x)} className="image-object" alt="obraz" />
           </div>
         ))}
       </div>

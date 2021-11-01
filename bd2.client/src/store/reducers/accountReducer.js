@@ -1,6 +1,8 @@
 const initAccountState = () => {
   return {
     isLoggedIn: false,
+    id: null,
+    email: null,
     firstname: null,
     lastname: null,
     roles: [],

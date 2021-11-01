@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import ImagePicker from "../general/ImagePicker";
 import axios from "axios";
-import { useSelector } from "react-redux";
 
 export const editorTypes = {
   EDIT: "EDIT",
@@ -12,9 +11,8 @@ const PostEditor = ({
   post = null,
   onSuccess = null,
   type = editorTypes.NEW,
+  header,
 }) => {
-  const bearer = useSelector((state) => state.account).token; // get redux store values
-
   const [title, setTitle] = useState(post ? post.title : "");
   const validateTitle = () => {
     if (title.length === 0 || title === "") return "Tytuł nie może być puste";
@@ -50,7 +48,6 @@ const PostEditor = ({
         result.data.success &&
         result.data.model.post.id
       ) {
-        debugger;
         setTitle("");
         setText("");
         setFiles([]);
@@ -63,10 +60,8 @@ const PostEditor = ({
       debugger;
 
       for (let index = 0; index < files.length; index++) {
-        debugger;
         const form = new FormData();
         form.append("image", files[index]);
-        debugger;
         console.log(`api/posts/images/${result.data.model.post.id}`);
 
         const imageResponse = await axios.post(
@@ -100,9 +95,15 @@ const PostEditor = ({
   return (
     <div className="container d-flex justify-content-center">
       <div
-        className="card m-4 rounded rounded-lg w-100 shadow border rounded-0"
-        style={{ border: "#8f8f8fb6", padding: 60 }}
+        className="card m-4 p-4 rounded rounded-lg w-100 shadow border rounded-0"
+        style={{ border: "#8f8f8fb6" }}
       >
+        {
+          header && (
+          <div className=" text-center">
+            <h4>{header}</h4>
+          </div>
+        )}
         <div className="form-group m-0">
           <label htmlFor="title">Tytuł</label>
           <input
@@ -139,7 +140,7 @@ const PostEditor = ({
             files={files}
             setFiles={setFiles}
             className="m-3"
-            style={{ height: "100px" }}
+            style={{ height: "50px" }}
           />
         </div>
 

@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useHistory } from "react-router-dom";
 
 export const login = (email, password) => {
   return async (dispatch) => {
@@ -15,6 +14,8 @@ export const login = (email, password) => {
         dispatch({
           type: "SET_LOG_IN",
           payload: {
+            id: result.data.id,
+            email: result.data.email,
             firstname: result.data.firstname,
             lastname: result.data.lastname,
             roles: result.data.roles,

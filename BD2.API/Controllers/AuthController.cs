@@ -140,8 +140,10 @@ namespace BD2.API.Controllers
 
             return Ok(new LoginResponse()
             {
+                Id = existingUser.Id,
                 Firstname = existingUser.Firstname,
                 Lastname = existingUser.Lastname,
+                Email = existingUser.Email,
                 Roles  = roles,
                 Token = jwtToken,
                 Success = true,

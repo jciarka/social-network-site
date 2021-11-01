@@ -7,7 +7,7 @@ import { actionCreators } from "../store/index";
 const Header = () => {
   const account = useSelector((state) => state.account); // get redux store values
   const dispach = useDispatch();
-  const { login, logout } = bindActionCreators(actionCreators, dispach);
+  const { logout } = bindActionCreators(actionCreators, dispach);
 
   return (
     <>
@@ -30,16 +30,16 @@ const Header = () => {
                   style={{ position: "relative", top: "9px" }}
                 >
                   {/* <img src={HotelLogo} width="20" height="20" alt=""/> */}
-                  Button 1
+                  Tablica
                 </button>
               </Link>
-              <Link to="/">
+              <Link to="/my">
                 <button
                   className="btn btn-dark nav-button rounded-0"
                   style={{ position: "relative", top: "9px" }}
                 >
                   {/* <img src={RestaurantLogo} width="20" height="20" alt=""/> */}
-                  Button 2
+                  Moje posty
                 </button>
               </Link>
               <Link to="/">
@@ -48,7 +48,7 @@ const Header = () => {
                   style={{ position: "relative", top: "9px" }}
                 >
                   {/* <img src={HistoryLogo} width="20" height="20" alt=""/> */}
-                  Button 3
+                  Grupy
                 </button>
               </Link>
               <Link to="/">
@@ -57,7 +57,7 @@ const Header = () => {
                   style={{ position: "relative", top: "9px" }}
                 >
                   {/* <img src={PopcornLogo} width="20" height="20" alt=""/> */}
-                  Button 4
+                  Znajomi
                 </button>
               </Link>
               <Link to="/">
@@ -66,7 +66,7 @@ const Header = () => {
                   style={{ position: "relative", top: "9px" }}
                 >
                   {/* <img src={FootballLogo} width="20" height="20" alt=""/> */}
-                  Button 6
+                  Komunikator
                 </button>
               </Link>
             </div>
