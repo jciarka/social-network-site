@@ -30,7 +30,7 @@ const PostBrowser = ({ fetchPostsUrl, fetchPostDetailsUrl }) => {
   return (
     <>
       <div className="container justify-content-center">
-        <PostEditor type={editorTypes.EDIT} header="Napisz o czym myślisz" />
+        <PostEditor type={editorTypes.EDIT} onSuccess={(x) => fetchPosts()} header="Napisz o czym myślisz" />
 
         {posts.map((postData, index) => {
           return (

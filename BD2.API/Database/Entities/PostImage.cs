@@ -30,7 +30,7 @@ namespace BD2.API.Database.Entities
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
             builder.HasOne(x => x.Post)
-                .WithMany()
+                .WithMany(x => x.Images)
                 .HasForeignKey(x => x.PostId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         }

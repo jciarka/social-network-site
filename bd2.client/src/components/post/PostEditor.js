@@ -56,14 +56,9 @@ const PostEditor = ({
         return;
       }
 
-      console.log(result.data);
-      debugger;
-
       for (let index = 0; index < files.length; index++) {
         const form = new FormData();
         form.append("image", files[index]);
-        console.log(`api/posts/images/${result.data.model.post.id}`);
-
         const imageResponse = await axios.post(
           `api/posts/images/${result.data.model.post.id}`,
           form
@@ -78,10 +73,9 @@ const PostEditor = ({
           setBackendErrors(result.data.errors);
           return;
         }
-
-        if (!onSuccess) {
-          onSuccess(result.data.model);
-        }
+      }
+      if (onSuccess) {
+        onSuccess(result.data.model);
       }
     } catch (e) {
       if (e.response) {
@@ -93,13 +87,15 @@ const PostEditor = ({
   };
 
   return (
-    <div className="container d-flex justify-content-center">
+    <div
+      className="container d-flex justify-content-center"
+      style={{"max-width": 600}}
+    >
       <div
         className="card m-4 p-4 rounded rounded-lg w-100 shadow border rounded-0"
         style={{ border: "#8f8f8fb6" }}
       >
-        {
-          header && (
+        {header && (
           <div className=" text-center">
             <h4>{header}</h4>
           </div>
@@ -145,7 +141,7 @@ const PostEditor = ({
         </div>
 
         {backendErrors && backendErrors.length > 0 && (
-          <div className="p-2 alert alert-danger p-0 pt-1 d-flex align-items-center">
+          <div className="pb-2 alert alert-danger p-0 d-flex align-items-center">
             <div className="text-center w-100" role="alert">
               {backendErrors.map((error, index) => {
                 return (
@@ -173,7 +169,7 @@ const PostEditor = ({
           </div>
         )}
 
-        <div className="w-100 text-center">
+        <div className="mt-2 w-100 text-center">
           <button
             disabled={!validateAll()}
             type="submit"

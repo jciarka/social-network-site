@@ -178,6 +178,7 @@ namespace BD2.API.Database.Repositories.Concrete
                 .Where(x => x.OwnerId == userId)
                 .Include(x => x.Images)
                 .Include(x => x.Owner)
+                .OrderByDescending(x => x.PostDate)
                 .ToListAsync();
 
             await track(posts, watcherId);

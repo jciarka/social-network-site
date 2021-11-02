@@ -64,4 +64,6 @@ const App = () => {
 // npm i redux-thunk
 // npm install axios
 
+// npm install react-image-gallery
+
 export default App;
