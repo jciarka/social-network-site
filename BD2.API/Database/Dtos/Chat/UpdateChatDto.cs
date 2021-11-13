@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace BD2.API.Database.Dtos.Chat
+{
+    public record UpdateChatDto
+    {
+        public Guid Name { get; set; }
+
+        [JsonIgnore]
+        public ICollection<Guid> MembersIds { get; set; }
+    }
+}
