@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace BD2.API.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class PostCommentsController : ExtendedControllerBase
     {
         private readonly IPostCommentsRepository _repo;
@@ -46,7 +46,7 @@ namespace BD2.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("{postId}/{userId}")]
-        public async Task<IActionResult> Post(Guid postId, Guid userId, [FromBody] PostCommentAddModel model) 
+        public async Task<IActionResult> Post(Guid postId, Guid userId, [FromBody]PostCommentAddModel model) 
         {
             // Comment can't be empty - defined in PostComment by model annotation
             if (!ModelState.IsValid)

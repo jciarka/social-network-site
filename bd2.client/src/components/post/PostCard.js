@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import axios from "axios";
+import PostComments from "./PostComments";
 
 const PostCard = ({ postData, setPostData }) => {
   const fetchPostsDetails = async () => {
@@ -11,6 +12,7 @@ const PostCard = ({ postData, setPostData }) => {
       setPostData({
         ...postData,
         detailsFetched: true,
+        expanded: true,
         ...result.data.model,
       });
     }
@@ -42,7 +44,7 @@ const PostCard = ({ postData, setPostData }) => {
           )}
         </div>
 
-        <hr style={{ background: "black", marginBottom: 5 }} />
+        <hr style={{ background: "black", marginBottom: 20, marginTop: 20 }} />
         {/* IMAGES carousel*/}
         <div className="d-flex flex-row justify-content-between">
           <div className="h5">
@@ -82,6 +84,39 @@ const PostCard = ({ postData, setPostData }) => {
         </div>
         <div className="ma-4 pa-4" style={{ fontSize: 18 }}>
           {postData.post.text}
+        </div>
+
+        <div className=" mt-2">
+          <PostComments
+            comments={postData.comments}
+            setComments={(comments) => setPostData([...postData, comments])}
+            showComments={postData.expanded}
+            postId={postData.post.id}
+          />
+          {!postData.expanded ? (
+            <div
+              className="mx-2 badge badge-pill badge-primary py-2 float-right"
+              style={{ height: 30, fontSize: 13 }}
+              onClick={() => {
+                fetchPostsDetails()
+                setPostData({ ...postData, expanded: true });
+              }}
+            >
+              <i className="fa fa-arrow-down mr-2" aria-hidden="true"></i>
+              <span className="float-right">Pokaż komentarze</span>
+            </div>
+          ) : (
+            <div
+              className="mx-2 badge badge-pill badge-secondary py-2"
+              style={{ height: 30, fontSize: 13 }}
+              onClick={() => {
+                setPostData({ ...postData, expanded: false });
+              }}
+            >
+              <i className="fa fa-arrow-up mr-2" aria-hidden="true"></i>
+              <span className="float-right">Ukryj komentarze</span>
+            </div>
+          )}
         </div>
       </div>
     </>

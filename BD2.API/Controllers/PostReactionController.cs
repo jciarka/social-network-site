@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BD2.API.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class PostReactionController : ExtendedControllerBase
     {
         private readonly IPostReactionsRepository _repo;
@@ -64,11 +64,21 @@ namespace BD2.API.Controllers
                 }); ;
             }
 
-            // add reaction
-            var postReaction = _mapper.Map<PostReaction>(model);
-            postReaction.AccountId = userId;
-            postReaction.PostId = postId;
-            var success = await _repo.AddAsync(postReaction);
+            var found = await _repo.FindAsync(postId, userId);
+            bool success;
+            if (found == null)
+            {
+                // add reaction
+                var postReaction = _mapper.Map<PostReaction>(model);
+                postReaction.AccountId = userId;
+                postReaction.PostId = postId;
+                success = await _repo.AddAsync(postReaction);
+            }
+            else 
+            {
+                var postReaction = _mapper.Map(model, found);
+                success = await _repo.UpdateAsync(found);
+            }
 
             if (!success)
             {
