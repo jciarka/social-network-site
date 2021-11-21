@@ -15,6 +15,15 @@ namespace BD2.API.Configuration
         {
             cfg.CreateMap<Account, UserModel>();
             cfg.CreateMap<PostUpdateModel, Post>();
+
+            cfg.CreateMap<PostComment, PostCommentModel>();
+            cfg.CreateMap<PostCommentAddModel, PostComment>()
+                .ForMember(x => x.CommentDate, opt => opt.MapFrom(src => DateTime.Now));
+
+            cfg.CreateMap<PostReaction, PostReactionModel>();
+            cfg.CreateMap<PostReactionAddModel, PostReaction>()
+                .ForMember(x => x.ReactionDate, opt => opt.MapFrom(src => DateTime.Now));
+
         };
     }
 }
