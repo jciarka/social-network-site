@@ -91,7 +91,7 @@ namespace BD2.API.Controllers
 
             // fetch comment with user data
             var commentResult = await _repo.All()
-                .Where(x => x.PostId == postId && x.AccountId == userId)
+                .Where(x => x.Id == postComment.Id)
                 .Include(x => x.Account)
                 .FirstOrDefaultAsync();
 
@@ -106,10 +106,10 @@ namespace BD2.API.Controllers
 
         [AllowAnonymous]
         [HttpDelete]
-        [Route("{postId, userId}")]
-        public async Task<IActionResult> Delete(Guid postId, Guid userId) // dodawanie nowych encji
+        [Route("{id}")]
+        public async Task<IActionResult> Delete(Guid id) // dodawanie nowych encji
         {
-            var result = await _repo.DeleteAsync(postId, userId);
+            var result = await _repo.DeleteAsync(id);
 
             if (result == false)
             {

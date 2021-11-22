@@ -18,10 +18,10 @@ namespace BD2.API.Database.Repositories.Concrete
             _ctx = ctx;
         }
 
-        public async Task<PostComment> FindAsync(Guid postId, Guid userId)
+        public async Task<PostComment> FindAsync(Guid id)
         {
             return await _ctx.PostComments
-                .Where(x => x.PostId == postId && x.AccountId == userId)
+                .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
         }
 
@@ -59,7 +59,7 @@ namespace BD2.API.Database.Repositories.Concrete
 
         public async Task<bool> UpdateAsync(PostComment entity)
         {
-            var found = await FindAsync(entity.PostId, entity.AccountId);
+            var found = await FindAsync(entity.Id);
 
             if (found == null)
             {
@@ -70,9 +70,9 @@ namespace BD2.API.Database.Repositories.Concrete
             return (await _ctx.SaveChangesAsync()) > 0 ? true : false;
         }
 
-        public async Task<bool> DeleteAsync(Guid postId, Guid userId)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            var found = await _ctx.PostComments.FindAsync(postId, userId);
+            var found = await _ctx.PostComments.FindAsync(id);
 
             if (found == null)
             {

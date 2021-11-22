@@ -10,6 +10,8 @@ namespace BD2.API.Database.Entities
 {
     public class PostComment
     {
+        public Guid Id { get; set; }
+
         [JsonIgnore]
         public Account Account { get; set; }
         public Guid AccountId { get; set; }
@@ -27,7 +29,10 @@ namespace BD2.API.Database.Entities
     {
         public void Configure(EntityTypeBuilder<PostComment> builder)
         {
-            builder.HasKey(x => new { x.AccountId, x.PostId });
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("NEWSEQUENTIALID ()");
 
             builder.HasOne(x => x.Account)
                 .WithMany()

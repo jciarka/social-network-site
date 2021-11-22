@@ -8,12 +8,12 @@ namespace BD2.API.Database.Repositories.Interfaces
 {
     public interface IPostCommentsRepository
     {
-        public Task<PostComment> FindAsync(Guid PostId, Guid UserId);
+        public Task<PostComment> FindAsync(Guid id);
 
         public Task<bool> AddAsync(PostComment entity);
         public Task<int> AddRangeAsync(IEnumerable<PostComment> entities);
         public Task<bool> UpdateAsync(PostComment entity);
-        public Task<bool> DeleteAsync(Guid PostId, Guid UserId);
+        public Task<bool> DeleteAsync(Guid id);
         public IQueryable<PostComment> All();
         public IQueryable<PostComment> AllByPost(Guid PostId);
     }
