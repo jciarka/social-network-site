@@ -46,7 +46,7 @@ namespace BD2.API.Database.Entities
 
         public enum ReactionType
     {
-        Dislike = 0,
-        Like = 1,
+        Dislike = 1,
+        Like = 2,
     }
 }

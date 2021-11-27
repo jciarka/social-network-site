@@ -178,6 +178,7 @@ namespace BD2.API.Database.Repositories.Concrete
                 .Where(x => x.OwnerId == userId)
                 .Include(x => x.Images)
                 .Include(x => x.Owner)
+                .Include(x => x.Reactions)
                 .OrderByDescending(x => x.PostDate)
                 .ToListAsync();
 
@@ -192,6 +193,7 @@ namespace BD2.API.Database.Repositories.Concrete
                 .Where(x => x.GroupId == groupId)
                 .Include(x => x.Images)
                 .Include(x => x.Owner)
+                .Include(x => x.Reactions)
                 .ToListAsync();
 
             await track(posts, watcherId);
@@ -205,6 +207,7 @@ namespace BD2.API.Database.Repositories.Concrete
              .Include(x => x.Images)
              .Include(x => x.Owner)
              .ThenInclude(x => x.Friendships)
+             .Include(x => x.Reactions)
              .Where(x => 
                 x.Owner != null && x.Owner.Friendships != null && (
                 x.Owner.Friendships.Select(x => x.FirstFriendId).Contains(watcherId) ||

@@ -18,11 +18,17 @@ const PostComments = ({
   const postComment = async () => {
     console.log(`posting ${newComment}`);
     const result = await axios.post(
-      `/api/PostComments/${postId}/${account.id}`, { text: newComment.text}
+      `/api/PostComments/${postId}/${account.id}`,
+      { text: newComment.text }
     );
 
     if (result && result.data && result.data.success) {
-      setComments([...comments, result.data]);
+      if (comments) {
+        setComments([...comments, result.data.data]);
+      }
+      setNewComment({
+        text: "",
+      })
     }
   };
 
@@ -64,7 +70,6 @@ const PostComments = ({
       {!comments ||
         (showComments && comments.length !== 0 && (
           <div className="w-100">
-
             {comments.map((comment, index) => (
               <CommentBubble key={index} comment={comment} />
             ))}

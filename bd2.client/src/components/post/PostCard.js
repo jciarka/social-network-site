@@ -3,8 +3,11 @@ import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import axios from "axios";
 import PostComments from "./PostComments";
+import { useSelector } from "react-redux";
 
 const PostCard = ({ postData, setPostData }) => {
+  const account = useSelector((state) => state.account); // get redux store values
+
   const fetchPostsDetails = async () => {
     const result = await axios.get(`/api/Posts/${postData.post.id}`);
 
@@ -15,6 +18,17 @@ const PostCard = ({ postData, setPostData }) => {
         expanded: true,
         ...result.data.model,
       });
+    }
+  };
+  const postReaction = async (type) => {
+    const result = await axios.post(
+      `/api/PostReaction/${postData.post.id}/${account.id}`,
+      { type }
+    );
+
+    if (result && result.data && result.data.success) {
+      postData.hasReacted = type;
+      setPostData(postData);
     }
   };
 
@@ -56,20 +70,36 @@ const PostCard = ({ postData, setPostData }) => {
               {/* TO DO: cut milieconds */}
             </div>
 
-            <div
-              className="mx-2 badge badge-pill badge-primary py-2"
-              style={{ height: 30, fontSize: 13 }}
+            <button
+              className={`mx-2 badge badge-pill py-2 shadow-lg ${
+                postData.hasReacted === 2 ? "badge-primary" : ""
+              }`}
+              style={{
+                height: 30,
+                fontSize: 13,
+              }}
+              onClick={() => {
+                postReaction(2);
+              }}
             >
               <i className="fa fa-thumbs-up mr-2" aria-hidden="true"></i>
               {postData.post.positiveReactionsCount}
-            </div>
-            <div
-              className="mx-2 badge badge-pill badge-danger py-2"
-              style={{ height: 30, fontSize: 13 }}
+            </button>
+            <button
+              className={`mx-2 badge badge-pill py-2 shadow-lg ${
+                postData.hasReacted === 1 ? "badge-danger" : ""
+              }`}
+              style={{
+                height: 30,
+                fontSize: 13,
+              }}
+              onClick={() => {
+                postReaction(1);
+              }}
             >
               <i className="fa fa-thumbs-down mr-2" aria-hidden="true"></i>
               {postData.post.negativeReactionCount}
-            </div>
+            </button>
             <div
               className="mx-2 badge badge-pill badge-warning py-2"
               style={{ height: 30, fontSize: 13 }}
@@ -89,7 +119,9 @@ const PostCard = ({ postData, setPostData }) => {
         <div className=" mt-2">
           <PostComments
             comments={postData.comments}
-            setComments={(comments) => setPostData([...postData, comments])}
+            setComments={(comments) => {
+              setPostData({ ...postData, comments });
+            }}
             showComments={postData.expanded}
             postId={postData.post.id}
           />
@@ -98,7 +130,7 @@ const PostCard = ({ postData, setPostData }) => {
               className="mx-2 badge badge-pill badge-primary py-2 float-right"
               style={{ height: 30, fontSize: 13 }}
               onClick={() => {
-                fetchPostsDetails()
+                fetchPostsDetails();
                 setPostData({ ...postData, expanded: true });
               }}
             >

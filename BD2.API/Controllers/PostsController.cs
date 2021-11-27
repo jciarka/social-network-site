@@ -46,6 +46,7 @@ namespace BD2.API.Controllers
 
             var postModel = new
             {
+
                 Post = post,
                 Images = post.Images.Select(x => x.ImageId),
                 Owner = _mapper.Map<UserModel>(post.Owner),
@@ -66,7 +67,8 @@ namespace BD2.API.Controllers
                 {
                     ViewDate = y.ViewDate,
                     Account = _mapper.Map<UserModel>(y.Account)
-                })
+                }),
+                HasReacted = post.Reactions.Where(x => x.AccountId == UserId).Select(x => x.Type).FirstOrDefault(),
             };
 
             return Ok(new
@@ -97,6 +99,7 @@ namespace BD2.API.Controllers
                 Post = x,
                 Images = x.Images.Select(x => x.ImageId),
                 Owner = _mapper.Map<UserModel>(x.Owner),
+                HasReacted = x.Reactions.Where(x => x.AccountId == UserId).Select(x => x.Type).FirstOrDefault(),
                 Group = x.Group,
             });
 
@@ -128,6 +131,7 @@ namespace BD2.API.Controllers
                 Post = x,
                 Images = x.Images.Select(x => x.ImageId),
                 Owner = _mapper.Map<UserModel>(x.Owner),
+                HasReacted = x.Reactions.Where(x => x.AccountId == UserId).Select(x => x.Type).FirstOrDefault(),
                 Group = x.Group,
             });
 
@@ -168,6 +172,7 @@ namespace BD2.API.Controllers
                 Post = x,
                 Images = x.Images.Select(x => x.ImageId),
                 Owner = _mapper.Map<UserModel>(x.Owner),
+                HasReacted = x.Reactions.Where(x => x.AccountId == UserId).Select(x => x.Type).FirstOrDefault(),
                 Group = x.Group,
             });
 
@@ -211,6 +216,7 @@ namespace BD2.API.Controllers
                 Post = post,
                 Images = post.Images.Select(x => x.ImageId),
                 Owner = _mapper.Map<UserModel>(post.Owner),
+                HasReacted = post.Reactions.Where(x => x.AccountId == UserId).Select(x => x.Type).FirstOrDefault(),
                 Group = post.Group
             };
 

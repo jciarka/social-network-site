@@ -40,12 +40,22 @@ namespace BD2.API.Controllers
                 reactionCounts[(int)type] = reactions.Count(x => x.Type == (ReactionType)type);
             }
 
+            ReactionType? hasReacted = null;
+            if (UserId != default)
+            {
+                hasReacted = reactions
+                    .Where(x => x.AccountId == UserId)
+                    .Select(x => x.Type)
+                    .FirstOrDefault();
+            }
+
             var reactionsModel = reactions.Select(x => _mapper.Map<PostReactionModel>(x));
 
             return Ok(new
             {
                 Success = true,
                 counts = reactionCounts,
+                hasReacted = hasReacted,
                 data = reactionsModel
             });
         }
