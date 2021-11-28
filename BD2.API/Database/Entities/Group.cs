@@ -19,6 +19,10 @@ namespace BD2.API.Database.Entities
         public ICollection<GroupAccount> Members { get; set; }
         [JsonIgnore]
         public ICollection<Post> Posts { get; set; }
+        [JsonIgnore]
+        public PacketSubscription Subscription { get; set; }
+        public Guid? SubscriptionId { get; set; }
+
     }
 
     public class GroupConfig : IEntityTypeConfiguration<Group>

@@ -15,5 +15,7 @@ namespace BD2.API.Database.Entities
         public ICollection<Friendship> Friendships { get; set; }
         [JsonIgnore]
         public ICollection<Invitation> Invitations { get; set; }
+        [JsonIgnore]
+        public ICollection<PacketSubscription> Subscriptions { get; set; }
     }
 }
