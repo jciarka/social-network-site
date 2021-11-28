@@ -13,7 +13,6 @@ namespace BD2.API.Database.Entities
         public Guid Id { get; set; }
         public DateTime ExpirationDate { get; set; }
 
-        [JsonIgnore]
         public ICollection<Group> Groups { get; set; }
 
         [JsonIgnore]

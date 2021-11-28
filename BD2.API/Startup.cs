@@ -41,6 +41,8 @@ namespace BD2.API
             services.AddTransient<IPostsRepository, PostsRepository>();
             services.AddTransient<IPostCommentsRepository, PostCommentsRepository>();
             services.AddTransient<IPostReactionsRepository, PostReactionsRepository>();
+            services.AddTransient<IPacketsRepository, PacketsRepository>();
+            services.AddTransient<IPacketSubscriptionsRepository, PacketSubscriptionsRepository>();
 
             // services.AddTransient<IRepo, Repo>();
             var tokenConfiguration = new TokenConfiguration { SecurityKey = "qwertyuiopasdfghjklzxcvbnm" };
