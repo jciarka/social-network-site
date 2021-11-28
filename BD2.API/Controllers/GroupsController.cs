@@ -124,6 +124,7 @@ namespace BD2.API.Controllers
             }
 
             [HttpPost]
+            [Route("my")]
             public async Task<IActionResult> GetByUser(GroupFilter filter)
             {
                 var groupsQuery = _repo.All()
@@ -186,6 +187,12 @@ namespace BD2.API.Controllers
                 }
 
                 var group = _mapper.Map<Group>(model);
+                group.Members.Add(new GroupAccount
+                {
+                    AccountId = (Guid)UserId,
+                    IsAdmin = true,
+                });
+
                 var result = await _repo.AddAsync(group);
                 
                 if (!result)
