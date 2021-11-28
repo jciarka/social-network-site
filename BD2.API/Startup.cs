@@ -43,6 +43,7 @@ namespace BD2.API
             services.AddTransient<IPostReactionsRepository, PostReactionsRepository>();
             services.AddTransient<IPacketsRepository, PacketsRepository>();
             services.AddTransient<IPacketSubscriptionsRepository, PacketSubscriptionsRepository>();
+            services.AddTransient<IGroupRepository, GroupRepository>();
 
             // services.AddTransient<IRepo, Repo>();
             var tokenConfiguration = new TokenConfiguration { SecurityKey = "qwertyuiopasdfghjklzxcvbnm" };
@@ -82,7 +83,7 @@ namespace BD2.API
                     Configuration.GetConnectionString("dbConnection")
                 ));
 
-            services.AddAutoMapper(AppMapperConfiguration.Configuration);
+            services.AddAutoMapper(AppMapperConfiguration.Configuration(Configuration));
 
             // Enable model validation
             services.AddControllers()

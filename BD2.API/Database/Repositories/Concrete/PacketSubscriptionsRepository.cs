@@ -1,5 +1,6 @@
 ﻿using BD2.API.Database.Entities;
 using BD2.API.Database.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,6 +82,24 @@ namespace BD2.API.Database.Repositories.Concrete
         public IQueryable<PacketSubscription> All()
         {
             return _ctx.PacketSubscriptions.AsQueryable();
+        }
+
+        public async Task<int> AvailableSlotsCount(Guid subcriptionId)
+        {
+            var sub = await All()
+                .Where(x => x.Id == subcriptionId)
+                .Include(x => x.Groups)
+                .Include(x => x.Packet)
+                .Select(x => new
+                {
+                    GroupsCount = x.Groups.Count(),
+                    GroupsLimit = x.Packet.GroupsLimit,
+                })
+                .FirstOrDefaultAsync();
+
+            if (sub == null) return 0;
+
+            return sub.GroupsLimit - sub.GroupsCount;
         }
     }
 }

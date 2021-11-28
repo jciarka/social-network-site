@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace BD2.API.Database.Repositories.Interfaces
 {
-    public interface IPacketSubscriptionsRepository : ICrudRepository<PacketSubscription>
+    public interface IGroupRepository : ICrudRepository<Group>
     {
-        Task<int> AvailableSlotsCount(Guid subcriptionId);
     }
 }
