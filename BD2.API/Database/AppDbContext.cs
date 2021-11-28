@@ -33,6 +33,7 @@ namespace BD2.API.Database
         public DbSet<PacketGroupsLimit> PacketGroupsLimits { get; set; }
         public DbSet<PacketPeopleLimit> PacketPeopleLimits { get; set; }
         public DbSet<PacketPeriod> PacketPeriods { get; set; }
+        public DbSet<GroupTopic> GroupTopics { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)

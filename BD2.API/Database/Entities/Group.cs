@@ -22,7 +22,9 @@ namespace BD2.API.Database.Entities
         [JsonIgnore]
         public PacketSubscription Subscription { get; set; }
         public Guid? SubscriptionId { get; set; }
-
+        [JsonIgnore]
+        public GroupTopic GroupTopicObject { get; set; }
+        public string GroupTopic { get; set; }
     }
 
     public class GroupConfig : IEntityTypeConfiguration<Group>
@@ -38,6 +40,12 @@ namespace BD2.API.Database.Entities
 
             builder.Property(x => x.CreatedDate)
                 .HasDefaultValueSql("GETDATE()");
+
+            builder.Property(x => x.GroupTopic).HasMaxLength(100);
+            builder.HasOne(x => x.GroupTopicObject)
+                .WithMany()
+                .HasForeignKey(x => x.GroupTopic)
+                .OnDelete(DeleteBehavior.SetNull);
 
         }
     }

@@ -23,6 +23,7 @@ namespace BD2.API.Database.Entities
         public PacketPeriod PacketPeriodObject { get; set; }
         public int PacketPeriod { get; set; }
         public bool IsValid { get; set; }
+        public bool IsOpen { get; set; }
     }
 
     public class PacketConfig : IEntityTypeConfiguration<Packet>
