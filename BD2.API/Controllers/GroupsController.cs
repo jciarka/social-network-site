@@ -15,7 +15,7 @@ namespace BD2.API.Controllers
 
     namespace BD2.API.Controllers
     {
-        [Route("[controller]")]
+        [Route("api/[controller]")]
         public class GroupsController : ExtendedControllerBase
         {
             private readonly IGroupRepository _repo;
@@ -61,9 +61,9 @@ namespace BD2.API.Controllers
                 });
             }
             
-            [HttpGet]
+            [HttpPost]
             [Route("find")]
-            public async Task<IActionResult> Get(GroupFilter filter)
+            public async Task<IActionResult> Get([FromBody]GroupFilter filter)
             {
                 var groupsQuery = _repo.All()
                     .Include(x => x.Members)

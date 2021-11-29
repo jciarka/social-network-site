@@ -105,5 +105,6 @@ const App = () => {
 // npm install axios
 
 // npm install react-image-gallery
+// npm install @mui/material @emotion/react @emotion/styled
 
 export default App;

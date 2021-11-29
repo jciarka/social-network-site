@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace BD2.API.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class PacketSubscriptionsController : ExtendedControllerBase
     {
         private readonly IPacketSubscriptionsRepository _repo;

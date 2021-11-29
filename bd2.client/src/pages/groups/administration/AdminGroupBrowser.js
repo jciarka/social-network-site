@@ -1,18 +1,19 @@
-import React, { useEffect } from "react";
-// import axios from "axios";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-const AdminGroupBrowser = ({abc, def}) => {
+
+const AdminGroupBrowser = () => {
+  const [groups, setGroups] = useState([]);
 
   const fetchGroups = async () => {
-    // const result = await axios.get();
+    const result = await axios.get("/api/Groups/find", {
+      IsMember: true,
+    });
 
-    // if (result && result.data && result.data.success) {
-    //   setPosts(
-    //     result.data.model.map((x) => {
-    //       return { ...x, expanded: false, detailsFetched: false };
-    //     })
-    //   );
-    // }
+    if (result && result.data && result.data.success) {
+      console.log(result.data.data);
+      groups(result.data.data);
+    }
   };
 
   useEffect(() => {
@@ -21,9 +22,7 @@ const AdminGroupBrowser = ({abc, def}) => {
 
   return (
     <>
-      <div className="container justify-content-center">
-        absc
-      </div>
+      <div className="container justify-content-center">absc</div>
     </>
   );
 };
