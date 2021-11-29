@@ -42,7 +42,7 @@ const Header = () => {
                   Moje posty
                 </button>
               </Link>
-              <Link to="/">
+              <Link to="/groups">
                 <button
                   className="btn btn-dark nav-button rounded-0"
                   style={{ position: "relative", top: "9px" }}
@@ -108,6 +108,19 @@ const Header = () => {
                       }}
                     >
                       Log out{" "}
+                      <img
+                        className="bl-2"
+                        src={LogoutIcon}
+                        width="15"
+                        height="15"
+                        alt=""
+                      />
+                    </Link>
+                    <Link
+                      to="/groups/administration"
+                      className="rounded-0"
+                    >
+                      Moje grupy{" "}
                       <img
                         className="bl-2"
                         src={LogoutIcon}
