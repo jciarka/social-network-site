@@ -83,7 +83,7 @@ namespace BD2.API
                     Configuration.GetConnectionString("dbConnection")
                 ));
 
-            services.AddAutoMapper(AppMapperConfiguration.Configuration(Configuration));
+            // services.AddAutoMapper(AppMapperConfiguration.Configuration(Configuration));
 
             // Enable model validation
             services.AddControllers()
@@ -126,7 +126,7 @@ namespace BD2.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider services)
         {
             if (env.IsDevelopment())
             {
@@ -145,6 +145,12 @@ namespace BD2.API
             {
                 endpoints.MapControllers();
             });
+
+            if (env.IsDevelopment())
+            {
+                var seedTask = PacketDictDataProvier.Seed(services.GetRequiredService<AppDbContext>());
+                seedTask.Wait();
+            }
         }
     }
 }

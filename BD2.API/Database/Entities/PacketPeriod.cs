@@ -17,6 +17,8 @@ namespace BD2.API.Database.Entities
         public void Configure(EntityTypeBuilder<PacketPeriod> builder)
         {
             builder.HasKey(x => x.MonthsPeriod);
+            builder.Property(x => x.MonthsPeriod)
+                .ValueGeneratedNever();
         }
     }
 }

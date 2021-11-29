@@ -17,7 +17,9 @@ namespace BD2.API.Database.Entities
         public void Configure(EntityTypeBuilder<GroupTopic> builder)
         {
             builder.HasKey(x => x.Topic);
-            builder.Property(x => x.Topic).HasMaxLength(100);
+            builder.Property(x => x.Topic)
+                .HasMaxLength(100)
+                .ValueGeneratedNever();
         }
     }
 }

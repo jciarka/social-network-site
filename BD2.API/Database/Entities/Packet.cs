@@ -18,7 +18,7 @@ namespace BD2.API.Database.Entities
         public int GroupsLimit { get; set; }
         [JsonIgnore]
         public PacketPeopleLimit PeopleLimitObject { get; set; }
-        public int PeopleLimit { get; set; }
+        public int? PeopleLimit { get; set; }
         [JsonIgnore]
         public PacketPeriod PacketPeriodObject { get; set; }
         public int PacketPeriod { get; set; }
@@ -41,7 +41,10 @@ namespace BD2.API.Database.Entities
 
             builder.Property(x => x.Price)
                 .IsRequired(true)
-                .HasPrecision(5, 2);
+                .HasPrecision(9, 2);
+
+            builder.Property(x => x.PeopleLimit)
+                .IsRequired(false);
 
             builder
                 .HasOne(x => x.GroupsLimitObject)
@@ -60,8 +63,6 @@ namespace BD2.API.Database.Entities
                 .WithMany()
                 .HasForeignKey(x => x.PacketPeriod)
                 .OnDelete(DeleteBehavior.Restrict);
-
-
 
         }
     }

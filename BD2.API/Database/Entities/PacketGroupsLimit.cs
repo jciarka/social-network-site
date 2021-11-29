@@ -17,6 +17,9 @@ namespace BD2.API.Database.Entities
         public void Configure(EntityTypeBuilder<PacketGroupsLimit> builder)
         {
             builder.HasKey(x => x.GroupsLimit);
+            builder.Property(x => x.GroupsLimit)
+                .ValueGeneratedNever();
         }
     }
+
 }

@@ -4,14 +4,16 @@ using BD2.API.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BD2.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211129174448_DictsKeyChangePartTwo")]
+    partial class DictsKeyChangePartTwo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -391,12 +393,12 @@ namespace BD2.API.Migrations
                     b.Property<int>("PacketPeriod")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PeopleLimit")
+                    b.Property<int>("PeopleLimit")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(9, 2)
-                        .HasColumnType("decimal(9,2)");
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
 
                     b.HasKey("Id");
 
@@ -902,7 +904,8 @@ namespace BD2.API.Migrations
                     b.HasOne("BD2.API.Database.Entities.PacketPeopleLimit", "PeopleLimitObject")
                         .WithMany()
                         .HasForeignKey("PeopleLimit")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("GroupsLimitObject");
 

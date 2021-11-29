@@ -17,6 +17,8 @@ namespace BD2.API.Database.Entities
         public void Configure(EntityTypeBuilder<PacketPeopleLimit> builder)
         {
             builder.HasKey(x => x.PeopleLimit);
+            builder.Property(x => x.PeopleLimit)
+                .ValueGeneratedNever();
         }
     }
 }

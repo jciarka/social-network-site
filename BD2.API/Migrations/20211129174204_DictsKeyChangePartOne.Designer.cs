@@ -4,14 +4,16 @@ using BD2.API.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BD2.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211129174204_DictsKeyChangePartOne")]
+    partial class DictsKeyChangePartOne
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -374,9 +376,6 @@ namespace BD2.API.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWSEQUENTIALID ()");
 
-                    b.Property<int>("GroupsLimit")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsOpen")
                         .HasColumnType("bit");
 
@@ -388,55 +387,13 @@ namespace BD2.API.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("PacketPeriod")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PeopleLimit")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Price")
-                        .HasPrecision(9, 2)
-                        .HasColumnType("decimal(9,2)");
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupsLimit");
-
-                    b.HasIndex("PacketPeriod");
-
-                    b.HasIndex("PeopleLimit");
-
                     b.ToTable("Packets");
-                });
-
-            modelBuilder.Entity("BD2.API.Database.Entities.PacketGroupsLimit", b =>
-                {
-                    b.Property<int>("GroupsLimit")
-                        .HasColumnType("int");
-
-                    b.HasKey("GroupsLimit");
-
-                    b.ToTable("PacketGroupsLimits");
-                });
-
-            modelBuilder.Entity("BD2.API.Database.Entities.PacketPeopleLimit", b =>
-                {
-                    b.Property<int>("PeopleLimit")
-                        .HasColumnType("int");
-
-                    b.HasKey("PeopleLimit");
-
-                    b.ToTable("PacketPeopleLimits");
-                });
-
-            modelBuilder.Entity("BD2.API.Database.Entities.PacketPeriod", b =>
-                {
-                    b.Property<int>("MonthsPeriod")
-                        .HasColumnType("int");
-
-                    b.HasKey("MonthsPeriod");
-
-                    b.ToTable("PacketPeriods");
                 });
 
             modelBuilder.Entity("BD2.API.Database.Entities.PacketSubscription", b =>
@@ -883,32 +840,6 @@ namespace BD2.API.Migrations
                     b.Navigation("Invited");
 
                     b.Navigation("Inviting");
-                });
-
-            modelBuilder.Entity("BD2.API.Database.Entities.Packet", b =>
-                {
-                    b.HasOne("BD2.API.Database.Entities.PacketGroupsLimit", "GroupsLimitObject")
-                        .WithMany()
-                        .HasForeignKey("GroupsLimit")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BD2.API.Database.Entities.PacketPeriod", "PacketPeriodObject")
-                        .WithMany()
-                        .HasForeignKey("PacketPeriod")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BD2.API.Database.Entities.PacketPeopleLimit", "PeopleLimitObject")
-                        .WithMany()
-                        .HasForeignKey("PeopleLimit")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("GroupsLimitObject");
-
-                    b.Navigation("PacketPeriodObject");
-
-                    b.Navigation("PeopleLimitObject");
                 });
 
             modelBuilder.Entity("BD2.API.Database.Entities.PacketSubscription", b =>
