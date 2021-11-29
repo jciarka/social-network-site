@@ -11,5 +11,7 @@ namespace BD2.API.Models.Groups
         public bool? UseSubcription { get; set; }
         public string Name { get; set; }
         public bool? IsOpen { get; set; }
+        public bool? IsMember { get; set; }
+        public bool? IsOwner { get; set; }
     }
 }

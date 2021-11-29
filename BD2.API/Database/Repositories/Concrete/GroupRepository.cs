@@ -22,37 +22,49 @@ namespace BD2.API.Database.Repositories.Concrete
             return await _ctx.Groups.FindAsync(id);
         }
 
-        public async Task<bool> AddAsync(Group entity)
+        public async Task<bool> AddAsync(Group entity, Guid ownerId)
         {
-            if (entity.Id != default)
+            if (entity.Id != default || ownerId == default)
             {
                 return false;
             }
 
-            _ctx.Groups.Add(entity);
-            try
+            using var transaction = _ctx.Database.BeginTransaction();
             {
-                return (await _ctx.SaveChangesAsync()) > 0 ? true : false;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+                try
+                {
+                    _ctx.Groups.Add(entity);
 
-        }
+                    if ((await _ctx.SaveChangesAsync()) <= 0)
+                    {
+                        await transaction.RollbackAsync();
+                        return false;
+                    }
 
+                    var groupAccount = new GroupAccount()
+                    {
+                        GroupId = entity.Id,
+                        AccountId = ownerId,
+                        IsAdmin = true,
+                    };
 
-        public async Task<int> AddRangeAsync(IEnumerable<Group> entities)
-        {
-            if (entities.Any(x => x.Id != default))
-            {
-                return 0;
+                    _ctx.GroupAccounts.Add(groupAccount);
+
+                    if ((await _ctx.SaveChangesAsync()) <= 0)
+                    {
+                        await transaction.RollbackAsync();
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    return false;
+                }
+
+                await transaction.CommitAsync();
             }
-            foreach (var entity in entities)
-            {
-                _ctx.Groups.Add(entity);
-            }
-            return await _ctx.SaveChangesAsync();
+            return true;
         }
 
         public async Task<bool> UpdateAsync(Group entity)

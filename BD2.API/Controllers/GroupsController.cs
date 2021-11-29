@@ -87,6 +87,16 @@ namespace BD2.API.Controllers
                     groupsQuery = groupsQuery.Where(x => x.Name.Contains(filter.Name));
                 }
 
+                if (filter.IsMember != default)
+                {
+                    groupsQuery = groupsQuery.Where(x => x.Members.Any(x => x.AccountId == UserId));
+                }
+
+                if (filter.IsOwner != default)
+                {
+                    groupsQuery = groupsQuery.Where(x => x.Members.Any(x => x.IsAdmin && x.AccountId == UserId));
+                }
+
                 if (filter.IsOpen != default)
                 {
                     if (filter.IsOpen == true)
@@ -125,7 +135,9 @@ namespace BD2.API.Controllers
 
             [HttpPost]
             [Route("my")]
-            public async Task<IActionResult> GetByUser(GroupFilter filter)
+            /** Verbose data - for administratio purposes
+             *  Only owners group returned by default       */
+            public async Task<IActionResult> GetForAdministration(GroupFilter filter) 
             {
                 var groupsQuery = _repo.All()
                     .Include(x => x.Members)
@@ -187,13 +199,7 @@ namespace BD2.API.Controllers
                 }
 
                 var group = _mapper.Map<Group>(model);
-                group.Members.Add(new GroupAccount
-                {
-                    AccountId = (Guid)UserId,
-                    IsAdmin = true,
-                });
-
-                var result = await _repo.AddAsync(group);
+                var result = await _repo.AddAsync(group, (Guid)UserId);
                 
                 if (!result)
                 {

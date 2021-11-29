@@ -2,6 +2,7 @@
 using BD2.API.Database.Entities;
 using BD2.API.Models.Auth;
 using BD2.API.Models.Groups;
+using BD2.API.Models.Packets;
 using BD2.API.Models.Posts;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -63,7 +64,11 @@ namespace BD2.API.Configuration
                     opt => opt.MapFrom(src => src.Members != null ? src.Members.Count() : 0));
 
             cfg.CreateMap<GroupAddModel, Group>()
-                .ForMember(x => x.CreatedDate, opt => opt.MapFrom(src => DateTime.Now));
+                .ForMember(x => x.CreatedDate, opt => opt.MapFrom(src => DateTime.Now))
+                .ForMember(x => x.Members, opt => opt.MapFrom(src => new List<GroupAccount>()))
+                .ForMember(x => x.LastPostDate, opt => opt.MapFrom(src => DateTime.Now));
+
+            cfg.CreateMap<AddSubscriptionPacketModel, PacketSubscription>();
         };
     }
 }

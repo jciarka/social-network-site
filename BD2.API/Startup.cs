@@ -83,7 +83,7 @@ namespace BD2.API
                     Configuration.GetConnectionString("dbConnection")
                 ));
 
-            // services.AddAutoMapper(AppMapperConfiguration.Configuration(Configuration));
+            services.AddAutoMapper(AppMapperConfiguration.Configuration(Configuration));
 
             // Enable model validation
             services.AddControllers()
@@ -150,6 +150,8 @@ namespace BD2.API
             {
                 var seedTask = PacketDictDataProvier.Seed(services.GetRequiredService<AppDbContext>());
                 seedTask.Wait();
+                var groupTopicsSeed = GroupTopicsDataProvider.Seed(services.GetRequiredService<AppDbContext>());
+                groupTopicsSeed.Wait();
             }
         }
     }

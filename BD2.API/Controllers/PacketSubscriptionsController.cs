@@ -17,22 +17,22 @@ namespace BD2.API.Controllers
     public class PacketSubscriptionsController : ExtendedControllerBase
     {
         private readonly IPacketSubscriptionsRepository _repo;
+        private readonly IPacketsRepository _prepo;
         private readonly IMapper _mapper;
 
-        public PacketSubscriptionsController(PacketSubscriptionsRepository repo, IMapper mapper)
+        public PacketSubscriptionsController(IPacketSubscriptionsRepository repo, IMapper mapper, IPacketsRepository prepo)
         {
             _repo = repo;
             _mapper = mapper;
+            _prepo = prepo;
         }
 
-        [AllowAnonymous]
         [HttpGet]
-        [Route("{userId}")]
-        public async Task<IActionResult> GetByGroupId(Guid userId)
+        public async Task<IActionResult> GetMyPackets()
         {
             var found = await _repo
                 .All()
-                .Where(x => x.OwnerId == userId)
+                .Where(x => x.OwnerId == UserId)
                 .Include(x => x.Groups)
                 .ToListAsync();
 
@@ -52,11 +52,34 @@ namespace BD2.API.Controllers
             });
         }
 
-        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Post(AddSubscriptionPacketModel model) // dodawanie nowych encji
         {
+            if (model == null && model.PacketId == default)
+            {
+                return BadRequest(new
+                {
+                    Success = false,
+                    Errors = new List<string> { "Nieprawidłowe dane" }
+                });
+            }
+
+            var packet = await _prepo.All().Where(x => x.Id == model.PacketId).FirstOrDefaultAsync();
+
+            if (packet == null)
+            {
+                return BadRequest(new
+                {
+                    Success = false,
+                    Errors = new List<string> { "Nie znaleziono pakietu o podanym id" }
+                });
+            }
+
+            // set packet data 
             var subcription = _mapper.Map<PacketSubscription>(model);
+            subcription.OwnerId = (Guid)UserId;
+            subcription.ExpirationDate = DateTime.Now.AddMonths(packet.PacketPeriod);
+            
             var result = await _repo.AddAsync(subcription); 
 
             if (!result)
