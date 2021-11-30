@@ -87,7 +87,7 @@ namespace BD2.API.Controllers
                     groupsQuery = groupsQuery.Where(x => x.Name.Contains(filter.Name));
                 }
 
-                if (filter.IsMember != default)
+                if (filter.IsMember != default && filter.IsOpen == false)
                 {
                     groupsQuery = groupsQuery.Where(x => x.Members.Any(x => x.AccountId == UserId));
                 }
@@ -137,7 +137,7 @@ namespace BD2.API.Controllers
             [Route("my")]
             /** Verbose data - for administratio purposes
              *  Only owners group returned by default       */
-            public async Task<IActionResult> GetForAdministration(GroupFilter filter) 
+            public async Task<IActionResult> GetForAdministration([FromBody] GroupFilter filter) 
             {
                 var groupsQuery = _repo.All()
                     .Include(x => x.Members)
@@ -184,7 +184,7 @@ namespace BD2.API.Controllers
 
             [AllowAnonymous]
             [HttpPost]
-            public async Task<IActionResult> Post(GroupAddModel model) 
+            public async Task<IActionResult> Post([FromBody]GroupAddModel model) 
             {
                 if (!ModelState.IsValid)
                 {
@@ -216,7 +216,7 @@ namespace BD2.API.Controllers
             [AllowAnonymous]
             [HttpPut]
             [Route("{id}")]
-            public async Task<IActionResult> Put(Guid id, GroupAddModel model) // dodawanie nowych encji
+            public async Task<IActionResult> Put(Guid id, [FromBody]GroupAddModel model) // dodawanie nowych encji
             {
                 var group = await _repo.FindAsync(id);
 
@@ -247,8 +247,8 @@ namespace BD2.API.Controllers
 
             [AllowAnonymous]
             [HttpPut]
-            [Route("{id}/setpacket")]
-            public async Task<IActionResult> Put(Guid id, SetSubcriptionModel sub) // dodawanie nowych encji
+            [Route("{id}/subcription")]
+            public async Task<IActionResult> Put(Guid id, [FromBody]SetSubcriptionModel sub) // dodawanie nowych encji
             {
                 var group = await _repo.FindAsync(id);
 

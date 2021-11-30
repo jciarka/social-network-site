@@ -3,6 +3,7 @@ using BD2.API.Database.Entities;
 using BD2.API.Database.Repositories.Concrete;
 using BD2.API.Database.Repositories.Interfaces;
 using BD2.API.Models.Packets;
+using BD2.API.Models.Subcriptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +35,7 @@ namespace BD2.API.Controllers
                 .All()
                 .Where(x => x.OwnerId == UserId)
                 .Include(x => x.Groups)
+                .Include(x => x.Packet)
                 .ToListAsync();
 
             if (found == null)
@@ -45,15 +47,17 @@ namespace BD2.API.Controllers
                 });
             }
 
+            var data = found.Select(x => _mapper.Map<PacketSubcriptionsModel>(x));
+
             return Ok(new
             {
                 Success = true,
-                data = found
+                data
             });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(AddSubscriptionPacketModel model) // dodawanie nowych encji
+        public async Task<IActionResult> Post([FromBody] AddSubscriptionPacketModel model) // dodawanie nowych encji
         {
             if (model == null && model.PacketId == default)
             {

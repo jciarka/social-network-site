@@ -4,6 +4,7 @@ using BD2.API.Models.Auth;
 using BD2.API.Models.Groups;
 using BD2.API.Models.Packets;
 using BD2.API.Models.Posts;
+using BD2.API.Models.Subcriptions;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -69,6 +70,18 @@ namespace BD2.API.Configuration
                 .ForMember(x => x.LastPostDate, opt => opt.MapFrom(src => DateTime.Now));
 
             cfg.CreateMap<AddSubscriptionPacketModel, PacketSubscription>();
+
+            cfg.CreateMap<PacketSubscription, PacketSubcriptionsModel>()
+                .ForMember(x => x.Name, opt => opt.MapFrom(src => src.Packet != null ? src.Packet.Name : null))
+                .ForMember(x => x.PeopleLimit, opt => opt.MapFrom(src => src.Packet != null ? src.Packet.PeopleLimit : 0))
+                .ForMember(x => x.GroupsLimit, opt => opt.MapFrom(src => src.Packet != null ? src.Packet.GroupsLimit : 0))
+                .ForMember(x => x.FreeSlots, opt => opt.MapFrom(src => countSubcriptionFreeSlots(src)));
         };
+
+        private static int countSubcriptionFreeSlots(PacketSubscription src)
+        {
+            if (src.Packet == null) return 0;
+            return src.Groups != null ? src.Packet.GroupsLimit - src.Groups.Count() : src.Packet.GroupsLimit;
+        }
     }
 }

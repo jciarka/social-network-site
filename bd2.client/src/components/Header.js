@@ -121,13 +121,14 @@ const Header = () => {
                       className="rounded-0"
                     >
                       Moje grupy{" "}
-                      <img
-                        className="bl-2"
-                        src={LogoutIcon}
-                        width="15"
-                        height="15"
-                        alt=""
-                      />
+                      <i class="fa fa-users" aria-hidden="true"></i>
+                    </Link>
+                    <Link
+                      to="/subscriptions"
+                      className="rounded-0"
+                    >
+                      Subskrypcje {" "}
+                      <i class="fa fa-ticket" aria-hidden="true"></i>
                     </Link>
                   </div>
                 </div>

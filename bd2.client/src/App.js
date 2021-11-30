@@ -9,6 +9,7 @@ import CreateAccountForm from "pages/account/CreateAccountForm";
 import PostBrowser from "components/post/PostBrowser";
 import GroupBrowser from "pages/groups/GroupBrowser";
 import AdminGroupBrowser from "pages/groups/administration/AdminGroupBrowser";
+import PacketSubcriptionsBrowser from 'pages/subscriptions/PacketSubcriptionsBrowser'
 
 const App = () => {
   // const serverUrl = "http://localhost:8080/"
@@ -75,6 +76,15 @@ const App = () => {
         render={(props) => (
           <>
             <AdminGroupBrowser />
+          </>
+        )}
+      ></Route>
+
+      <Route
+        path="/subscriptions"
+        render={(props) => (
+          <>
+            <PacketSubcriptionsBrowser />
           </>
         )}
       ></Route>

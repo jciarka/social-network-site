@@ -52,7 +52,7 @@ namespace BD2.API.Controllers
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var packets = await _repo.All().ToListAsync();
+            var packets = await _repo.All().Where(x => x.IsValid).ToListAsync();
 
             if (packets == null)
             {
