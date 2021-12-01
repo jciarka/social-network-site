@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace BD2.API.Database.Repositories.Interfaces
 {
-    public class IChatRepository : ICrudRepository<Chat>
+    public interface IChatRepository : ICrudRepository<Chat>
     {
-
     }
 }
