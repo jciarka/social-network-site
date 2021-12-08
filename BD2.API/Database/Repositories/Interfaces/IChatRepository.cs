@@ -8,6 +8,8 @@ namespace BD2.API.Database.Repositories.Interfaces
 {
     public interface IChatRepository : ICrudRepository<Chat>
     {
+        public Task<IEnumerable<Chat>> FindUserChats(Guid userId, Guid? watcherId = null);
+
         //public Task<bool> AddAsync(Chat entity)
         //{
         //    throw new NotImplementedException();

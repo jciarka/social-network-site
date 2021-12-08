@@ -34,9 +34,34 @@ namespace BD2.API.Controllers
                 });
             }
 
+            // TO DO: model 
+
             return Ok(new
             {
                 Model = chat,
+                Success = true
+            });
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("list/user/{id}")]
+        public async Task<IActionResult> UserChats(Guid id)
+        {
+            var chats = await _repo.FindUserChats(id);
+
+            if (chats == null)
+            {
+                return NotFound(new
+                {
+                    Success = false,
+                    Errors = new List<string> { $"Nie znaleziono postów użytkownika o id = {id}" }
+                });
+            }
+            
+            return Ok(new
+            {
+                Model = chats,
                 Success = true,
             });
         }

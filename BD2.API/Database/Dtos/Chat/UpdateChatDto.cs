@@ -8,7 +8,7 @@ namespace BD2.API.Database.Dtos.Chat
 {
     public record UpdateChatDto
     {
-        public Guid Name { get; set; }
+        public string Name { get; set; }
 
         [JsonIgnore]
         public ICollection<Guid> MembersIds { get; set; }

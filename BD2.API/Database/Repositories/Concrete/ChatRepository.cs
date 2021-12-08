@@ -1,5 +1,6 @@
 ﻿using BD2.API.Database.Entities;
 using BD2.API.Database.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,14 +62,32 @@ namespace BD2.API.Database.Repositories.Concrete
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var found = await _ctx.Chats.FindAsync(id);
+
+            if (found == null)
+            {
+                return false;
+            }
+
+            _ctx.Chats.Remove(found);
+            return (await _ctx.SaveChangesAsync()) > 0;
         }
 
         public IQueryable<Chat> All()
         {
-            throw new NotImplementedException();
+            return _ctx.Chats.AsQueryable();
+        }
+        public async Task<IEnumerable<Chat>> FindUserChats(Guid userId, Guid? watcherId = null)
+        {
+            var chats = await _ctx.Chats
+                .Where(x => x.Members.Any(y => y.Id == userId))
+                .ToListAsync();
+
+            return chats;
         }
     }
+
 }
+
