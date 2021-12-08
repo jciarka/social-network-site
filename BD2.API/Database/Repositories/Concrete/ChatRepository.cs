@@ -7,16 +7,9 @@ using System.Threading.Tasks;
 
 namespace BD2.API.Database.Repositories.Concrete
 {
-    public class ChatRepository
+    public class ChatRepository : IChatRepository
     {
         private readonly AppDbContext _ctx;
-        private readonly IChatRepository _irepo;
-        public ChatRepository(IChatRepository irepo, AppDbContext ctx)
-        {
-            _irepo = irepo;
-            _ctx = ctx;
-        }
-
         public ChatRepository(AppDbContext ctx)
         {
             _ctx = ctx;
@@ -56,6 +49,26 @@ namespace BD2.API.Database.Repositories.Concrete
 
             _ctx.Entry(found).CurrentValues.SetValues(entity);
             return await _ctx.SaveChangesAsync() > 0;
+        }
+
+        public async Task<Chat> FindAsync(Guid id)
+        {
+            return await _ctx.Chats.FindAsync(id);
+        }
+
+        Task<int> ICrudRepository<Chat>.AddRangeAsync(IEnumerable<Chat> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Chat> All()
+        {
+            throw new NotImplementedException();
         }
     }
 }
