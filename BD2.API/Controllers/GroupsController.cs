@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BD2.API.Database.Entities;
 using BD2.API.Database.Repositories.Interfaces;
+using BD2.API.Models.GroupAccount;
 using BD2.API.Models.Groups;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,13 +21,15 @@ namespace BD2.API.Controllers
         {
             private readonly IGroupRepository _repo;
             private readonly IPacketSubscriptionsRepository _srepo;
+            private readonly IGroupAccountsRepository _garepo;
             private readonly IMapper _mapper;
 
-            public GroupsController(IGroupRepository repo, IMapper mapper, IPacketSubscriptionsRepository srepo)
+            public GroupsController(IGroupRepository repo, IMapper mapper, IPacketSubscriptionsRepository srepo, IGroupAccountsRepository garepo)
             {
                 _repo = repo;
                 _mapper = mapper;
                 _srepo = srepo;
+                _garepo = garepo;
             }
 
             [AllowAnonymous]
@@ -60,10 +63,10 @@ namespace BD2.API.Controllers
                     data = group
                 });
             }
-            
+
             [HttpPost]
             [Route("find")]
-            public async Task<IActionResult> Get([FromBody]GroupFilter filter)
+            public async Task<IActionResult> Get([FromBody] GroupFilter filter)
             {
                 var groupsQuery = _repo.All()
                     .Include(x => x.Members)
@@ -101,14 +104,14 @@ namespace BD2.API.Controllers
                 {
                     if (filter.IsOpen == true)
                     {
-                        groupsQuery = groupsQuery.Where(x => x.Subscription != null && 
-                            x.Subscription.Packet != null && 
+                        groupsQuery = groupsQuery.Where(x => x.Subscription != null &&
+                            x.Subscription.Packet != null &&
                             x.Subscription.Packet.IsOpen == filter.IsOpen);
                     }
                     else
                     {
                         groupsQuery = groupsQuery.Where(x => x.Subscription == null ||
-                            ( x.Subscription.Packet != null && x.Subscription.Packet.IsOpen == filter.IsOpen));
+                            (x.Subscription.Packet != null && x.Subscription.Packet.IsOpen == filter.IsOpen));
                     }
                 }
 
@@ -137,7 +140,7 @@ namespace BD2.API.Controllers
             [Route("my")]
             /** Verbose data - for administratio purposes
              *  Only owners group returned by default       */
-            public async Task<IActionResult> GetForAdministration([FromBody] GroupFilter filter) 
+            public async Task<IActionResult> GetForAdministration([FromBody] GroupFilter filter)
             {
                 var groupsQuery = _repo.All()
                     .Include(x => x.Members)
@@ -184,11 +187,11 @@ namespace BD2.API.Controllers
 
             [AllowAnonymous]
             [HttpPost]
-            public async Task<IActionResult> Post([FromBody]GroupAddModel model) 
+            public async Task<IActionResult> Post([FromBody] GroupAddModel model)
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest(new 
+                    return BadRequest(new
                     {
                         Success = false,
                         Errors = ModelState.Values
@@ -200,7 +203,7 @@ namespace BD2.API.Controllers
 
                 var group = _mapper.Map<Group>(model);
                 var result = await _repo.AddAsync(group, (Guid)UserId);
-                
+
                 if (!result)
                 {
                     return BadRequest(new
@@ -216,7 +219,7 @@ namespace BD2.API.Controllers
             [AllowAnonymous]
             [HttpPut]
             [Route("{id}")]
-            public async Task<IActionResult> Put(Guid id, [FromBody]GroupAddModel model) // dodawanie nowych encji
+            public async Task<IActionResult> Put(Guid id, [FromBody] GroupAddModel model) // dodawanie nowych encji
             {
                 var group = await _repo.FindAsync(id);
 
@@ -248,7 +251,7 @@ namespace BD2.API.Controllers
             [AllowAnonymous]
             [HttpPut]
             [Route("{id}/subcription")]
-            public async Task<IActionResult> Put(Guid id, [FromBody]SetSubcriptionModel sub) // dodawanie nowych encji
+            public async Task<IActionResult> Put(Guid id, [FromBody] SetSubcriptionModel sub) // dodawanie nowych encji
             {
                 var group = await _repo.FindAsync(id);
 

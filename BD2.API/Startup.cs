@@ -4,10 +4,12 @@ using BD2.API.Database.Entities;
 using BD2.API.Database.Repositories;
 using BD2.API.Database.Repositories.Concrete;
 using BD2.API.Database.Repositories.Interfaces;
+using BD2.API.Seed;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -44,6 +46,7 @@ namespace BD2.API
             services.AddTransient<IPacketsRepository, PacketsRepository>();
             services.AddTransient<IPacketSubscriptionsRepository, PacketSubscriptionsRepository>();
             services.AddTransient<IGroupRepository, GroupRepository>();
+            services.AddTransient<IGroupAccountsRepository, GroupAccountsRepository>();
 
             // services.AddTransient<IRepo, Repo>();
             var tokenConfiguration = new TokenConfiguration { SecurityKey = "qwertyuiopasdfghjklzxcvbnm" };
@@ -148,10 +151,11 @@ namespace BD2.API
 
             if (env.IsDevelopment())
             {
-                var seedTask = PacketDictDataProvier.Seed(services.GetRequiredService<AppDbContext>());
-                seedTask.Wait();
-                var groupTopicsSeed = GroupTopicsDataProvider.Seed(services.GetRequiredService<AppDbContext>());
-                groupTopicsSeed.Wait();
+                PacketDictDataProvier.Seed(services.GetRequiredService<AppDbContext>()).Wait();
+                GroupTopicsDataProvider.Seed(services.GetRequiredService<AppDbContext>()).Wait();
+                AccountsDataProvider.SeedRoles(services.GetRequiredService<AppDbContext>()).Wait();
+                AccountsDataProvider.Seed(services.GetRequiredService<AppDbContext>(), 
+                    services.GetRequiredService<UserManager<Account>>()).Wait();
             }
         }
     }
