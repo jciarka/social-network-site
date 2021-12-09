@@ -11,11 +11,11 @@ namespace BD2.API.Database.Entities
     public class Chat
     {
         public Guid Id { get; set; }
-        public Guid Name { get; set; }
+        public string Name { get; set; }
         public DateTime? LastPostDate { get; set; }
 
         [JsonIgnore]
-        public ICollection<Account> Members { get; set; }
+        public ICollection<ChatAccount> Members { get; set; }
         [JsonIgnore]
         public ICollection<ChatEntry> Entries { get; set; }
 
