@@ -9,8 +9,8 @@ import CreateAccountForm from "pages/account/CreateAccountForm";
 import PostBrowser from "components/post/PostBrowser";
 import GroupBrowser from "pages/groups/GroupBrowser";
 import AdminGroupBrowser from "pages/groups/administration/AdminGroupBrowser";
-import PacketSubcriptionsBrowser from 'pages/subscriptions/PacketSubcriptionsBrowser'
-
+import PacketSubcriptionsBrowser from "pages/subscriptions/PacketSubcriptionsBrowser";
+import AdminGroupUsersBrowser from "pages/groups/administration/AdminGroupUsersBrowser";
 const App = () => {
   // const serverUrl = "http://localhost:8080/"
   const account = useSelector((state) => state.account); // get redux store values
@@ -32,15 +32,11 @@ const App = () => {
       />
 
       <Route
-        path="/my"
+        path="/board"
         exact
         render={(props) => (
           <>
-            {account && account.isLoggedIn && (
-              <PostBrowser
-                fetchPostsUrl={`/api/posts/list/user/${account.id}`}
-              />
-            )}
+            {account && account.isLoggedIn && <PostBrowser type={"BOARD"} />}
             {(!account || !account.isLoggedIn) && <Redirect to="/login" />}
           </>
         )}
@@ -51,11 +47,7 @@ const App = () => {
         exact
         render={(props) => (
           <>
-            {account && account.isLoggedIn && (
-              <PostBrowser
-                fetchPostsUrl={`/api/posts/list/group/${this.props.match.params.groupId}`}
-              />
-            )}
+            {account && account.isLoggedIn && <PostBrowser type={"GROUP"} />}
             {(!account || !account.isLoggedIn) && <Redirect to="/login" />}
           </>
         )}
@@ -72,10 +64,21 @@ const App = () => {
       ></Route>
 
       <Route
+        exact
         path="/groups/administration"
         render={(props) => (
           <>
             <AdminGroupBrowser />
+          </>
+        )}
+      ></Route>
+
+      <Route
+        exact
+        path="/groups/administration/:groupId/users"
+        render={(props) => (
+          <>
+            <AdminGroupUsersBrowser />
           </>
         )}
       ></Route>

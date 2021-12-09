@@ -52,7 +52,7 @@ const EditGroup = ({ group, setGroup, onCancel, onSuccess }) => {
 
   return (
     <>
-      <DialogTitle>Dodaj grupę</DialogTitle>
+      <DialogTitle>Dane grupy</DialogTitle>
       <DialogContent style={{ minWidth: "450px" }}>
         <DialogContentText>
           <div className="p-1">
@@ -102,7 +102,7 @@ const EditGroup = ({ group, setGroup, onCancel, onSuccess }) => {
           Anuluj
         </Button>
         <Button disabled={!validate()} onClick={addOrUpdateGroup}>
-          Dodaj
+          Zatwierdź
         </Button>
       </DialogActions>
     </>

@@ -88,10 +88,7 @@ const AdminGroupBrowser = () => {
         />
       </Dialog>
 
-      <Dialog
-        open={subscriptionOpen}
-        onClose={handleSubscriptionClose}
-      >
+      <Dialog open={subscriptionOpen} onClose={handleSubscriptionClose}>
         <ChooseSubscription
           groupId={subscriptionGroup}
           subscription={editedSubscription}
@@ -181,11 +178,13 @@ const AdminGroupBrowser = () => {
                   <TableCell width="200px" align="center">
                     Pakiet
                   </TableCell>
+                  <TableCell width="30px" align="center"></TableCell>
                   <TableCell width="200px" align="center">
                     Liczba członków
                   </TableCell>
+                  <TableCell width="30px" align="center"></TableCell>
                   <TableCell width="200px" align="center">
-                    Liczba osób
+                    Limit osób
                   </TableCell>
                   <TableCell width="200px" align="center">
                     Czy grupa otwarta?
@@ -211,20 +210,22 @@ const AdminGroupBrowser = () => {
                     </TableCell>
                     <TableCell align="left">{row.name}</TableCell>
                     <TableCell align="center">
-                      {row.packetName}
+                      {row.packetName}{" "}
                       {!row.packetName && (
                         <button
                           type="button"
                           class="btn btn-outline-primary rounded-circle btn-sm"
                           onClick={() => {
                             setEditedSubscription({});
-                            setSubscriptionGroup(row.id)
+                            setSubscriptionGroup(row.id);
                             handleSubscriptionClickOpen();
                           }}
                         >
                           <i class="fa fa-plus" aria-hidden="true"></i>
                         </button>
                       )}
+                    </TableCell>
+                    <TableCell>
                       {row.packetName && (
                         <button
                           type="button"
@@ -233,7 +234,7 @@ const AdminGroupBrowser = () => {
                             setEditedSubscription({
                               subscriptionId: row.subscriptionId,
                             });
-                            setSubscriptionGroup(row.id)
+                            setSubscriptionGroup(row.id);
                             handleSubscriptionClickOpen();
                           }}
                         >
@@ -242,6 +243,17 @@ const AdminGroupBrowser = () => {
                       )}
                     </TableCell>
                     <TableCell align="center">{row.membersCount}</TableCell>
+                    <TableCell align="center">
+                      <Link to={`/groups/administration/${row.id}/users`}>
+                      <button
+                        type="button"
+                        className="btn ml-2 btn-outline-primary rounded-circle btn-sm"
+                        onClick={() => {}}
+                      >
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                      </button>
+                      </Link>
+                    </TableCell>
                     <TableCell align="center">
                       {row.packetPeopleLimit}
                     </TableCell>

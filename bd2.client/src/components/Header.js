@@ -24,22 +24,13 @@ const Header = () => {
               <strong>I don't have a title yet!</strong>
             </div>
             <div className="d-flex justify-content-start m-0 p-0">
-              <Link to="/" className="m-0 p-0">
-                <button
-                  className="btn btn-dark nav-button rounded-0"
-                  style={{ position: "relative", top: "9px" }}
-                >
-                  {/* <img src={HotelLogo} width="20" height="20" alt=""/> */}
-                  Tablica
-                </button>
-              </Link>
-              <Link to="/my">
+              <Link to="/board">
                 <button
                   className="btn btn-dark nav-button rounded-0"
                   style={{ position: "relative", top: "9px" }}
                 >
                   {/* <img src={RestaurantLogo} width="20" height="20" alt=""/> */}
-                  Moje posty
+                  Tablica
                 </button>
               </Link>
               <Link to="/groups">
@@ -116,18 +107,11 @@ const Header = () => {
                         alt=""
                       />
                     </Link>
-                    <Link
-                      to="/groups/administration"
-                      className="rounded-0"
-                    >
-                      Moje grupy{" "}
-                      <i class="fa fa-users" aria-hidden="true"></i>
+                    <Link to="/groups/administration" className="rounded-0">
+                      Moje grupy <i class="fa fa-users" aria-hidden="true"></i>
                     </Link>
-                    <Link
-                      to="/subscriptions"
-                      className="rounded-0"
-                    >
-                      Subskrypcje {" "}
+                    <Link to="/subscriptions" className="rounded-0">
+                      Subskrypcje{" "}
                       <i class="fa fa-ticket" aria-hidden="true"></i>
                     </Link>
                   </div>
