@@ -15,9 +15,10 @@ namespace BD2.API.Database.Entities
         public DateTime? LastPostDate { get; set; }
 
         [JsonIgnore]
-        public ICollection<ChatAccount> Members { get; set; }
+        public ICollection<Account> Members { get; set; }
         [JsonIgnore]
         public ICollection<ChatEntry> Entries { get; set; }
+
     }
 
     public class ChatConfig : IEntityTypeConfiguration<Chat>
