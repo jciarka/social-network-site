@@ -29,7 +29,7 @@ namespace BD2.API.Database.Entities
             builder.HasKey(x => new { x.ChatId, x.AccountId });
 
             builder.HasOne(x => x.Chat)
-                .WithMany()
+                .WithMany(x => x.Members)
                 .HasForeignKey(x => x.ChatId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
