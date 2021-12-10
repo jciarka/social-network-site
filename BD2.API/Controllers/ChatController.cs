@@ -1,4 +1,7 @@
-﻿using BD2.API.Database.Repositories.Interfaces;
+﻿using BD2.API.Database.Dtos.Chat;
+using BD2.API.Database.Entities;
+using BD2.API.Database.Repositories;
+using BD2.API.Database.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,10 +15,12 @@ namespace BD2.API.Controllers
     public class ChatController : ExtendedControllerBase
     {
         private readonly IChatRepository _repo;
+        private readonly IChatAccountRepository _arepo;
 
-        public ChatController(IChatRepository repo)
+        public ChatController(IChatRepository repo, IChatAccountRepository arepo)
         {
             _repo = repo;
+            _arepo = arepo;
         }
 
         [AllowAnonymous]
@@ -64,6 +69,52 @@ namespace BD2.API.Controllers
                 Model = chats,
                 Success = true,
             });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post(CreateChatDto createChatDto)
+        {
+            if (UserId == null)
+            {
+                return Unauthorized(new
+                {
+                    Success = false,
+                    Errors = new List<string> { "Błąd uwierzytelniania, zaloguj się ponownie i spróbuj jeszcze raz" }
+                });
+            }
+
+            Chat chat = new()
+            {
+                Id = new Guid(),
+                Name = createChatDto.Name,
+                Members = new List<ChatAccount>(),
+                LastPostDate = new DateTime(),
+                Entries = new List<ChatEntry>()
+            };
+
+            foreach (var memberId in createChatDto.MembersIds)
+            {
+                chat.Members.Add(await _arepo.FindAsync(memberId));
+            }
+
+            var result = await _repo.AddAsync(chat);
+
+            if (!result)
+            {
+                return BadRequest(new
+                {
+                    Success = false,
+                    Errors = new List<string> { "Nie udało się dodać posta" }
+                });
+            }
+
+            return Ok(new
+            {
+                Success = true,
+                Errors = (List<string>)null,
+                Model = chat
+            });
+
         }
     }
 }

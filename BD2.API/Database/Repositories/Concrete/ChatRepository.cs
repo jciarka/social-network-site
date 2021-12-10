@@ -81,14 +81,11 @@ namespace BD2.API.Database.Repositories.Concrete
         }
         public async Task<IEnumerable<Chat>> FindUserChats(Guid userId, Guid? watcherId = null)
         {
-            /*
-                var chats = await _ctx.Chats
-                .Where(x => x.Members.Any(y => y.Id == userId))
+            var chats = await _ctx.Chats
+                .Where(x => x.Members.Any(y => y.AccountId == userId))
                 .ToListAsync();
 
             return chats;
-            */
-            return null;
         }
     }
 
