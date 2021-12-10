@@ -3,7 +3,7 @@ import axios from "axios";
 export const login = (email, password) => {
   return async (dispatch) => {
     try {
-      const result = await axios.post("api/auth/login", {
+      const result = await axios.post("/api/auth/login", {
         email: email,
         password: password,
       });

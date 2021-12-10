@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BD2.API.Database.Entities;
+using BD2.API.Models;
 using BD2.API.Models.Auth;
+using BD2.API.Models.GroupAccount;
 using BD2.API.Models.Groups;
 using BD2.API.Models.Packets;
 using BD2.API.Models.Posts;
@@ -76,6 +78,13 @@ namespace BD2.API.Configuration
                 .ForMember(x => x.PeopleLimit, opt => opt.MapFrom(src => src.Packet != null ? src.Packet.PeopleLimit : 0))
                 .ForMember(x => x.GroupsLimit, opt => opt.MapFrom(src => src.Packet != null ? src.Packet.GroupsLimit : 0))
                 .ForMember(x => x.FreeSlots, opt => opt.MapFrom(src => countSubcriptionFreeSlots(src)));
+
+            cfg.CreateMap<GroupAccount, GroupAccountModel>()
+                .ForMember(x => x.Firstname, opt => opt.MapFrom(src => src.Account != null ? src.Account.Firstname : ""))
+                .ForMember(x => x.Lastname, opt => opt.MapFrom(src => src.Account != null ? src.Account.Lastname : ""))
+                .ForMember(x => x.Email, opt => opt.MapFrom(src => src.Account.Email != null ? src.Account.Email : ""));
+
+            cfg.CreateMap<GroupAccountAddModel, GroupAccount>();
         };
 
         private static int countSubcriptionFreeSlots(PacketSubscription src)

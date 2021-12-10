@@ -15,13 +15,15 @@ const PostEditor = ({
 }) => {
   const [title, setTitle] = useState(post ? post.title : "");
   const validateTitle = () => {
-    if (title.length === 0 || title === "") return "Tytuł nie może być puste";
+    if ((title && title.length === 0) || title === "")
+      return "Tytuł nie może być puste";
     else return "";
   };
 
   const [text, setText] = useState(post ? post.text : "");
   const validateText = () => {
-    if (text.length === 0 || text === "") return "Opis nie może być pusty";
+    if ((text && text.length === 0) || text === "")
+      return "Opis nie może być pusty";
     else return "";
   };
 
@@ -37,7 +39,9 @@ const PostEditor = ({
 
   const submit = async () => {
     try {
-      const result = await axios.post("api/posts", {
+      debugger
+      const result = await axios.post("/api/posts", {
+        ...post,
         title: title,
         text: text,
       });
@@ -60,7 +64,7 @@ const PostEditor = ({
         const form = new FormData();
         form.append("image", files[index]);
         const imageResponse = await axios.post(
-          `api/posts/images/${result.data.model.post.id}`,
+          `/api/posts/images/${result.data.model.post.id}`,
           form
         );
 
@@ -89,7 +93,7 @@ const PostEditor = ({
   return (
     <div
       className="container d-flex justify-content-center"
-      style={{"max-width": 600}}
+      style={{ "max-width": 600 }}
     >
       <div
         className="card m-4 p-4 rounded rounded-lg w-100 shadow border rounded-0"

@@ -35,8 +35,8 @@ const PostCard = ({ postData, setPostData }) => {
   const getImages = () => {
     return postData.images.map((x) => {
       return {
-        original: "Images/" + x,
-        thumbnail: "Images/" + x,
+        original: "/Images/" + x,
+        thumbnail: "/Images/" + x,
       };
     });
   };
