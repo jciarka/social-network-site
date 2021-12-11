@@ -1,6 +1,4 @@
-﻿using BD2.API.Database.Dtos.Chat;
-using BD2.API.Database.Entities;
-using BD2.API.Database.Repositories;
+﻿using BD2.API.Models.Chat
 using BD2.API.Database.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -72,7 +70,7 @@ namespace BD2.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(CreateChatDto createChatDto)
+        public async Task<IActionResult> Post([FromBody] CreateUpdateChatModel model)
         {
             if (UserId == null)
             {
@@ -83,19 +81,7 @@ namespace BD2.API.Controllers
                 });
             }
 
-            Chat chat = new()
-            {
-                Id = new Guid(),
-                Name = createChatDto.Name,
-                Members = new List<ChatAccount>(),
-                LastPostDate = new DateTime(),
-                Entries = new List<ChatEntry>()
-            };
-
-            foreach (var memberId in createChatDto.MembersIds)
-            {
-                chat.Members.Add(await _arepo.FindAsync(memberId));
-            }
+            
 
             var result = await _repo.AddAsync(chat);
 

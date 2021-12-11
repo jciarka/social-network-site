@@ -42,6 +42,7 @@ namespace BD2.API
             services.AddTransient<IImagesRepository, ImagesRepository>();
             services.AddTransient<IPostsRepository, PostsRepository>();
             services.AddTransient<IChatRepository, ChatRepository>();
+            services.AddTransient<IChatAccountRepository, ChatAccountRepository>();
             services.AddTransient<IPostCommentsRepository, PostCommentsRepository>();
             services.AddTransient<IPostReactionsRepository, PostReactionsRepository>();
             services.AddTransient<IPacketsRepository, PacketsRepository>();
