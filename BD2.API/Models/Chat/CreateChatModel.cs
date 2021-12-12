@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace BD2.API.Database.Dtos.Chat
 {
-    public record UpdateChatDto
+    public record CreateChatModel
     {
         public string Name { get; set; }
 
-        [JsonIgnore]
-        public ICollection<Guid> MembersIds { get; set; }
     }
 }

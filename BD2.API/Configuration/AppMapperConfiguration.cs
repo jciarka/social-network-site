@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BD2.API.Database.Dtos.Chat;
 using BD2.API.Database.Entities;
 using BD2.API.Models;
 using BD2.API.Models.Auth;
@@ -85,6 +86,14 @@ namespace BD2.API.Configuration
                 .ForMember(x => x.Email, opt => opt.MapFrom(src => src.Account.Email != null ? src.Account.Email : ""));
 
             cfg.CreateMap<GroupAccountAddModel, GroupAccount>();
+
+            cfg.CreateMap<CreateChatModel, Chat>()
+                .ForMember(x => x.Id, opt => opt.MapFrom(src => new Guid()))
+                .ForMember(x => x.Members, opt => opt.MapFrom(src => new List<ChatAccount>()))
+                .ForMember(x => x.Entries, opt => opt.MapFrom(src => new List<ChatEntry>()))
+                .ForMember(x => x.LastPostDate, opt => opt.MapFrom(src => DateTime.Now));
+
+            cfg.CreateMap<UpdateChatModel, Chat>();
         };
 
         private static int countSubcriptionFreeSlots(PacketSubscription src)
