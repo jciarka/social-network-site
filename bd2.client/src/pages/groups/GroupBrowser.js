@@ -129,6 +129,7 @@ const GroupBrowser = ({ abc, def }) => {
                 <TableRow>
                   <TableCell width="200px"></TableCell>
                   <TableCell align="left">Nazwa</TableCell>
+                  <TableCell align="left">Temat</TableCell>
                   <TableCell width="200px" align="center">
                     Liczba członków
                   </TableCell>
@@ -145,10 +146,17 @@ const GroupBrowser = ({ abc, def }) => {
                   >
                     <TableCell align="center">
                       <Link to={`/group/${row.id}`}>
-                        <Button variant="contained">Wejdź</Button>
+
+                        <button
+                          type="button"
+                          class="btn btn-outline-primary rounded-circle btn-sm"
+                        >
+                          <i class="fa fa-sign-in" aria-hidden="true"></i>
+                        </button>
                       </Link>
                     </TableCell>
                     <TableCell align="left">{row.name}</TableCell>
+                    <TableCell align="left">{row.groupTopic}</TableCell>
                     <TableCell align="center">{row.membersCount}</TableCell>
                     <TableCell align="center">
                       {row.isOpen ? "Tak" : "Nie"}
