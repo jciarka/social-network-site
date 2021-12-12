@@ -79,7 +79,7 @@ namespace BD2.API.Controllers
         [Route("{groupId}/member/{userId}")]
         public async Task<IActionResult> DeleteMember(Guid groupId, Guid userId)
         {
-            var found = _repo.FindAsync(userId, groupId);
+            var found = await _repo.FindAsync(userId, groupId);
 
             if (found == null)
             {

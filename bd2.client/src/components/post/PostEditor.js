@@ -39,7 +39,6 @@ const PostEditor = ({
 
   const submit = async () => {
     try {
-      debugger
       const result = await axios.post("/api/posts", {
         ...post,
         title: title,

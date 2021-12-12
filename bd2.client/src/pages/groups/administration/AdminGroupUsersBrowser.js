@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import FindPersonByName from "components/general/FindPersonByName";
 import axios from "axios";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -26,6 +27,8 @@ const AdminGroupUsersBrowser = () => {
   const [open, setOpen] = React.useState(false);
   const [group, setGroup] = React.useState(null);
 
+  const [members, setMembers] = React.useState([]);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -37,85 +40,45 @@ const AdminGroupUsersBrowser = () => {
   const { groupId } = useParams();
 
   const fetchGroup = async () => {
-    const result = await axios.post(`/api/groups/${groupId}`);
-
+    const result = await axios.get(`/api/GroupAccounts/${groupId}`);
     if (result && result.data && result.data.success) {
-      console.log(result.data.data);
-      setGroup(result.data.data);
+      setMembers(result.data.data);
     }
   };
 
   const removePerson = async (userId) => {
-    const result = await axios.delete(`/api/groupaccounts/${groupId}/member/${userId}`);
-
+    const result = await axios.delete(
+      `/api/GroupAccounts/${groupId}/member/${userId}`
+    );
     if (result && result.data && result.data.success) {
-      await fetchGroup()
+      await fetchGroup();
     }
   };
 
   const addPerson = async (userId) => {
     const result = await axios.post(`/api/groupaccounts`, {
       groupId: groupId,
-      accountId: userId
+      accountId: userId,
     });
 
     if (result && result.data && result.data.success) {
-      await fetchGroup()
+      await fetchGroup();
     }
   };
 
   useEffect(() => {
     fetchGroup();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
-      {/* <div className="container d-flex justify-content-center">
-        <div
-          className="card m-4 p-4 rounded rounded-lg w-100 shadow border rounded-0"
-          style={{ border: "#8f8f8fb6" }}
-        >
-          <div className="row mx-4 mb-4 align-items-center">
-            <div className="row align-items-center">
-              <Link to={`/groups/administration`}>
-                <button
-                  type="button"
-                  className="btn ml-2 btn-outline-primary rounded-circle btn-sm"
-                  onClick={() => {}}
-                >
-                  <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                </button>
-              </Link>
-
-              <h6 className="mx-2 mt-1">Powrót</h6>
-            </div>
-          </div>
-
-          {/* 
-  
       <Dialog open={open} onClose={handleClose}>
-        <EditGroup
-          group={editedGroup}
-          setGroup={setEditedGroup}
-          onCancel={handleClose}
-          onSuccess={() => {
-            fetchGroups();
+        <FindPersonByName
+          onSuccess={(person) => {
+            addPerson(person.id);
             handleClose();
           }}
-        />
-      </Dialog>
-
-      <Dialog open={subscriptionOpen} onClose={handleSubscriptionClose}>
-        <ChooseSubscription
-          groupId={subscriptionGroup}
-          subscription={editedSubscription}
-          setSubscription={setEditedSubscription}
-          onCancel={handleSubscriptionClose}
-          onSuccess={() => {
-            fetchGroups();
-            handleSubscriptionClose();
-          }}
+          onCancel={handleClose}
         />
       </Dialog>
 
@@ -125,66 +88,36 @@ const AdminGroupUsersBrowser = () => {
           style={{ border: "#8f8f8fb6" }}
         >
           <div className="row mx-4 mb-4 align-items-center">
-            <div style={{ width: "50px" }}>
-              <button
-                type="button"
-                class="btn btn-primary rounded-circle"
-                onClick={() => {
-                  setEditedGroup({});
-                  handleClickOpen();
-                }}
-              >
-                <i class="fa fa-plus" aria-hidden="true"></i>
-              </button>
+            <div className="row d-felx align-items-center w-100">
+              <div className="d-flex" style={{ width: "100px" }}>
+                <Link to={`/groups/administration`}>
+                  <button
+                    type="button"
+                    className="btn ml-2 btn-outline-primary rounded-circle btn-sm"
+                    onClick={() => {}}
+                  >
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                  </button>
+                </Link>
+                <h6 className="mx-2 mt-1">Powrót</h6>
+              </div>
+              <div className="justify-content-center text-center flex-fill">
+                <h3>Członkowie grupy</h3>
+              </div>
             </div>
+          </div>
 
-            <div style={{ width: "250px" }}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Temat</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={topic}
-                  label="Temat"
-                  onChange={(e) => {
-                    setTopic(e.target.value);
-                  }}
-                >
-                  {topics.map((t) => {
-                    return (
-                      <MenuItem key={t} value={t}>
-                        {t}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </div> 
-            <div className="mx-2" style={{ width: "300px" }}>
-              <TextField
-                fullWidth
-                value={name}
-                id="outlined-basic"
-                label="Nazwa"
-                variant="outlined"
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
-              />
-            </div>
-
-            <FormControlLabel
-              className="mx-4 mt-2"
-              control={
-                <Checkbox
-                  checked={isOpen}
-                  onChange={(e) => {
-                    setIsOpen(e.target.checked);
-                  }}
-                />
-              }
-              label="Grupy otwarte"
-            />
+          <div className="row mx-4 mb-4 align-items-center">
+            <button
+              type="button"
+              class="btn btn-primary rounded-circle align-items-center"
+              onClick={() => {
+                handleClickOpen();
+              }}
+            >
+              <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+            <h5 className="d-inline ml-2 pt-2">Dodaj członka</h5>
           </div>
 
           <TableContainer component={Paper}>
@@ -195,32 +128,44 @@ const AdminGroupUsersBrowser = () => {
                   <TableCell width="500px" align="left">
                     Imię i nazwisko
                   </TableCell>
-                  <TableCell width="200px" align="center">
+                  <TableCell width="500px" align="center">
                     E-mail
                   </TableCell>
-                  <TableCell width="50px"></TableCell>
+                  <TableCell width="100px" align="center"></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {groups.map((row) => (
+                {members.map((row) => (
                   <TableRow
                     key={row.name}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                    }}
                   >
                     <TableCell align="center"></TableCell>
                     <TableCell align="left">
-                      {row.Firstname} + {row.LastName}
+                      {row.firstname} {row.lastname}
                     </TableCell>
-                    <TableCell align="center">{row.emial}</TableCell>
+                    <TableCell align="center">{row.email}</TableCell>
                     <TableCell align="center">
-                      <Button
-                        variant="contained"
-                        onClick={() => {
-                          removePerson(row.id);
-                        }}
-                      >
-                        Edytuj
-                      </Button>
+                      {row.isAdmin && (
+                        <i
+                          class="fa fa-lock"
+                          style={{ fontSize: "20px" }}
+                          aria-hidden="true"
+                        ></i>
+                      )}
+                      {!row.isAdmin && (
+                        <button
+                          type="button"
+                          className="btn ml-2 btn-outline-danger rounded-circle btn-sm"
+                          onClick={() => {
+                            removePerson(row.accountId);
+                          }}
+                        >
+                          <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -228,7 +173,7 @@ const AdminGroupUsersBrowser = () => {
             </Table>
           </TableContainer>
         </div>
-      </div> */}
+      </div>
     </>
   );
 };
