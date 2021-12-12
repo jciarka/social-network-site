@@ -70,8 +70,18 @@ const AdminGroupBrowser = () => {
     }
   };
 
+  const fetchTopics = async () => {
+    const result = await axios.get("/api/Topics");
+
+    if (result && result.data && result.data.success) {
+      console.log(result.data.data);
+      setTopics(result.data.data);
+    }
+  };
+
   useEffect(() => {
     fetchGroups();
+    fetchTopics();
   }, [name, topic, isOpen]);
 
   return (
@@ -124,6 +134,7 @@ const AdminGroupBrowser = () => {
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Temat</InputLabel>
                 <Select
+                  size="small"
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={topic}
@@ -134,7 +145,7 @@ const AdminGroupBrowser = () => {
                 >
                   {topics.map((t) => {
                     return (
-                      <MenuItem key={t} value={t}>
+                      <MenuItem size="small" key={t} value={t}>
                         {t}
                       </MenuItem>
                     );
@@ -142,8 +153,20 @@ const AdminGroupBrowser = () => {
                 </Select>
               </FormControl>
             </div>
+            <div>
+              <button
+                type="button"
+                className="btn ml-2 mt-1 btn-outline-secondary rounded-circle btn-sm"
+                onClick={() => {
+                  setTopic(null);
+                }}
+              >
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </button>
+            </div>
             <div className="mx-2" style={{ width: "300px" }}>
               <TextField
+                size="small"
                 fullWidth
                 value={name}
                 id="outlined-basic"
@@ -198,15 +221,16 @@ const AdminGroupBrowser = () => {
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell align="center">
-                      <Button
-                        variant="contained"
+                      <button
+                        type="button"
+                        className="btn ml-2 btn-outline-primary rounded-circle btn-sm"
                         onClick={() => {
                           setEditedGroup({ ...row });
                           setOpen(true);
                         }}
                       >
-                        Edytuj
-                      </Button>
+                        <i className="fa fa-pencil" aria-hidden="true"></i>
+                      </button>
                     </TableCell>
                     <TableCell align="left">{row.name}</TableCell>
                     <TableCell align="center">
@@ -238,20 +262,20 @@ const AdminGroupBrowser = () => {
                             handleSubscriptionClickOpen();
                           }}
                         >
-                          <i className="fa fa-pencil" aria-hidden="true"></i>
+                          <i class="fa fa-ticket" aria-hidden="true"></i>
                         </button>
                       )}
                     </TableCell>
                     <TableCell align="center">{row.membersCount}</TableCell>
                     <TableCell align="center">
                       <Link to={`/groups/administration/${row.id}/users`}>
-                      <button
-                        type="button"
-                        className="btn ml-2 btn-outline-primary rounded-circle btn-sm"
-                        onClick={() => {}}
-                      >
-                        <i class="fa fa-list" aria-hidden="true"></i>
-                      </button>
+                        <button
+                          type="button"
+                          className="btn ml-2 btn-outline-primary rounded-circle btn-sm"
+                          onClick={() => {}}
+                        >
+                          <i class="fa fa-list" aria-hidden="true"></i>
+                        </button>
                       </Link>
                     </TableCell>
                     <TableCell align="center">

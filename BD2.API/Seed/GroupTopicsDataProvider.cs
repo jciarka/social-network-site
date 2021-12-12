@@ -3,7 +3,10 @@ using BD2.API.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace BD2.API.Seed
@@ -16,20 +19,21 @@ namespace BD2.API.Seed
             {
                 try
                 {
-                    // ctx.Database.ExecuteSqlCommand("SET IDENTITY_INSERT PacketGroupsLimits ON;");
-                    // Periods
-                    List<GroupTopic> topics = new()
-                    {
-                        new GroupTopic { Topic = "Sport" },
-                        new GroupTopic { Topic = "Turystyka" },
-                        new GroupTopic { Topic = "Polityka" },
-                    };
+                    ctx.ChangeTracker.Clear();
+
+                    var buildDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var filePath = buildDir + $"/Seed/themas.json";
+                    var json = System.IO.File.ReadAllText(filePath);
+                    IEnumerable<string> themas = JsonSerializer.Deserialize<List<string>>(json);
+
+                    var topics = themas.Select(x => new GroupTopic { Topic = x });
 
                     foreach (var topic in topics)
                     {
                         if (!ctx.GroupTopics.Any(x => x.Topic == topic.Topic))
                         {
                             ctx.GroupTopics.Add(topic);
+                            
                         }
                     }
 

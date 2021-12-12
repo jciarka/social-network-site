@@ -7,19 +7,10 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import Dialog from "@mui/material/Dialog";
 
 const EditGroup = ({ group, setGroup, onCancel, onSuccess }) => {
   function validate() {
@@ -48,7 +39,20 @@ const EditGroup = ({ group, setGroup, onCancel, onSuccess }) => {
     }
   };
 
-  const [topics, setTopics] = useState(["Sport", "Polityka", "Turystyka"]);
+  const [topics, setTopics] = useState([]);
+
+  const fetchTopics = async () => {
+    const result = await axios.get("/api/Topics");
+
+    if (result && result.data && result.data.success) {
+      console.log(result.data.data);
+      setTopics(result.data.data);
+    }
+  }
+
+  useEffect(() => {
+    fetchTopics();
+  }, []);
 
   return (
     <>

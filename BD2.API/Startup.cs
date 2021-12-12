@@ -50,6 +50,7 @@ namespace BD2.API
             services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddTransient<IGroupAccountsRepository, GroupAccountsRepository>();
             services.AddTransient<IAccountRepository, AccountRepository>();
+            services.AddTransient<ITopicsRepository, TopicsRepository>();
 
             // services.AddTransient<IRepo, Repo>();
             var tokenConfiguration = new TokenConfiguration { SecurityKey = "qwertyuiopasdfghjklzxcvbnm" };

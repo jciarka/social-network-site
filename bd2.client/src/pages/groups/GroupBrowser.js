@@ -24,7 +24,7 @@ const GroupBrowser = ({ abc, def }) => {
   const [name, setName] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-  const [topics, setTopics] = useState(["Sport", "Polityka", "Turystyka"]);
+  const [topics, setTopics] = useState([]);
 
   const fetchGroups = async () => {
     const result = await axios.post("/api/Groups/find", {
@@ -40,8 +40,18 @@ const GroupBrowser = ({ abc, def }) => {
     }
   };
 
+  const fetchTopics = async () => {
+    const result = await axios.get("/api/Topics");
+
+    if (result && result.data && result.data.success) {
+      console.log(result.data.data);
+      setTopics(result.data.data);
+    }
+  };
+
   useEffect(() => {
     fetchGroups();
+    fetchTopics();
   }, [name, topic, isOpen]);
 
   return (
@@ -56,6 +66,7 @@ const GroupBrowser = ({ abc, def }) => {
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Temat</InputLabel>
                 <Select
+                  size="small"
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={topic}
@@ -74,9 +85,21 @@ const GroupBrowser = ({ abc, def }) => {
                 </Select>
               </FormControl>
             </div>
+            <div>
+              <button
+                type="button"
+                className="btn ml-2 mt-1 btn-outline-secondary rounded-circle btn-sm"
+                onClick={() => {
+                  setTopic(null);
+                }}
+              >
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </button>
+            </div>
             <div className="mx-2" style={{ width: "300px" }}>
               <TextField
                 fullWidth
+                size="small"
                 value={name}
                 id="outlined-basic"
                 label="Nazwa"
@@ -88,9 +111,10 @@ const GroupBrowser = ({ abc, def }) => {
             </div>
 
             <FormControlLabel
-              className="mx-4 mt-2"
+              className="mx-4"
               control={
-                <Checkbox checked={isOpen}
+                <Checkbox
+                  checked={isOpen}
                   onChange={(e) => {
                     setIsOpen(e.target.checked);
                   }}
