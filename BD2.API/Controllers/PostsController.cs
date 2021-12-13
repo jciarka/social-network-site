@@ -28,7 +28,6 @@ namespace BD2.API.Controllers
             _irepo = irepo;
         }
 
-        [AllowAnonymous]
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> Get(Guid id)
@@ -78,7 +77,6 @@ namespace BD2.API.Controllers
             });
         }
 
-        [AllowAnonymous]
         [HttpGet]
         [Route("list/user/{id}")]
         public async Task<IActionResult> UserPosts(Guid id)
@@ -110,7 +108,6 @@ namespace BD2.API.Controllers
             });
         }
 
-        [AllowAnonymous]
         [HttpGet]
         [Route("list/group/{id}")]
         public async Task<IActionResult> GroupPosts(Guid id)
@@ -142,7 +139,6 @@ namespace BD2.API.Controllers
             });
         }
 
-        [HttpGet]
         [HttpGet]
         [Route("list/friends")]
         public async Task<IActionResult> FriendsPosts()

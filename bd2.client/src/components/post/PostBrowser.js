@@ -7,9 +7,11 @@ import { useParams } from "react-router-dom";
 
 const PostBrowser = ({ type }) => {
   const [posts, setPosts] = useState([]);
+  const [group, setGroup] = useState(null);
+  const [canAddPosts, setCanAddPosts] = useState(true);
 
   const account = useSelector((state) => state.account);
-  let { groupId } = useParams()
+  let { groupId } = useParams();
 
   const fetchPosts = async () => {
     let result;
@@ -28,7 +30,21 @@ const PostBrowser = ({ type }) => {
     }
   };
 
+  const fetchGroup = async () => {
+    let result;
+    if (type !== "BOARD") {
+      setCanAddPosts(false);
+      result = await axios.get(`/api/groups/${groupId}`);
+
+      if (result && result.data && result.data.success) {
+        setGroup(result.data.data);
+        setCanAddPosts(result.data.canAddPosts);
+      }
+    }
+  };
+
   useEffect(() => {
+    fetchGroup();
     fetchPosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -41,12 +57,14 @@ const PostBrowser = ({ type }) => {
   return (
     <>
       <div className="container justify-content-center">
-        <PostEditor
-          type={editorTypes.EDIT}
-          onSuccess={(x) => fetchPosts()}
-          header="Napisz o czym myślisz"
-          post={{ groupId }}
-        />
+        {canAddPosts && (
+          <PostEditor
+            type={editorTypes.EDIT}
+            onSuccess={(x) => fetchPosts()}
+            header="Napisz o czym myślisz"
+            post={{ groupId }}
+          />
+        )}
 
         {posts.map((postData, index) => {
           return (

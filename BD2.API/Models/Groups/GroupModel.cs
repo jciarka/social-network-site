@@ -20,5 +20,7 @@ namespace BD2.API.Models.Groups
         public int? PacketPeopleLimit { get; set; }
         public bool IsOpen { get; set; }
         public string GroupTopic { get; set; }
+        public bool IsPacketExpired { get; set; }
+        public bool IsGroupBlocked { get; set; }
     }
 }

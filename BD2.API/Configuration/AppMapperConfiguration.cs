@@ -56,7 +56,14 @@ namespace BD2.API.Configuration
                     opt => opt.MapFrom(src => src.Members != null ? src.Members.Count() : 0))
                 .ForMember(
                     x => x.PostsCount,
-                    opt => opt.MapFrom(src => src.Posts != null ? src.Posts.Count() : 0));
+                    opt => opt.MapFrom(src => src.Posts != null ? src.Posts.Count() : 0))
+                .ForMember(
+                    x => x.IsPacketExpired,
+                    opt => opt.MapFrom(src => src.Subscription != null && src.Subscription.ExpirationDate < DateTime.Now))
+                .ForMember(
+                    x => x.IsPacketExpired,
+                    opt => opt.MapFrom(src => src.Subscription != null && src.Subscription.ExpirationDate < DateTime.Now && 
+                    src.Members.Count() > appConfig.GetValue<int>("AppBussinesDefault:Groups:DefaultPeopleLimit")));
 
             cfg.CreateMap<Group, GroupSimplifiedModel>()
                 .ForMember(
@@ -65,7 +72,14 @@ namespace BD2.API.Configuration
                              src.Subscription.Packet.IsOpen : false))
                 .ForMember(
                     x => x.MembersCount,
-                    opt => opt.MapFrom(src => src.Members != null ? src.Members.Count() : 0));
+                    opt => opt.MapFrom(src => src.Members != null ? src.Members.Count() : 0))
+                .ForMember(
+                    x => x.IsPacketExpired,
+                    opt => opt.MapFrom(src => src.Subscription != null && src.Subscription.ExpirationDate < DateTime.Now))
+                .ForMember(
+                    x => x.IsPacketExpired,
+                    opt => opt.MapFrom(src => src.Subscription != null && src.Subscription.ExpirationDate < DateTime.Now &&
+                    src.Members.Count() > appConfig.GetValue<int>("AppBussinesDefault:Groups:DefaultPeopleLimit")));
 
             cfg.CreateMap<GroupAddModel, Group>()
                 .ForMember(x => x.CreatedDate, opt => opt.MapFrom(src => DateTime.Now))

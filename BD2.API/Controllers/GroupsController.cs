@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Configuration;
 using BD2.API.Database.Entities;
 using BD2.API.Database.Repositories.Interfaces;
 using BD2.API.Models.GroupAccount;
@@ -23,6 +24,7 @@ namespace BD2.API.Controllers
             private readonly IPacketSubscriptionsRepository _srepo;
             private readonly IGroupAccountsRepository _garepo;
             private readonly IMapper _mapper;
+            private readonly IConfiguration _config; 
 
             public GroupsController(IGroupRepository repo, IMapper mapper, IPacketSubscriptionsRepository srepo, IGroupAccountsRepository garepo)
             {
@@ -32,7 +34,6 @@ namespace BD2.API.Controllers
                 _garepo = garepo;
             }
 
-            [AllowAnonymous]
             [HttpGet]
             [Route("{id}")]
             public async Task<IActionResult> Get(Guid id)
@@ -55,11 +56,13 @@ namespace BD2.API.Controllers
                 }
 
                 var group = _mapper.Map<GroupModel>(found);
+                var canAddPost = !group.IsOpen || found.Members.Any(x => x.AccountId == UserId && x.IsAdmin);
 
                 return Ok(new
                 {
                     Success = true,
                     Errors = (List<string>)null,
+                    CanAddPosts = canAddPost,
                     data = group
                 });
             }
@@ -185,7 +188,6 @@ namespace BD2.API.Controllers
                 });
             }
 
-            [AllowAnonymous]
             [HttpPost]
             public async Task<IActionResult> Post([FromBody] GroupAddModel model)
             {
@@ -216,7 +218,6 @@ namespace BD2.API.Controllers
                 return await Get(group.Id);
             }
 
-            [AllowAnonymous]
             [HttpPut]
             [Route("{id}")]
             public async Task<IActionResult> Put(Guid id, [FromBody] GroupAddModel model) // dodawanie nowych encji
@@ -248,7 +249,6 @@ namespace BD2.API.Controllers
                 return await Get(group.Id);
             }
 
-            [AllowAnonymous]
             [HttpPut]
             [Route("{id}/subcription")]
             public async Task<IActionResult> Put(Guid id, [FromBody] SetSubcriptionModel sub) // dodawanie nowych encji
