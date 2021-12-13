@@ -31,7 +31,7 @@ const ImagePicker = ({
         {files.map((x, i) => (
           <div>
             <i
-              class="fa fa-times-circle image-exit-icon"
+              className="fa fa-times-circle image-exit-icon"
               aria-hidden="true"
               onClick={() =>
                 setFiles(files.filter((file, index) => index !== i))

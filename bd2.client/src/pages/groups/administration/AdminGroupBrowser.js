@@ -120,13 +120,13 @@ const AdminGroupBrowser = () => {
             <div style={{ width: "50px" }}>
               <button
                 type="button"
-                class="btn btn-primary rounded-circle"
+                className="btn btn-primary rounded-circle"
                 onClick={() => {
                   setEditedGroup({});
                   handleClickOpen();
                 }}
               >
-                <i class="fa fa-plus" aria-hidden="true"></i>
+                <i className="fa fa-plus" aria-hidden="true"></i>
               </button>
             </div>
 
@@ -161,7 +161,7 @@ const AdminGroupBrowser = () => {
                   setTopic(null);
                 }}
               >
-                <i class="fa fa-times" aria-hidden="true"></i>
+                <i className="fa fa-times" aria-hidden="true"></i>
               </button>
             </div>
             <div className="mx-2" style={{ width: "300px" }}>
@@ -178,18 +178,6 @@ const AdminGroupBrowser = () => {
               />
             </div>
 
-            <FormControlLabel
-              className="mx-4 mt-2"
-              control={
-                <Checkbox
-                  checked={isOpen}
-                  onChange={(e) => {
-                    setIsOpen(e.target.checked);
-                  }}
-                />
-              }
-              label="Grupy otwarte"
-            />
           </div>
           <TableContainer component={Paper}>
             <Table aria-label="simple table">
@@ -238,14 +226,14 @@ const AdminGroupBrowser = () => {
                       {!row.packetName && (
                         <button
                           type="button"
-                          class="btn btn-outline-primary rounded-circle btn-sm"
+                          className="btn btn-outline-primary rounded-circle btn-sm"
                           onClick={() => {
                             setEditedSubscription({});
                             setSubscriptionGroup(row.id);
                             handleSubscriptionClickOpen();
                           }}
                         >
-                          <i class="fa fa-plus" aria-hidden="true"></i>
+                          <i className="fa fa-plus" aria-hidden="true"></i>
                         </button>
                       )}
                     </TableCell>
@@ -262,7 +250,7 @@ const AdminGroupBrowser = () => {
                             handleSubscriptionClickOpen();
                           }}
                         >
-                          <i class="fa fa-ticket" aria-hidden="true"></i>
+                          <i className="fa fa-ticket" aria-hidden="true"></i>
                         </button>
                       )}
                     </TableCell>
@@ -274,7 +262,7 @@ const AdminGroupBrowser = () => {
                           className="btn ml-2 btn-outline-primary rounded-circle btn-sm"
                           onClick={() => {}}
                         >
-                          <i class="fa fa-list" aria-hidden="true"></i>
+                          <i className="fa fa-list" aria-hidden="true"></i>
                         </button>
                       </Link>
                     </TableCell>

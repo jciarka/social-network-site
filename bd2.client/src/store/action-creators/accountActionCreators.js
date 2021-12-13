@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const login = (email, password) => {
+export const login = (email, password, onSuccess = null) => {
   return async (dispatch) => {
     try {
       const result = await axios.post("/api/auth/login", {
@@ -24,6 +24,9 @@ export const login = (email, password) => {
         });
         axios.defaults.headers.common["Authorization"] =
           "bearer " + result.data.token;
+        if (onSuccess) {
+          onSuccess();
+        }
       } else {
         dispatch({
           type: "SET_ERRORS",
@@ -48,7 +51,7 @@ export const logout = (login, password) => {
     dispatch({
       type: "LOG_OUT",
     });
-    axios.defaults.headers.common["Authorization"] = null
+    axios.defaults.headers.common["Authorization"] = null;
   };
 };
 

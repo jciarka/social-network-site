@@ -108,11 +108,11 @@ const Header = () => {
                       />
                     </Link>
                     <Link to="/groups/administration" className="rounded-0">
-                      Moje grupy <i class="fa fa-users" aria-hidden="true"></i>
+                      Moje grupy <i className="fa fa-users" aria-hidden="true"></i>
                     </Link>
                     <Link to="/subscriptions" className="rounded-0">
                       Subskrypcje{" "}
-                      <i class="fa fa-ticket" aria-hidden="true"></i>
+                      <i className="fa fa-ticket" aria-hidden="true"></i>
                     </Link>
                   </div>
                 </div>

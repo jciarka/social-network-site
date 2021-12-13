@@ -3,16 +3,20 @@ import { Link } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../store/index";
+import { useHistory } from "react-router-dom";
 
 const LoginForm = () => {
   const [emial, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const history = useHistory();
 
   const account = useSelector((state) => state.account);
   const dispach = useDispatch();
   const { login, clearErrors } = bindActionCreators(actionCreators, dispach);
 
   return (
+    
     <div className="container d-flex justify-content-center">
       <div
         className="card m-4 rounded rounded-0 w-100 shadow border "
@@ -22,7 +26,9 @@ const LoginForm = () => {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              login(emial, password);
+              login(emial, password, () => {
+                history.push("/board");
+              });
             }}
           >
             <div className="form-group">

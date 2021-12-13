@@ -58,7 +58,8 @@ const App = () => {
         exact
         render={(props) => (
           <>
-            <GroupBrowser />
+            {account && account.isLoggedIn && <GroupBrowser />}
+            {(!account || !account.isLoggedIn) && <Redirect to="/login" />}
           </>
         )}
       ></Route>
@@ -68,7 +69,8 @@ const App = () => {
         path="/groups/administration"
         render={(props) => (
           <>
-            <AdminGroupBrowser />
+            {account && account.isLoggedIn && <AdminGroupBrowser />}
+            {(!account || !account.isLoggedIn) && <Redirect to="/login" />}
           </>
         )}
       ></Route>
@@ -78,7 +80,8 @@ const App = () => {
         path="/groups/administration/:groupId/users"
         render={(props) => (
           <>
-            <AdminGroupUsersBrowser />
+            {account && account.isLoggedIn && <AdminGroupUsersBrowser />}
+            {(!account || !account.isLoggedIn) && <Redirect to="/login" />}
           </>
         )}
       ></Route>
@@ -87,7 +90,8 @@ const App = () => {
         path="/subscriptions"
         render={(props) => (
           <>
-            <PacketSubcriptionsBrowser />
+            {account && account.isLoggedIn && <PacketSubcriptionsBrowser />}
+            {(!account || !account.isLoggedIn) && <Redirect to="/login" />}
           </>
         )}
       ></Route>

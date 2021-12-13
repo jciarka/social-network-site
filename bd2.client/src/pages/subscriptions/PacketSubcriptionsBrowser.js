@@ -65,12 +65,12 @@ const PacketSubcriptionsBrowser = () => {
             <div style={{ width: "50px" }}>
               <button
                 type="button"
-                class="btn btn-primary rounded-circle"
+                className="btn btn-primary rounded-circle"
                 onClick={() => {
                   handleClickOpen();
                 }}
               >
-                <i class="fa fa-plus" aria-hidden="true"></i>
+                <i className="fa fa-plus" aria-hidden="true"></i>
               </button>
             </div>
             <h2>Subskrypcje</h2>

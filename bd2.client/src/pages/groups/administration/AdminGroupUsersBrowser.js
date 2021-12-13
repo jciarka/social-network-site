@@ -96,7 +96,7 @@ const AdminGroupUsersBrowser = () => {
                     className="btn ml-2 btn-outline-primary rounded-circle btn-sm"
                     onClick={() => {}}
                   >
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <i className="fa fa-arrow-left" aria-hidden="true"></i>
                   </button>
                 </Link>
                 <h6 className="mx-2 mt-1">Powrót</h6>
@@ -110,12 +110,12 @@ const AdminGroupUsersBrowser = () => {
           <div className="row mx-4 mb-4 align-items-center">
             <button
               type="button"
-              class="btn btn-primary rounded-circle align-items-center"
+              className="btn btn-primary rounded-circle align-items-center"
               onClick={() => {
                 handleClickOpen();
               }}
             >
-              <i class="fa fa-plus" aria-hidden="true"></i>
+              <i className="fa fa-plus" aria-hidden="true"></i>
             </button>
             <h5 className="d-inline ml-2 pt-2">Dodaj członka</h5>
           </div>
@@ -150,7 +150,7 @@ const AdminGroupUsersBrowser = () => {
                     <TableCell align="center">
                       {row.isAdmin && (
                         <i
-                          class="fa fa-lock"
+                        className="fa fa-lock"
                           style={{ fontSize: "20px" }}
                           aria-hidden="true"
                         ></i>
@@ -163,7 +163,7 @@ const AdminGroupUsersBrowser = () => {
                             removePerson(row.accountId);
                           }}
                         >
-                          <i class="fa fa-trash-o" aria-hidden="true"></i>
+                          <i className="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                       )}
                     </TableCell>

@@ -93,7 +93,7 @@ const GroupBrowser = ({ abc, def }) => {
                   setTopic(null);
                 }}
               >
-                <i class="fa fa-times" aria-hidden="true"></i>
+                <i className="fa fa-times" aria-hidden="true"></i>
               </button>
             </div>
             <div className="mx-2" style={{ width: "300px" }}>
@@ -149,9 +149,9 @@ const GroupBrowser = ({ abc, def }) => {
 
                         <button
                           type="button"
-                          class="btn btn-outline-primary rounded-circle btn-sm"
+                          className="btn btn-outline-primary rounded-circle btn-sm"
                         >
-                          <i class="fa fa-sign-in" aria-hidden="true"></i>
+                          <i className="fa fa-sign-in" aria-hidden="true"></i>
                         </button>
                       </Link>
                     </TableCell>
