@@ -38,7 +38,7 @@ const AddAbusement = ({ abusement, setAbusement, onCancel, onSuccess }) => {
               error={!(abusement.text && abusement.text !== "" && abusement.postId)}
               value={abusement.text}
               id="outlined-basic"
-              label="Nazwa"
+              label="Przyczyna zgłoszenia"
               variant="outlined"
               onChange={(e) => {
                 setAbusement({ ...abusement, text: e.target.value });

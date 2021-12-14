@@ -50,8 +50,13 @@ const PostBrowser = ({ type }) => {
   }, []);
 
   const getPostDataSetter = (index) => {
-    return (newData) =>
-      setPosts(posts.map((x, i) => (i !== index ? x : newData)));
+    return (newData) => {
+      if (newData) {
+        setPosts(posts.map((x, i) => (i !== index ? x : newData)));
+      } else {
+        setPosts(posts.filter((x, i) => (i !== index ? true : false)));
+      }
+    };
   };
 
   return (

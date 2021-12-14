@@ -11,7 +11,7 @@ namespace TravelNow2.Api.Helpers
     {
         public static bool TryGetUserEmail(this ClaimsPrincipal user, out string email)
         {
-            email = user.Claims?.FirstOrDefault(x => x.Type.Equals(ClaimTypes.NameIdentifier, StringComparison.OrdinalIgnoreCase))?.Value;
+            email = user.Claims?.FirstOrDefault(x => x.Type.Equals(ClaimTypes.Email, StringComparison.OrdinalIgnoreCase))?.Value;
             return email != null;
         }
 

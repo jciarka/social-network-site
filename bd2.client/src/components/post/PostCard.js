@@ -6,11 +6,14 @@ import { useSelector } from "react-redux";
 import Dialog from "@mui/material/Dialog";
 import { useState } from "react";
 import AddAbusement from "components/abusements/AddAbusement";
+import DeletePost from "components/post/DeletePost";
 
 const PostCard = ({ postData, setPostData }) => {
   const account = useSelector((state) => state.account); // get redux store values
   const [open, setOpen] = useState(false);
   const [abusement, setAbusement] = useState({});
+  const [deletePostOpen, setDeletePostOpen] = useState(false);
+  const [deletedPostId, setDeletdPostId] = useState({});
 
   const fetchPostsDetails = async () => {
     const result = await axios.get(`/api/Posts/${postData.post.id}`);
@@ -53,6 +56,14 @@ const PostCard = ({ postData, setPostData }) => {
     setOpen(false);
   };
 
+  const handleDeletePostClickOpen = () => {
+    setDeletePostOpen(true);
+  };
+
+  const handleDeletePostClose = () => {
+    setDeletePostOpen(false);
+  };
+
   return (
     <>
       <Dialog open={open} onClose={handleClose}>
@@ -67,11 +78,41 @@ const PostCard = ({ postData, setPostData }) => {
         />
       </Dialog>
 
+      <Dialog open={deletePostOpen} onClose={handleDeletePostClose}>
+        <DeletePost
+          postId={deletedPostId}
+          onCancel={handleDeletePostClose}
+          onSuccess={() => {
+            setPostData(null);
+            handleClose();
+          }}
+        />
+      </Dialog>
+
       <div
-        className="card m-4 pt-2 pb-0 rounded rounded-lg w-100 shadow border border-dark rounded-0"
+        className="card m-4 pt-0 pb-0 rounded rounded-lg w-100 shadow border border-dark rounded-0"
         style={{ border: "#8f8f8fb6", maxWidth: "800px" }}
       >
-        <div className=" mx-4 mt-2">
+        {postData.isOwner && (
+          <div className="row w-100 justify-content-end m-0 p-0">
+            <button
+              type="button"
+              className="btn btn-outline-danger rounded-circle btn-sm mt-1 mr-1"
+              onClick={() => {
+                setDeletdPostId(postData.post.id)
+                handleDeletePostClickOpen()
+              }}
+            >
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+          </div>
+        )}
+
+        {!postData.isOwner && (
+          <div className="mt-3" />
+        )}
+        
+        <div className="mx-4 mt-1">
           {postData.images && postData.images.length > 0 && (
             <ImageGallery
               items={getImages()}
@@ -81,8 +122,8 @@ const PostCard = ({ postData, setPostData }) => {
             />
           )}
         </div>
-
         <div style={{ marginBottom: 10 }} />
+
         {/* IMAGES carousel*/}
         <div className="mx-4 d-flex flex-row justify-content-between">
           <div className="h5">
