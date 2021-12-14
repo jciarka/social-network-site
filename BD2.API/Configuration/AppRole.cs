@@ -8,7 +8,7 @@ namespace BD2.API.Configuration
     public enum AppRole
     {
         USER,
-        MODERAOR,
+        MODERATOR,
         ADMIN
     }
 }

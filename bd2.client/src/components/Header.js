@@ -21,45 +21,95 @@ const Header = () => {
           <div className=" m-0 p-0">
             <div className="prompt">
               {" "}
-              <strong>I don't have a title yet!</strong>
+              <strong>New better facebook!</strong>
             </div>
             <div className="d-flex justify-content-start m-0 p-0">
-              <Link to="/board">
-                <button
-                  className="btn btn-dark nav-button rounded-0"
-                  style={{ position: "relative", top: "9px" }}
-                >
-                  {/* <img src={RestaurantLogo} width="20" height="20" alt=""/> */}
-                  Tablica
-                </button>
-              </Link>
-              <Link to="/groups">
-                <button
-                  className="btn btn-dark nav-button rounded-0"
-                  style={{ position: "relative", top: "9px" }}
-                >
-                  {/* <img src={HistoryLogo} width="20" height="20" alt=""/> */}
-                  Grupy
-                </button>
-              </Link>
-              <Link to="/">
-                <button
-                  className="btn btn-dark nav-button rounded-0"
-                  style={{ position: "relative", top: "9px" }}
-                >
-                  {/* <img src={PopcornLogo} width="20" height="20" alt=""/> */}
-                  Znajomi
-                </button>
-              </Link>
-              <Link to="/">
-                <button
-                  className="btn btn-dark nav-button rounded-0"
-                  style={{ position: "relative", top: "9px" }}
-                >
-                  {/* <img src={FootballLogo} width="20" height="20" alt=""/> */}
-                  Komunikator
-                </button>
-              </Link>
+              {account && account.roles && account.roles.includes("USER") && (
+                <>
+                  <Link to="/board">
+                    <button
+                      className="btn btn-dark nav-button rounded-0"
+                      style={{ position: "relative", top: "9px" }}
+                    >
+                      {/* <img src={RestaurantLogo} width="20" height="20" alt=""/> */}
+                      Tablica
+                    </button>
+                  </Link>
+                  <Link to="/groups">
+                    <button
+                      className="btn btn-dark nav-button rounded-0"
+                      style={{ position: "relative", top: "9px" }}
+                    >
+                      {/* <img src={HistoryLogo} width="20" height="20" alt=""/> */}
+                      Grupy
+                    </button>
+                  </Link>
+                  <Link to="/">
+                    <button
+                      className="btn btn-dark nav-button rounded-0"
+                      style={{ position: "relative", top: "9px" }}
+                    >
+                      {/* <img src={PopcornLogo} width="20" height="20" alt=""/> */}
+                      Znajomi
+                    </button>
+                  </Link>
+                  <Link to="/">
+                    <button
+                      className="btn btn-dark nav-button rounded-0"
+                      style={{ position: "relative", top: "9px" }}
+                    >
+                      {/* <img src={FootballLogo} width="20" height="20" alt=""/> */}
+                      Komunikator
+                    </button>
+                  </Link>
+                </>
+              )}
+              {account && account.roles && account.roles.includes("MODERATOR") && (
+                <>
+                  {/* Moderator actions to add */}
+                  <Link to="/abusements">
+                    <button
+                      className="btn btn-dark nav-button rounded-0"
+                      style={{ position: "relative", top: "9px" }}
+                    >
+                      {/* <img src={FootballLogo} width="20" height="20" alt=""/> */}
+                      Zgłoszenia
+                    </button>
+                  </Link>
+                  <Link to="/abusements/stats">
+                    <button
+                      className="btn btn-dark nav-button rounded-0"
+                      style={{ position: "relative", top: "9px" }}
+                    >
+                      {/* <img src={FootballLogo} width="20" height="20" alt=""/> */}
+                      Statystyki
+                    </button>
+                  </Link>
+                </>
+              )}
+              {account && account.roles && account.roles.includes("ADMIN") && (
+                <>
+                  {/* Administrator actions to add */}
+                  <Link to="/packetsmanager">
+                    <button
+                      className="btn btn-dark nav-button rounded-0"
+                      style={{ position: "relative", top: "9px" }}
+                    >
+                      {/* <img src={FootballLogo} width="20" height="20" alt=""/> */}
+                      Menedżer subskrypcji
+                    </button>
+                  </Link>
+                  <Link to="/packetsmanager/stats">
+                    <button
+                      className="btn btn-dark nav-button rounded-0"
+                      style={{ position: "relative", top: "9px" }}
+                    >
+                      {/* <img src={FootballLogo} width="20" height="20" alt=""/> */}
+                      Statystyki pakietów
+                    </button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -107,13 +157,54 @@ const Header = () => {
                         alt=""
                       />
                     </Link>
-                    <Link to="/groups/administration" className="rounded-0">
-                      Moje grupy <i className="fa fa-users" aria-hidden="true"></i>
-                    </Link>
-                    <Link to="/subscriptions" className="rounded-0">
-                      Subskrypcje{" "}
-                      <i className="fa fa-ticket" aria-hidden="true"></i>
-                    </Link>
+
+                    {account &&
+                      account.roles &&
+                      account.roles.includes("USER") && (
+                        <>
+                          <Link
+                            to="/groups/administration"
+                            className="rounded-0"
+                          >
+                            Moje grupy{" "}
+                            <i className="fa fa-users" aria-hidden="true"></i>
+                          </Link>
+                          <Link to="/subscriptions" className="rounded-0">
+                            Subskrypcje{" "}
+                            <i className="fa fa-ticket" aria-hidden="true"></i>
+                          </Link>
+                        </>
+                      )}
+                    {account &&
+                      account.roles &&
+                      account.roles.includes("MODERATOR") && (
+                        <>
+                          {/* Moderator actions to add */}
+                          <Link to="/abusements" className="rounded-0">
+                            Zgłoszenia{" "}
+                            <i class="fa fa-exclamation-triangle text-danger" aria-hidden="true"></i>
+                          </Link>
+                          <Link to="/abusements/stats" className="rounded-0">
+                            Statystyki zgłoszeń{" "}
+                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                          </Link>
+                        </>
+                      )}
+                    {account &&
+                      account.roles &&
+                      account.roles.includes("ADMIN") && (
+                        <>
+                          {/* Administrator actions to add */}
+                          <Link to="/packetsmanager" className="rounded-0">
+                            Menedżer pakietów{" "}
+                            <i class="fa fa-usd" aria-hidden="true"></i>
+                          </Link>
+                          <Link to="/packetsmanager/stats" className="rounded-0">
+                            Statystyki zgłoszeń{" "}
+                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                          </Link>
+                        </>
+                      )}
                   </div>
                 </div>
               )}

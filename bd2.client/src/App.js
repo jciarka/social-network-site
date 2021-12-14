@@ -37,7 +37,10 @@ const App = () => {
         render={(props) => (
           <>
             {account && account.isLoggedIn && <PostBrowser type={"BOARD"} />}
-            {(!account || !account.isLoggedIn) && <Redirect to="/login" />}
+            {(!account ||
+              !account.isLoggedIn ||
+              !account.roles ||
+              !account.roles.includes("USER")) && <Redirect to="/login" />}
           </>
         )}
       />
@@ -48,7 +51,10 @@ const App = () => {
         render={(props) => (
           <>
             {account && account.isLoggedIn && <PostBrowser type={"GROUP"} />}
-            {(!account || !account.isLoggedIn) && <Redirect to="/login" />}
+            {(!account ||
+              !account.isLoggedIn ||
+              !account.roles ||
+              !account.roles.includes("USER")) && <Redirect to="/login" />}
           </>
         )}
       />
@@ -59,7 +65,10 @@ const App = () => {
         render={(props) => (
           <>
             {account && account.isLoggedIn && <GroupBrowser />}
-            {(!account || !account.isLoggedIn) && <Redirect to="/login" />}
+            {(!account ||
+              !account.isLoggedIn ||
+              !account.roles ||
+              !account.roles.includes("USER")) && <Redirect to="/login" />}
           </>
         )}
       ></Route>
@@ -70,7 +79,10 @@ const App = () => {
         render={(props) => (
           <>
             {account && account.isLoggedIn && <AdminGroupBrowser />}
-            {(!account || !account.isLoggedIn) && <Redirect to="/login" />}
+            {(!account ||
+              !account.isLoggedIn ||
+              !account.roles ||
+              !account.roles.includes("USER")) && <Redirect to="/login" />}
           </>
         )}
       ></Route>
@@ -81,37 +93,88 @@ const App = () => {
         render={(props) => (
           <>
             {account && account.isLoggedIn && <AdminGroupUsersBrowser />}
-            {(!account || !account.isLoggedIn) && <Redirect to="/login" />}
+            {(!account ||
+              !account.isLoggedIn ||
+              !account.roles ||
+              !account.roles.includes("USER")) && <Redirect to="/login" />}
           </>
         )}
       ></Route>
 
       <Route
         path="/subscriptions"
+        exact
         render={(props) => (
           <>
             {account && account.isLoggedIn && <PacketSubcriptionsBrowser />}
-            {(!account || !account.isLoggedIn) && <Redirect to="/login" />}
+            {(!account ||
+              !account.isLoggedIn ||
+              !account.roles ||
+              !account.roles.includes("USER")) && <Redirect to="/login" />}
           </>
         )}
       ></Route>
 
-      {/* <Route path="/" exact render={(props) => <Browser />} />
-
-      <Route path="/login" exact render={(props) => <LoginForm />} />
-
-      <Route path="/hotels" exact render={(props) => <HotelManager />} />
-
       <Route
-        path="/reservations"
+        path="/abusements"
         exact
         render={(props) => (
           <>
-            <ReservationsManager />
+            TO DO: abusements manager
+            {/* {account && account.isLoggedIn && <PacketSubcriptionsBrowser />} */}
+            {(!account ||
+              !account.isLoggedIn ||
+              !account.roles ||
+              !account.roles.includes("MODERATOR")) && <Redirect to="/login" />}
           </>
         )}
-      />
-    */}
+      ></Route>
+
+      <Route
+        path="/abusements/stats"
+        exact
+        render={(props) => (
+          <>
+            TO DO: abusements stats
+            {/* {account && account.isLoggedIn && <PacketSubcriptionsBrowser />} */}
+            {(!account ||
+              !account.isLoggedIn ||
+              !account.roles ||
+              !account.roles.includes("MODERATOR")) && <Redirect to="/login" />}
+          </>
+        )}
+      ></Route>
+
+      <Route
+        path="/packetsmanager"
+        exact
+        render={(props) => (
+          <>
+            TO DO: packet manager
+            {/* {account && account.isLoggedIn && <PacketSubcriptionsBrowser />} */}
+            {(!account ||
+              !account.isLoggedIn ||
+              !account.roles ||
+              !account.roles.includes("ADMIN")) && <Redirect to="/login" />}
+          </>
+        )}
+      ></Route>
+
+      <Route
+        path="/packetsmanager/stats"
+        exact
+        render={(props) => (
+          <>
+            TO DO: packets stats
+            {/* {account && account.isLoggedIn && <PacketSubcriptionsBrowser />} */}
+            {(!account ||
+              !account.isLoggedIn ||
+              !account.roles ||
+              !account.roles.includes("ADMIN")) && <Redirect to="/login" />}
+          </>
+        )}
+      ></Route>
+      
     </Router>
   );
 };

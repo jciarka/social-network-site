@@ -22,7 +22,6 @@ namespace BD2.API.Controllers
     public class AuthController : ExtendedControllerBase
     {
         private readonly UserManager<Account> _userManager;
-        private readonly RoleManager<Role> _roleManager;
         private readonly TokenConfiguration _tokenConfiguration;
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly AppDbContext _authDbContext;
@@ -77,19 +76,51 @@ namespace BD2.API.Controllers
                 Lastname = request.Lastname,
                 Email = request.Email,
             };
-            var isCreated = await _userManager.CreateAsync(newUser, request.Password);
 
-            if (!isCreated.Succeeded)
+            using var transaction = await _authDbContext.Database.BeginTransactionAsync();
             {
-                return BadRequest(new ResponseBase()
+                try
                 {
-                    Success = false,
-                    Errors = new List<string>()
+
+                    var isCreated = await _userManager.CreateAsync(newUser, request.Password);
+
+                    if (!isCreated.Succeeded)
                     {
-                        "Nie można utworzyć użytkownika, spróbuj ponownie później"
+                        await transaction.RollbackAsync();
+                        return BadRequest(new ResponseBase()
+                        {
+                            Success = false,
+                            Errors = new List<string>()
+                            {
+                                "Nie można utworzyć użytkownika, spróbuj ponownie później"
+                            }
+                        });
                     }
-                });
+
+                    // new user has role USER
+                    var isRoleAdded = await _userManager.AddToRoleAsync(newUser, AppRole.USER.ToString());
+
+                    if (!isRoleAdded.Succeeded)
+                    {
+                        await transaction.RollbackAsync();
+                        return BadRequest(new ResponseBase()
+                        {
+                            Success = false,
+                            Errors = new List<string>()
+                            {
+                                "Nie można utworzyć użytkownika, spróbuj ponownie później"
+                            }
+                        });
+                    }
+
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                }
             }
+
             return Ok(new ResponseBase { Success = true });
         }
 

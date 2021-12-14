@@ -33,7 +33,7 @@ namespace BD2.API.Seed
                     }
                 }
 
-                                try
+                try
                 {
                     await ctx.SaveChangesAsync();
                     transaction.Commit();
@@ -51,6 +51,7 @@ namespace BD2.API.Seed
             {
                 try
                 {
+                    // USERS
                     var buildDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                     var filePath = buildDir + $"/Seed/accounts.json";
                     var json = System.IO.File.ReadAllText(filePath);
@@ -75,6 +76,38 @@ namespace BD2.API.Seed
                     }
 
                     transaction.Commit();
+
+                    // ADMIN
+                    var admin = new Account
+                    {
+                        Firstname = "Darth",
+                        Lastname = "Vader",
+                        Email = "admin@bd2.pl",
+                        UserName = "admin@bd2.pl",
+                        EmailConfirmed = true
+                    };
+
+                    if (!ctx.Users.Any(x => x.Email == admin.Email))
+                    {
+                        var success = await uManager.CreateAsync(admin, "DB@db2");
+                        success = await uManager.AddToRoleAsync(admin, AppRole.ADMIN.ToString());
+                    }
+
+                    // ADMIN
+                    var moderator = new Account
+                    {
+                        Firstname = "Master",
+                        Lastname = "Yoda",
+                        Email = "moderator@bd2.pl",
+                        UserName = "moderator@bd2.pl",
+                        EmailConfirmed = true
+                    };
+
+                    if (!ctx.Users.Any(x => x.Email == moderator.Email))
+                    {
+                        var success = await uManager.CreateAsync(moderator, "DB@db2");
+                        success = await uManager.AddToRoleAsync(moderator, AppRole.MODERATOR.ToString());
+                    }
                 }
                 catch (Exception ex)
                 {
