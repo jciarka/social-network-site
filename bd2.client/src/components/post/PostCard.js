@@ -3,9 +3,14 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import axios from "axios";
 import PostComments from "./PostComments";
 import { useSelector } from "react-redux";
+import Dialog from "@mui/material/Dialog";
+import { useState } from "react";
+import AddAbusement from "components/abusements/AddAbusement";
 
 const PostCard = ({ postData, setPostData }) => {
   const account = useSelector((state) => state.account); // get redux store values
+  const [open, setOpen] = useState(false);
+  const [abusement, setAbusement] = useState({});
 
   const fetchPostsDetails = async () => {
     const result = await axios.get(`/api/Posts/${postData.post.id}`);
@@ -40,13 +45,33 @@ const PostCard = ({ postData, setPostData }) => {
     });
   };
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <>
+      <Dialog open={open} onClose={handleClose}>
+        <AddAbusement
+          abusement={abusement}
+          setAbusement={setAbusement}
+          onCancel={handleClose}
+          onSuccess={() => {
+            setPostData({ ...postData, hasNotifiedAbusement: true });
+            handleClose();
+          }}
+        />
+      </Dialog>
+
       <div
-        className="card m-4 p-4 pt-2 rounded rounded-lg w-100 shadow border border-dark rounded-0"
-        style={{ border: "#8f8f8fb6" }}
+        className="card m-4 pt-2 pb-0 rounded rounded-lg w-100 shadow border border-dark rounded-0"
+        style={{ border: "#8f8f8fb6", maxWidth: "800px" }}
       >
-        <div>
+        <div className=" mx-4 mt-2">
           {postData.images && postData.images.length > 0 && (
             <ImageGallery
               items={getImages()}
@@ -57,9 +82,9 @@ const PostCard = ({ postData, setPostData }) => {
           )}
         </div>
 
-        <hr style={{ background: "black", marginBottom: 20, marginTop: 20 }} />
+        <div style={{ marginBottom: 10 }} />
         {/* IMAGES carousel*/}
-        <div className="d-flex flex-row justify-content-between">
+        <div className="mx-4 d-flex flex-row justify-content-between">
           <div className="h5">
             {postData.owner.firstname + " " + postData.owner.lastname}
           </div>
@@ -106,16 +131,46 @@ const PostCard = ({ postData, setPostData }) => {
               <i className="fa fa-comment mr-2" aria-hidden="true"></i>
               {postData.post.commentsCount}
             </div>
+            {postData.hasNotifiedAbusement && (
+              <div
+                className="mx-2 badge badge-pill border border-dark badge-danger py-2"
+                style={{ height: 30, fontSize: 13 }}
+              >
+                <i
+                  class="fa fa-exclamation-triangle text-white"
+                  aria-hidden="true"
+                ></i>
+              </div>
+            )}
+            {!postData.hasNotifiedAbusement && (
+              <div
+                className="mx-2 badge badge-pill border border-secnodary badge-black py-2"
+                style={{ height: 30, fontSize: 13 }}
+                onClick={() => {
+                  setAbusement({
+                    postId: postData.post.id,
+                    text: "",
+                  });
+                  handleClickOpen();
+                }}
+              >
+                <i
+                  class="fa fa-exclamation-triangle text-secondary"
+                  aria-hidden="true"
+                ></i>
+              </div>
+            )}
           </div>
         </div>
-        <div className="h5 justify-content-center text-center">
+        <hr style={{ background: "black", marginBottom: 10, marginTop: 10 }} />
+        <div className="h5  mx-4  justify-content-center text-center">
           {postData.post.title}
         </div>
-        <div className="ma-4 pa-4" style={{ fontSize: 18 }}>
+        <div className="ma-4 pa-4  mx-4 " style={{ fontSize: 18 }}>
           {postData.post.text}
         </div>
 
-        <div className=" mt-2">
+        <div className="mt-2 mx-4 mb-0 pb-0">
           <PostComments
             comments={postData.comments}
             setComments={(comments) => {
@@ -124,31 +179,53 @@ const PostCard = ({ postData, setPostData }) => {
             showComments={postData.expanded}
             postId={postData.post.id}
           />
-          {!postData.expanded ? (
-            <div
-              className="mx-2 badge badge-pill badge-primary py-2 float-right"
-              style={{ height: 30, fontSize: 13 }}
-              onClick={() => {
-                fetchPostsDetails();
-                setPostData({ ...postData, expanded: true });
-              }}
-            >
-              <i className="fa fa-arrow-down mr-2" aria-hidden="true"></i>
-              <span className="float-right">Pokaż komentarze</span>
-            </div>
-          ) : (
-            <div
-              className="mx-2 badge badge-pill badge-secondary py-2"
-              style={{ height: 30, fontSize: 13 }}
-              onClick={() => {
-                setPostData({ ...postData, expanded: false });
-              }}
-            >
-              <i className="fa fa-arrow-up mr-2" aria-hidden="true"></i>
-              <span className="float-right">Ukryj komentarze</span>
-            </div>
-          )}
         </div>
+        {!postData.expanded ? (
+          <div
+            className="badge rounded-0 badge-secondary py-2 text-right"
+            style={{
+              height: 17,
+              fontSize: 13,
+              position: "relative",
+              top: "1px",
+            }}
+            onClick={() => {
+              fetchPostsDetails();
+              setPostData({ ...postData, expanded: true });
+            }}
+          >
+            <i
+              style={{ position: "relative", top: "-7px" }}
+              className="fa fa-arrow-down mr-2"
+              aria-hidden="true"
+            ></i>
+            <span style={{ position: "relative", top: "-7px" }}>
+              Pokaż komentarze
+            </span>
+          </div>
+        ) : (
+          <div
+            className="badge rounded-0 badge-secondary py-2 text-left"
+            style={{
+              height: 17,
+              fontSize: 13,
+              position: "relative",
+              top: "1px",
+            }}
+            onClick={() => {
+              setPostData({ ...postData, expanded: false });
+            }}
+          >
+            <i
+              style={{ position: "relative", top: "-7px" }}
+              className="fa fa-arrow-up mr-2"
+              aria-hidden="true"
+            ></i>
+            <span style={{ position: "relative", top: "-7px" }}>
+              Ukryj komentarze
+            </span>
+          </div>
+        )}
       </div>
     </>
   );

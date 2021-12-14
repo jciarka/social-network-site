@@ -50,6 +50,7 @@ namespace BD2.API.Controllers
                 Images = post.Images.Select(x => x.ImageId),
                 Owner = _mapper.Map<UserModel>(post.Owner),
                 Group = post.Group,
+                IsOwner = post.Owner != null && post.Owner.Email == UserEmail,
                 Comments = post.Comments.Select(y => new PostCommentModel()
                 {
                     Text = y.Text,
@@ -68,6 +69,7 @@ namespace BD2.API.Controllers
                     Account = _mapper.Map<UserModel>(y.Account)
                 }),
                 HasReacted = post.Reactions.Where(x => x.AccountId == UserId).Select(x => x.Type).FirstOrDefault(),
+                HasNotifiedAbusement = false
             };
 
             return Ok(new
@@ -97,8 +99,10 @@ namespace BD2.API.Controllers
                 Post = x,
                 Images = x.Images.Select(x => x.ImageId),
                 Owner = _mapper.Map<UserModel>(x.Owner),
+                IsOwner = x.Owner != null && x.Owner.Email == UserEmail,
                 HasReacted = x.Reactions.Where(x => x.AccountId == UserId).Select(x => x.Type).FirstOrDefault(),
                 Group = x.Group,
+                HasNotifiedAbusement = false
             });
 
             return Ok(new
@@ -128,8 +132,10 @@ namespace BD2.API.Controllers
                 Post = x,
                 Images = x.Images.Select(x => x.ImageId),
                 Owner = _mapper.Map<UserModel>(x.Owner),
+                IsOwner = x.Owner != null && x.Owner.Email == UserEmail,
                 HasReacted = x.Reactions.Where(x => x.AccountId == UserId).Select(x => x.Type).FirstOrDefault(),
                 Group = x.Group,
+                HasNotifiedAbusement = false
             });
 
             return Ok(new
@@ -168,8 +174,10 @@ namespace BD2.API.Controllers
                 Post = x,
                 Images = x.Images.Select(x => x.ImageId),
                 Owner = _mapper.Map<UserModel>(x.Owner),
+                IsOwner = x.Owner != null && x.Owner.Email == UserEmail,
                 HasReacted = x.Reactions.Where(x => x.AccountId == UserId).Select(x => x.Type).FirstOrDefault(),
                 Group = x.Group,
+                HasNotifiedAbusement = false
             });
 
             return Ok(new
@@ -212,8 +220,10 @@ namespace BD2.API.Controllers
                 Post = post,
                 Images = post.Images.Select(x => x.ImageId),
                 Owner = _mapper.Map<UserModel>(post.Owner),
+                IsOwner = post.Owner != null && post.Owner.Email == UserEmail,
                 HasReacted = post.Reactions.Where(x => x.AccountId == UserId).Select(x => x.Type).FirstOrDefault(),
-                Group = post.Group
+                Group = post.Group,
+                HasNotifiedAbusement = false
             };
 
             return Ok(new
@@ -265,6 +275,7 @@ namespace BD2.API.Controllers
                 Post = post,
                 Images = post.Images.Select(x => x.ImageId),
                 Owner = _mapper.Map<UserModel>(post.Owner),
+                IsOwner = post.Owner != null && post.Owner.Email == UserEmail,
                 Group = post.Group,
                 Comments = post.Comments.Select(y => new PostCommentModel()
                 {
@@ -282,7 +293,8 @@ namespace BD2.API.Controllers
                 {
                     ViewDate = y.ViewDate,
                     Account = _mapper.Map<UserModel>(y.Account)
-                })
+                }),
+                HasNotifiedAbusement = false
             };
 
             return Ok(new

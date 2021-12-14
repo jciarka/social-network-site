@@ -68,11 +68,13 @@ const PostBrowser = ({ type }) => {
 
         {posts.map((postData, index) => {
           return (
-            <PostCard
-              key={index}
-              postData={postData}
-              setPostData={getPostDataSetter(index)}
-            />
+            <div key={index} className="row justify-content-center">
+              <PostCard
+                key={index}
+                postData={postData}
+                setPostData={getPostDataSetter(index)}
+              />
+            </div>
           );
         })}
       </div>
