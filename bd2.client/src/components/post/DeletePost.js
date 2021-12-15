@@ -11,7 +11,7 @@ const DeletePost = ({ postId, onCancel, onSuccess }) => {
     // const result = await axios.delete(`/api/Post/${postId}`);
     // if (result && result.data && result.data.success) 
     // {
-    //   onSuccess();
+      onSuccess();
     // }
   };
 
