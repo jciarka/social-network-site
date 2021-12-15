@@ -34,6 +34,7 @@ namespace BD2.API.Database
         public DbSet<PacketPeopleLimit> PacketPeopleLimits { get; set; }
         public DbSet<PacketPeriod> PacketPeriods { get; set; }
         public DbSet<GroupTopic> GroupTopics { get; set; }
+        public DbSet<PostAbusement> PostAbusements { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
