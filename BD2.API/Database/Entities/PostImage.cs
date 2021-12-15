@@ -27,12 +27,12 @@ namespace BD2.API.Database.Entities
             builder.HasOne(x => x.Image)
                 .WithMany()
                 .HasForeignKey(x => x.ImageId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(x => x.Post)
                 .WithMany(x => x.Images)
                 .HasForeignKey(x => x.PostId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
