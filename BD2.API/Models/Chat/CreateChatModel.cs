@@ -9,6 +9,7 @@ namespace BD2.API.Database.Dtos.Chat
     public record CreateChatModel
     {
         public string Name { get; set; }
+        public Guid MemberId { get; set; }
 
     }
 }

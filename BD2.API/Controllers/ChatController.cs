@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BD2.API.Controllers
@@ -15,13 +14,15 @@ namespace BD2.API.Controllers
     public class ChatController : ExtendedControllerBase
     {
         private readonly IChatRepository _repo;
-        private readonly IChatAccountRepository _arepo;
+        private readonly IChatAccountRepository _acrepo;
+        private readonly IAccountRepository _arepo;
         private readonly IMapper _mapper;
 
-        public ChatController(IChatRepository repo, IChatAccountRepository arepo, IMapper mapper)
+        public ChatController(IChatRepository repo, IChatAccountRepository acrepo, IAccountRepository arepo, IMapper mapper)
         {
             _repo = repo;
-            _arepo = arepo;
+            _acrepo = acrepo;
+            _arepo = arepo; 
             _mapper = mapper;
         }
 
@@ -89,6 +90,28 @@ namespace BD2.API.Controllers
             }
 
             Chat chat = _mapper.Map<Chat>(model);
+
+            ChatAccount userChatAccount = new()
+            {
+                AccountId = (Guid)UserId,
+                Account = await _arepo.FindAsync((Guid)UserId),
+                ChatId = chat.Id,
+                Chat = await _repo.FindAsync(chat.Id),
+                IsAdmin = false,
+                LastViewDate = DateTime.Now
+            };
+            chat.Members.Add(userChatAccount);
+
+            ChatAccount memberChatAccount = new()
+            {
+                AccountId = model.MemberId,
+                Account = await _arepo.FindAsync(model.MemberId),
+                ChatId = chat.Id,
+                Chat = await _repo.FindAsync(chat.Id),
+                IsAdmin = false,
+                LastViewDate = DateTime.Now
+            };
+            chat.Members.Add(memberChatAccount);
 
             var result = await _repo.AddAsync(chat);
 
@@ -196,6 +219,8 @@ namespace BD2.API.Controllers
             });
         }
 
-        //TODO: AddMember AddEntry UpdateEntry RemoveMember RemoveEntry
+
+
+        //TODO: AddEntry UpdateEntry RemoveEntry
     }
 }

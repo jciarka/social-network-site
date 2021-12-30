@@ -8,6 +8,7 @@ namespace BD2.API.Database.Repositories.Interfaces
 {
     public interface IAccountRepository
     {
+        public Task<Account> FindAsync(Guid id);
         public IQueryable<Account> All();
         public IQueryable<Account> AllByPost(string namePhrase);
     }
