@@ -16,8 +16,6 @@ namespace BD2.API.Database.Entities
 
         [JsonIgnore]
         public ICollection<ChatAccount> Members { get; set; }
-        [JsonIgnore]
-        public ICollection<ChatEntry> Entries { get; set; }
 
     }
 
