@@ -25,6 +25,7 @@ namespace BD2.API.Database.Entities
         public Account CheckedBy { get; set; }
         public Guid? CheckedById { get; set; }
         public DateTime? CheckedDate { get; set; }
+        public bool? Status { get; set; }
     }
 
     public class AbusementConfig : IEntityTypeConfiguration<PostAbusement>

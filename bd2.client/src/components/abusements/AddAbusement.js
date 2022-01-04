@@ -18,7 +18,9 @@ const AddAbusement = ({ abusement, setAbusement, onCancel, onSuccess }) => {
       console.log(`Not valid`);
       return;
     }
-    const result = await axios.post(`/api/Abusements/`, abusement);
+  console.log(JSON.stringify(abusement))
+
+    const result = await axios.post(`/api/PostAbusements/`, abusement);
     if (result && result.data && result.data.success) 
     {
       onSuccess();
