@@ -23,7 +23,7 @@ namespace BD2.API.Database.Repositories.Concrete
 
         public async Task<bool> DeleteAsync(Guid id)
         {
-            var found = _ctx.Images.Where(x => x.Id == id);
+            var found = _ctx.Images.Where(x => x.Id == id).ToList();
             _ctx.RemoveRange(found);
 
             return await _ctx.SaveChangesAsync() > 0;

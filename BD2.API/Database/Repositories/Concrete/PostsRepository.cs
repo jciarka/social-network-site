@@ -78,9 +78,10 @@ namespace BD2.API.Database.Repositories.Concrete
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
 
-            var imagesIds = _ctx.PostImages
+            var imagesIds = await _ctx.PostImages
                 .Where(x => x.PostId == id)
-                .Select(x => x.ImageId);
+                .Select(x => x.ImageId)
+                .ToListAsync();
 
             foreach(var imageId in imagesIds)
             {

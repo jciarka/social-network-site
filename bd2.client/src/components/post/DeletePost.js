@@ -8,11 +8,11 @@ import DialogTitle from "@mui/material/DialogTitle";
 const DeletePost = ({ postId, onCancel, onSuccess }) => {
     
   const deletePost = async () => {
-    // const result = await axios.delete(`/api/Post/${postId}`);
-    // if (result && result.data && result.data.success) 
-    // {
+    const result = await axios.delete(`/api/Posts/${postId}`);
+    if (result && result.data && result.data.success) 
+    {
       onSuccess();
-    // }
+    }
   };
 
   return (
