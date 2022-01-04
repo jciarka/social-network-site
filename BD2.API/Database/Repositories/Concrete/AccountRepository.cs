@@ -16,6 +16,12 @@ namespace BD2.API.Database.Repositories.Concrete
             _ctx = ctx;
         }
 
+        public async Task<Account> FindAsync(Guid id)
+        {
+            return await _ctx.Accounts.FindAsync(id);
+        }
+
+
         public IQueryable<Account> All()
         {
             return _ctx.Users.AsQueryable();

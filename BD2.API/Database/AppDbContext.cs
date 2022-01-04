@@ -12,6 +12,8 @@ namespace BD2.API.Database
     public class AppDbContext : IdentityDbContext<Account, Role, Guid>
     {
         public DbSet<Book> Books { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+
         public DbSet<Author> Authors { get; set; }
 
         public DbSet<AccountImage> AccountImages { get; set; }

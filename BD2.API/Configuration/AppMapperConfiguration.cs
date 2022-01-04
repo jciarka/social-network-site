@@ -104,7 +104,6 @@ namespace BD2.API.Configuration
             cfg.CreateMap<CreateChatModel, Chat>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(src => new Guid()))
                 .ForMember(x => x.Members, opt => opt.MapFrom(src => new List<ChatAccount>()))
-                .ForMember(x => x.Entries, opt => opt.MapFrom(src => new List<ChatEntry>()))
                 .ForMember(x => x.LastPostDate, opt => opt.MapFrom(src => DateTime.Now));
 
             cfg.CreateMap<UpdateChatModel, Chat>();

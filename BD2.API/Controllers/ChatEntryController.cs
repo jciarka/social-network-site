@@ -1,28 +1,29 @@
 ﻿using AutoMapper;
-using BD2.API.Database.Dtos.Chat;
 using BD2.API.Database.Entities;
 using BD2.API.Database.Repositories.Interfaces;
+using BD2.API.Models.ChatEntry;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BD2.API.Controllers
 {
     [Route("[controller]")]
-    public class ChatController : ExtendedControllerBase
+    public class ChatEntryController : ExtendedControllerBase
     {
-        private readonly IChatRepository _repo;
-        private readonly IChatAccountRepository _acrepo;
+        private readonly IChatEntryRepository _repo;
+        private readonly IChatRepository _crepo;
         private readonly IAccountRepository _arepo;
         private readonly IMapper _mapper;
 
-        public ChatController(IChatRepository repo, IChatAccountRepository acrepo, IAccountRepository arepo, IMapper mapper)
+        public ChatEntryController(IChatEntryRepository repo, IChatRepository crepo, IAccountRepository arepo, IMapper mapper)
         {
             _repo = repo;
-            _acrepo = acrepo;
-            _arepo = arepo; 
+            _crepo = crepo;
+            _arepo = arepo;
             _mapper = mapper;
         }
 
@@ -31,9 +32,9 @@ namespace BD2.API.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            var chat = await _repo.FindAsync(id);
+            var entry = await _repo.FindAsync(id);
 
-            if (chat == null)
+            if (entry == null)
             {
                 return NotFound(new
                 {
@@ -42,26 +43,26 @@ namespace BD2.API.Controllers
                 });
             }
 
-            var chatModel = new
+            var entryModel = new
             {
-                Chat = chat
+                ChatEntry = entry
             };
 
             return Ok(new
             {
-                Model = chatModel,
+                Model = entryModel,
                 Success = true
             });
         }
 
         [AllowAnonymous]
         [HttpGet]
-        [Route("list/user/{id}")]
-        public async Task<IActionResult> UserChats(Guid id)
+        [Route("list/chat/{id}")]
+        public async Task<IActionResult> ChatsEntries(Guid id)
         {
-            var chats = await _repo.FindUserChats(id);
+            var entries = await _repo.FindChatsEntries(id);
 
-            if (chats == null)
+            if (entries == null)
             {
                 return NotFound(new
                 {
@@ -69,17 +70,17 @@ namespace BD2.API.Controllers
                     Errors = new List<string> { $"Nie znaleziono postów użytkownika o id = {id}" }
                 });
             }
-            
+
             return Ok(new
             {
-                data = chats,
+                data = entries,
                 Success = true,
             });
         }
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateChatModel model)
+        public async Task<IActionResult> Post([FromBody] CreateChatEntryModel model)
         {
             if (UserId == null)
             {
@@ -90,38 +91,25 @@ namespace BD2.API.Controllers
                 });
             }
 
-            Chat chat = _mapper.Map<Chat>(model);
-
-            ChatAccount userChatAccount = new()
+            ChatEntry entry = new()
             {
-                AccountId = (Guid)UserId,
-                Account = await _arepo.FindAsync((Guid)UserId),
-                ChatId = chat.Id,
-                Chat = await _repo.FindAsync(chat.Id),
-                IsAdmin = false,
-                LastViewDate = DateTime.Now
+                Id = new Guid(),
+                ChatId = model.ChatId,
+                Chat = await _crepo.FindAsync(model.ChatId),
+                AccountId = model.AccountId,
+                Account = await _arepo.FindAsync(model.AccountId),
+                PostDate = DateTime.Now,
+                Text = model.Text
             };
-            chat.Members.Add(userChatAccount);
 
-            ChatAccount memberChatAccount = new()
-            {
-                AccountId = model.MemberId,
-                Account = await _arepo.FindAsync(model.MemberId),
-                ChatId = chat.Id,
-                Chat = await _repo.FindAsync(chat.Id),
-                IsAdmin = false,
-                LastViewDate = DateTime.Now
-            };
-            chat.Members.Add(memberChatAccount);
-
-            var result = await _repo.AddAsync(chat);
+            var result = await _repo.AddAsync(entry);
 
             if (!result)
             {
                 return BadRequest(new
                 {
                     Success = false,
-                    Errors = new List<string> { "Nie udało się dodać posta" }
+                    Errors = new List<string> { "Nie udało się dodać wiadomości" }
                 });
             }
 
@@ -129,14 +117,14 @@ namespace BD2.API.Controllers
             {
                 Success = true,
                 Errors = (List<string>)null,
-                Model = chat
+                Model = entry
             });
 
         }
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> Put(Guid id, UpdateChatModel model)
+        public async Task<IActionResult> Put(Guid id, UpdateChatEntryModel model)
         {
             if (UserId == null)
             {
@@ -147,32 +135,35 @@ namespace BD2.API.Controllers
                 });
             }
 
-            var chat = await _repo.FindAsync(id);
+            var entry = await _repo.FindAsync(id);
 
-            if (chat == null)
+            if (entry == null)
             {
                 return NotFound(new
                 {
                     Success = false,
-                    Errors = new List<string> { "Nie znaleziono czatu o podanym id" },
+                    Errors = new List<string> { "Nie znaleziono wiadomości o podanym id" },
                 });
             }
 
-            Chat updatedChat = _mapper.Map(model, chat);
-            var success = await _repo.UpdateAsync(updatedChat);
+            ChatEntry found = await _repo.FindAsync(id);
+            found.Text = model.Text;
+            found.PostDate = DateTime.Now;
+
+            var success = await _repo.UpdateAsync(found);
 
             if (success == false)
             {
                 return BadRequest(new
                 {
                     Success = false,
-                    Errors = new List<string> { "Nie udało sie zmodyfikować posta" },
+                    Errors = new List<string> { "Nie udało się zmodyfikować wiadomości" },
                 });
             }
 
             return Ok(new
             {
-                Model = chat,
+                Model = entry,
                 Success = true,
                 Errors = (List<string>)null,
             });
@@ -191,9 +182,9 @@ namespace BD2.API.Controllers
                 });
             }
 
-            var chat = await _repo.FindAsync(id);
+            var entry = await _repo.FindAsync(id);
 
-            if(chat == null)
+            if (entry == null)
             {
                 return NotFound(new
                 {
@@ -203,7 +194,7 @@ namespace BD2.API.Controllers
             }
 
             var result = await _repo.DeleteAsync(id);
-            
+
             if (result == false)
             {
                 return BadRequest(new
@@ -220,8 +211,5 @@ namespace BD2.API.Controllers
             });
         }
 
-
-
-        //TODO: AddEntry UpdateEntry RemoveEntry
     }
 }
