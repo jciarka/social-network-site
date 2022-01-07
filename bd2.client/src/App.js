@@ -11,7 +11,7 @@ import GroupBrowser from "pages/groups/GroupBrowser";
 import AdminGroupBrowser from "pages/groups/administration/AdminGroupBrowser";
 import PacketSubcriptionsBrowser from "pages/subscriptions/PacketSubcriptionsBrowser";
 import AdminGroupUsersBrowser from "pages/groups/administration/AdminGroupUsersBrowser";
-import AbusementsManager from 'pages/abusements/AbusementsManager'
+import ChatBrowser from "components/chat/ChatBrowser";
 const App = () => {
   // const serverUrl = "http://localhost:8080/"
   const account = useSelector((state) => state.account); // get redux store values
@@ -121,7 +121,8 @@ const App = () => {
         exact
         render={(props) => (
           <>
-            {account && account.isLoggedIn && <AbusementsManager />}
+            TO DO: abusements manager
+            {/* {account && account.isLoggedIn && <PacketSubcriptionsBrowser />} */}
             {(!account ||
               !account.isLoggedIn ||
               !account.roles ||

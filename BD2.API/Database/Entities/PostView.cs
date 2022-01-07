@@ -30,12 +30,12 @@ namespace BD2.API.Database.Entities
             builder.HasOne(x => x.Account)
                 .WithMany()
                 .HasForeignKey(x => x.AccountId)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.ClientSetNull);
 
             builder.HasOne(x => x.Post)
                 .WithMany(x => x.Views)
                 .HasForeignKey(x => x.PostId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.ClientSetNull);
 
             builder.Property(x => x.ViewDate)
                 .ValueGeneratedOnAdd()
