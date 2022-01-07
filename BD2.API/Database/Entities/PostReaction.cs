@@ -31,12 +31,12 @@ namespace BD2.API.Database.Entities
             builder.HasOne(x => x.Account)
                 .WithMany()
                 .HasForeignKey(x => x.AccountId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.ClientCascade);
 
             builder.HasOne(x => x.Post)
                 .WithMany(x => x.Reactions)
                 .HasForeignKey(x => x.PostId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(x => x.ReactionDate)
                 .ValueGeneratedOnAdd()
@@ -44,7 +44,7 @@ namespace BD2.API.Database.Entities
         }
     }
 
-        public enum ReactionType
+    public enum ReactionType
     {
         Dislike = 1,
         Like = 2,
