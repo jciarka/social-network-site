@@ -2,10 +2,10 @@
 using BD2.API.Database.Dtos.Chat;
 using BD2.API.Database.Entities;
 using BD2.API.Models;
+using BD2.API.Models.Abusements;
 using BD2.API.Models.Auth;
 using BD2.API.Models.GroupAccount;
 using BD2.API.Models.Groups;
-using BD2.API.Models.Notifications;
 using BD2.API.Models.Packets;
 using BD2.API.Models.Posts;
 using BD2.API.Models.Subcriptions;
@@ -63,7 +63,7 @@ namespace BD2.API.Configuration
                     opt => opt.MapFrom(src => src.Subscription != null && src.Subscription.ExpirationDate < DateTime.Now))
                 .ForMember(
                     x => x.IsPacketExpired,
-                    opt => opt.MapFrom(src => src.Subscription != null && src.Subscription.ExpirationDate < DateTime.Now && 
+                    opt => opt.MapFrom(src => src.Subscription != null && src.Subscription.ExpirationDate < DateTime.Now &&
                     src.Members.Count() > appConfig.GetValue<int>("AppBussinesDefault:Groups:DefaultPeopleLimit")));
 
             cfg.CreateMap<Group, GroupSimplifiedModel>()
@@ -107,6 +107,16 @@ namespace BD2.API.Configuration
                 .ForMember(x => x.Members, opt => opt.MapFrom(src => new List<ChatAccount>()))
                 .ForMember(x => x.LastPostDate, opt => opt.MapFrom(src => DateTime.Now));
 
+            cfg.CreateMap<UpdateChatModel, Chat>();
+
+            cfg.CreateMap<PostAbusement, PostAbusementModel>()
+                .ForMember(x => x.Firstname, opt => opt.MapFrom(src => src.Account != null ? src.Account.Firstname : null))
+                .ForMember(x => x.Lastname, opt => opt.MapFrom(src => src.Account != null ? src.Account.Lastname : null))
+                .ForMember(x => x.PostTitle, opt => opt.MapFrom(src => src.Post != null ? src.Post.Title : null));
+
+
+            cfg.CreateMap<AddPostAbusementModel, PostAbusement>()
+                .ForMember(x => x.AbusementDate, opt => opt.MapFrom(src => DateTime.Now));
 
         };
 

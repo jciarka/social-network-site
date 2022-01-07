@@ -11,6 +11,7 @@ import GroupBrowser from "pages/groups/GroupBrowser";
 import AdminGroupBrowser from "pages/groups/administration/AdminGroupBrowser";
 import PacketSubcriptionsBrowser from "pages/subscriptions/PacketSubcriptionsBrowser";
 import AdminGroupUsersBrowser from "pages/groups/administration/AdminGroupUsersBrowser";
+import ChatBrowser from "components/chat/ChatBrowser";
 const App = () => {
   // const serverUrl = "http://localhost:8080/"
   const account = useSelector((state) => state.account); // get redux store values
@@ -150,12 +151,11 @@ const App = () => {
         exact
         render={(props) => (
           <>
-            TO DO: packet manager
-            {/* {account && account.isLoggedIn && <PacketSubcriptionsBrowser />} */}
+            {account && account.isLoggedIn && <PacketSubcriptionsBrowser />}
             {(!account ||
               !account.isLoggedIn ||
               !account.roles ||
-              !account.roles.includes("ADMIN")) && <Redirect to="/login" />}
+              !account.roles.includes("USER")) && <Redirect to="/login" />}
           </>
         )}
       ></Route>
@@ -171,6 +171,21 @@ const App = () => {
               !account.isLoggedIn ||
               !account.roles ||
               !account.roles.includes("ADMIN")) && <Redirect to="/login" />}
+          </>
+        )}
+      ></Route>
+
+      <Route
+        path="/chats"
+        exact
+        render={(props) => (
+          <>
+            {<ChatBrowser />}
+            {/* {account && account.isLoggedIn && <ChatBrowser />}
+            {(!account ||
+              !account.isLoggedIn ||
+              !account.roles ||
+              !account.roles.includes("USER")) && <Redirect to="/login" />} */}
           </>
         )}
       ></Route>
