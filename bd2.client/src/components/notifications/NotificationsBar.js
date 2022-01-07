@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
 const NotificationsBar = () => {
-  const account = useSelector((state) => state.account); // get redux store values
 
   const [msgNotifications, setMsgNotifications] = useState([]);
   const [reactNotifications, setReactNotifications] = useState([]);
@@ -15,13 +13,15 @@ const NotificationsBar = () => {
   const [commentCounts, setCommentCounts] = useState(0);
 
   const fetchNotificationCounts = async () => {
-    const result = await axios.get(`/api/Notifications/Counts/${account.id}`);
+    const result = await axios.get(`/api/Notifications/Counts`);
+
+    console.log(JSON.stringify(result.data))
 
     if (result && result.data && result.data.success) {
       console.log(result.data.data);
-      setMsgCounts(result.data.messages);
-      setCommentCounts(result.data.comments);
-      setReactCounts(result.data.reactions);
+      setMsgCounts(result.data.data.messages);
+      setCommentCounts(result.data.data.comments);
+      setReactCounts(result.data.data.reactions);
     }
   };
 
