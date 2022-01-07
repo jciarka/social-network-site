@@ -3,6 +3,7 @@ import { bindActionCreators } from "redux";
 import { useDispatch, useSelector } from "react-redux";
 import LogoutIcon from "../icons/exit.svg";
 import { actionCreators } from "../store/index";
+import NotificationsBar from "components/notifications/NotificationsBar";
 
 const Header = () => {
   const account = useSelector((state) => state.account); // get redux store values
@@ -114,6 +115,27 @@ const Header = () => {
           </div>
         </div>
 
+        <div
+          className="collapse navbar-collapse justify-content-end"
+          id="navbarSupportedContent"
+        >
+          <ul className="navbar-nav">
+            {/* Notifications */}
+            <li className="nav-item active">
+              {account && account.roles && account.roles.includes("USER") && (
+                <>
+                  <div
+                    className="collapse navbar-collapse justify-content-end"
+                    id="navbarSupportedContent"
+                  >
+                    <NotificationsBar />
+                  </div>
+                </>
+              )}
+            </li>
+          </ul>
+        </div>
+
         {/*<!-- LOGIN -->*/}
         <div
           className="collapse navbar-collapse justify-content-end"
@@ -182,7 +204,10 @@ const Header = () => {
                           {/* Moderator actions to add */}
                           <Link to="/abusements" className="rounded-0">
                             Zgłoszenia{" "}
-                            <i class="fa fa-exclamation-triangle text-danger" aria-hidden="true"></i>
+                            <i
+                              class="fa fa-exclamation-triangle text-danger"
+                              aria-hidden="true"
+                            ></i>
                           </Link>
                           <Link to="/abusements/stats" className="rounded-0">
                             Statystyki zgłoszeń{" "}
@@ -199,7 +224,10 @@ const Header = () => {
                             Menedżer pakietów{" "}
                             <i class="fa fa-usd" aria-hidden="true"></i>
                           </Link>
-                          <Link to="/packetsmanager/stats" className="rounded-0">
+                          <Link
+                            to="/packetsmanager/stats"
+                            className="rounded-0"
+                          >
                             Statystyki zgłoszeń{" "}
                             <i class="fa fa-line-chart" aria-hidden="true"></i>
                           </Link>
