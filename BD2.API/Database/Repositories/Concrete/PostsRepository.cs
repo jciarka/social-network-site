@@ -78,10 +78,9 @@ namespace BD2.API.Database.Repositories.Concrete
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
 
-            var imagesIds = await _ctx.PostImages
+            var imagesIds = _ctx.PostImages
                 .Where(x => x.PostId == id)
-                .Select(x => x.ImageId)
-                .ToListAsync();
+                .Select(x => x.ImageId);
 
             foreach(var imageId in imagesIds)
             {
@@ -180,9 +179,7 @@ namespace BD2.API.Database.Repositories.Concrete
                 .Include(x => x.Images)
                 .Include(x => x.Owner)
                 .Include(x => x.Reactions)
-                .Include(x => x.Abusements)
                 .OrderByDescending(x => x.PostDate)
-                .Where(x => x.Abusements.All(x => x.Status != true))
                 .ToListAsync();
 
             await track(posts, watcherId);
@@ -197,8 +194,6 @@ namespace BD2.API.Database.Repositories.Concrete
                 .Include(x => x.Images)
                 .Include(x => x.Owner)
                 .Include(x => x.Reactions)
-                .Include(x => x.Abusements)
-                .Where(x => x.Abusements.All(x => x.Status != true))
                 .ToListAsync();
 
             await track(posts, watcherId);
@@ -213,8 +208,6 @@ namespace BD2.API.Database.Repositories.Concrete
              .Include(x => x.Owner)
              .ThenInclude(x => x.Friendships)
              .Include(x => x.Reactions)
-             .Include(x => x.Abusements)
-             .Where(x => x.Abusements.All(x => x.Status != true))
              .Where(x => 
                 x.Owner != null && x.Owner.Friendships != null && (
                 x.Owner.Friendships.Select(x => x.FirstFriendId).Contains(watcherId) ||
@@ -240,7 +233,6 @@ namespace BD2.API.Database.Repositories.Concrete
                     .ThenInclude(x => x.Account)
                 .Include(x => x.Views)
                     .ThenInclude(x => x.Account)
-                .Include(x => x.Abusements)
                 .FirstOrDefaultAsync();
         }
 

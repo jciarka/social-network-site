@@ -31,8 +31,6 @@ namespace BD2.API.Database.Entities
         public ICollection<PostView> Views { get; set; }
         [JsonIgnore]
         public ICollection<PostReaction> Reactions { get; set; }
-        [JsonIgnore]
-        public ICollection<PostAbusement> Abusements { get; set; }
 
         public DateTime? LastCommentDate { get; set; }
         public DateTime? LastReactionDate { get; set; }

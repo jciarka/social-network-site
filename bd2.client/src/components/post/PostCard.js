@@ -84,7 +84,7 @@ const PostCard = ({ postData, setPostData }) => {
           onCancel={handleDeletePostClose}
           onSuccess={() => {
             setPostData(null);
-            handleDeletePostClose();
+            handleClose();
           }}
         />
       </Dialog>
