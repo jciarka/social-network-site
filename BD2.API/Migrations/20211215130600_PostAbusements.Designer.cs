@@ -4,14 +4,16 @@ using BD2.API.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BD2.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211215130600_PostAbusements")]
+    partial class PostAbusements
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,6 +201,9 @@ namespace BD2.API.Migrations
                     b.Property<Guid>("ChatId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ChatId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("PostDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -212,6 +217,8 @@ namespace BD2.API.Migrations
                     b.HasIndex("AccountId");
 
                     b.HasIndex("ChatId");
+
+                    b.HasIndex("ChatId1");
 
                     b.ToTable("ChatEntries");
                 });
@@ -524,9 +531,6 @@ namespace BD2.API.Migrations
                     b.Property<DateTime?>("CheckedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("Status")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasMaxLength(1000)
@@ -816,6 +820,10 @@ namespace BD2.API.Migrations
                         .WithMany()
                         .HasForeignKey("ChatId")
                         .IsRequired();
+
+                    b.HasOne("BD2.API.Database.Entities.Chat", null)
+                        .WithMany("Entries")
+                        .HasForeignKey("ChatId1");
 
                     b.Navigation("Account");
 
@@ -1126,6 +1134,8 @@ namespace BD2.API.Migrations
 
             modelBuilder.Entity("BD2.API.Database.Entities.Chat", b =>
                 {
+                    b.Navigation("Entries");
+
                     b.Navigation("Members");
                 });
 

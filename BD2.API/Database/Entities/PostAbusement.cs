@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BD2.API.Database.Entities
 {
-    public class PostReaction
+    public class PostAbusement
     {
         [JsonIgnore]
         public Account Account { get; set; }
@@ -18,13 +18,19 @@ namespace BD2.API.Database.Entities
         public Post Post { get; set; }
         public Guid PostId { get; set; }
 
-        public DateTime ReactionDate { get; set; }
-        public ReactionType Type { get; set; }
+        public string Text { get; set; }
+        public DateTime AbusementDate { get; set; }
+
+        [JsonIgnore]
+        public Account CheckedBy { get; set; }
+        public Guid? CheckedById { get; set; }
+        public DateTime? CheckedDate { get; set; }
+        public bool? Status { get; set; }
     }
 
-    public class ReactionConfig : IEntityTypeConfiguration<PostReaction>
+    public class AbusementConfig : IEntityTypeConfiguration<PostAbusement>
     {
-        public void Configure(EntityTypeBuilder<PostReaction> builder)
+        public void Configure(EntityTypeBuilder<PostAbusement> builder)
         {
             builder.HasKey(x => new { x.AccountId, x.PostId });
 
@@ -34,19 +40,23 @@ namespace BD2.API.Database.Entities
                 .OnDelete(DeleteBehavior.ClientCascade);
 
             builder.HasOne(x => x.Post)
-                .WithMany(x => x.Reactions)
+                .WithMany(x => x.Abusements)
                 .HasForeignKey(x => x.PostId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Property(x => x.ReactionDate)
+            builder.Property(x => x.AbusementDate)
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("GETDATE()");
+
+            builder.Property(x => x.Text)
+                .HasMaxLength(1000)
+                .IsRequired(true);
+
+            builder.HasOne(x => x.CheckedBy)
+                .WithMany()
+                .HasForeignKey(x => x.CheckedById)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 
-    public enum ReactionType
-    {
-        Dislike = 1,
-        Like = 2,
-    }
 }

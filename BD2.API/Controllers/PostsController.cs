@@ -69,7 +69,7 @@ namespace BD2.API.Controllers
                     Account = _mapper.Map<UserModel>(y.Account)
                 }),
                 HasReacted = post.Reactions.Where(x => x.AccountId == UserId).Select(x => x.Type).FirstOrDefault(),
-                HasNotifiedAbusement = false
+                HasNotifiedAbusement = post.Abusements.Any(x => x.AccountId == UserId),
             };
 
             return Ok(new
@@ -102,7 +102,7 @@ namespace BD2.API.Controllers
                 IsOwner = x.Owner != null && x.Owner.Email == UserEmail,
                 HasReacted = x.Reactions.Where(x => x.AccountId == UserId).Select(x => x.Type).FirstOrDefault(),
                 Group = x.Group,
-                HasNotifiedAbusement = false
+                HasNotifiedAbusement = x.Abusements.Any(x => x.AccountId == UserId),
             });
 
             return Ok(new
@@ -135,7 +135,7 @@ namespace BD2.API.Controllers
                 IsOwner = x.Owner != null && x.Owner.Email == UserEmail,
                 HasReacted = x.Reactions.Where(x => x.AccountId == UserId).Select(x => x.Type).FirstOrDefault(),
                 Group = x.Group,
-                HasNotifiedAbusement = false
+                HasNotifiedAbusement = x.Abusements.Any(x => x.AccountId == UserId),
             });
 
             return Ok(new
@@ -177,7 +177,7 @@ namespace BD2.API.Controllers
                 IsOwner = x.Owner != null && x.Owner.Email == UserEmail,
                 HasReacted = x.Reactions.Where(x => x.AccountId == UserId).Select(x => x.Type).FirstOrDefault(),
                 Group = x.Group,
-                HasNotifiedAbusement = false
+                HasNotifiedAbusement = x.Abusements.Any(x => x.AccountId == UserId),
             });
 
             return Ok(new
@@ -223,7 +223,7 @@ namespace BD2.API.Controllers
                 IsOwner = post.Owner != null && post.Owner.Email == UserEmail,
                 HasReacted = post.Reactions.Where(x => x.AccountId == UserId).Select(x => x.Type).FirstOrDefault(),
                 Group = post.Group,
-                HasNotifiedAbusement = false
+                HasNotifiedAbusement = post.Abusements.Any(x => x.AccountId == UserId),
             };
 
             return Ok(new
@@ -294,7 +294,7 @@ namespace BD2.API.Controllers
                     ViewDate = y.ViewDate,
                     Account = _mapper.Map<UserModel>(y.Account)
                 }),
-                HasNotifiedAbusement = false
+                HasNotifiedAbusement = post.Abusements.Any(x => x.AccountId == UserId),
             };
 
             return Ok(new

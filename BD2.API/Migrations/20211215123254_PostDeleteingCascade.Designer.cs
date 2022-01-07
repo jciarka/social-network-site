@@ -4,14 +4,16 @@ using BD2.API.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BD2.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211215123254_PostDeleteingCascade")]
+    partial class PostDeleteingCascade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,6 +201,9 @@ namespace BD2.API.Migrations
                     b.Property<Guid>("ChatId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ChatId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("PostDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -212,6 +217,8 @@ namespace BD2.API.Migrations
                     b.HasIndex("AccountId");
 
                     b.HasIndex("ChatId");
+
+                    b.HasIndex("ChatId1");
 
                     b.ToTable("ChatEntries");
                 });
@@ -505,42 +512,6 @@ namespace BD2.API.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("BD2.API.Database.Entities.PostAbusement", b =>
-                {
-                    b.Property<Guid>("AccountId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PostId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("AbusementDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<Guid?>("CheckedById")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("CheckedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool?>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.HasKey("AccountId", "PostId");
-
-                    b.HasIndex("CheckedById");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("PostAbusements");
-                });
-
             modelBuilder.Entity("BD2.API.Database.Entities.PostComment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -817,6 +788,10 @@ namespace BD2.API.Migrations
                         .HasForeignKey("ChatId")
                         .IsRequired();
 
+                    b.HasOne("BD2.API.Database.Entities.Chat", null)
+                        .WithMany("Entries")
+                        .HasForeignKey("ChatId1");
+
                     b.Navigation("Account");
 
                     b.Navigation("Chat");
@@ -955,32 +930,6 @@ namespace BD2.API.Migrations
                     b.Navigation("Group");
 
                     b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("BD2.API.Database.Entities.PostAbusement", b =>
-                {
-                    b.HasOne("BD2.API.Database.Entities.Account", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.HasOne("BD2.API.Database.Entities.Account", "CheckedBy")
-                        .WithMany()
-                        .HasForeignKey("CheckedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("BD2.API.Database.Entities.Post", "Post")
-                        .WithMany("Abusements")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-
-                    b.Navigation("CheckedBy");
-
-                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("BD2.API.Database.Entities.PostComment", b =>
@@ -1126,6 +1075,8 @@ namespace BD2.API.Migrations
 
             modelBuilder.Entity("BD2.API.Database.Entities.Chat", b =>
                 {
+                    b.Navigation("Entries");
+
                     b.Navigation("Members");
                 });
 
@@ -1143,8 +1094,6 @@ namespace BD2.API.Migrations
 
             modelBuilder.Entity("BD2.API.Database.Entities.Post", b =>
                 {
-                    b.Navigation("Abusements");
-
                     b.Navigation("Comments");
 
                     b.Navigation("Images");
