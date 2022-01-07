@@ -96,8 +96,8 @@ namespace BD2.API.Controllers
                 Id = new Guid(),
                 ChatId = model.ChatId,
                 Chat = await _crepo.FindAsync(model.ChatId),
-                AccountId = model.AccountId,
-                Account = await _arepo.FindAsync(model.AccountId),
+                AccountId = (Guid) UserId,
+                Account = await _arepo.FindAsync((Guid) UserId),
                 PostDate = DateTime.Now,
                 Text = model.Text
             };
