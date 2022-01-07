@@ -28,11 +28,12 @@ namespace BD2.API.Controllers
 
         public AuthController(
             UserManager<Account> userManager,
-            TokenConfiguration tokenConfiguration
-            )
+            TokenConfiguration tokenConfiguration,
+            AppDbContext authDbContext)
         {
             _userManager = userManager;
             _tokenConfiguration = tokenConfiguration;
+            _authDbContext = authDbContext;
         }
 
         [AllowAnonymous]
