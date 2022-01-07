@@ -1,5 +1,6 @@
 ﻿using BD2.API.Database.Entities;
 using BD2.API.Database.Repositories.Interfaces;
+using BD2.API.Database.ViewEntities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -91,6 +92,11 @@ namespace BD2.API.Database.Repositories.Concrete
             return _ctx.PostReactions
                 .Where(x => x.PostId == postId)
                 .Include(x => x.Account);
+        }
+
+        public IQueryable<PostReactionNotification> GetNotifications(Guid userId)
+        {
+            return _ctx.PostReactionNotifications.FromSqlRaw($"exec GetReactionsNotifications {userId}");
         }
     }
 }

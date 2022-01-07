@@ -5,6 +5,7 @@ using BD2.API.Models;
 using BD2.API.Models.Auth;
 using BD2.API.Models.GroupAccount;
 using BD2.API.Models.Groups;
+using BD2.API.Models.Notifications;
 using BD2.API.Models.Packets;
 using BD2.API.Models.Posts;
 using BD2.API.Models.Subcriptions;
@@ -106,7 +107,7 @@ namespace BD2.API.Configuration
                 .ForMember(x => x.Members, opt => opt.MapFrom(src => new List<ChatAccount>()))
                 .ForMember(x => x.LastPostDate, opt => opt.MapFrom(src => DateTime.Now));
 
-            cfg.CreateMap<UpdateChatModel, Chat>();
+
         };
 
         private static int countSubcriptionFreeSlots(PacketSubscription src)

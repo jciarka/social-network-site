@@ -1,4 +1,5 @@
 ﻿using BD2.API.Database.Entities;
+using BD2.API.Database.ViewEntities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -36,6 +37,11 @@ namespace BD2.API.Database
         public DbSet<PacketPeopleLimit> PacketPeopleLimits { get; set; }
         public DbSet<PacketPeriod> PacketPeriods { get; set; }
         public DbSet<GroupTopic> GroupTopics { get; set; }
+
+        // Stored pocedures entities
+        public DbSet<PostCommentNotification> PostCommentNotifications { get; set; }
+        public DbSet<PostReactionNotification> PostReactionNotifications { get; set; }
+
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)

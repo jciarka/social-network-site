@@ -1,4 +1,5 @@
 ﻿using BD2.API.Database.Entities;
+using BD2.API.Database.ViewEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,8 @@ namespace BD2.API.Database.Repositories.Interfaces
         public Task<bool> DeleteAsync(Guid PostId, Guid UserId);
         public IQueryable<PostReaction> All();
         public IQueryable<PostReaction> AllByPost(Guid PostId);
+
+        // Notifications
+        public IQueryable<PostReactionNotification> GetNotifications(Guid UserId);
     }
 }

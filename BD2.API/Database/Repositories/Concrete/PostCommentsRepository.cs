@@ -1,5 +1,6 @@
 ﻿using BD2.API.Database.Entities;
 using BD2.API.Database.Repositories.Interfaces;
+using BD2.API.Database.ViewEntities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -95,5 +96,9 @@ namespace BD2.API.Database.Repositories.Concrete
                 .Include(x => x.Account);
         }
 
+        public IQueryable<PostCommentNotification> GetNotifications(Guid userId)
+        {
+            return _ctx.PostCommentNotifications.FromSqlRaw($"exec GetCommentsNotifications {userId}");
+        }
     }
 }
