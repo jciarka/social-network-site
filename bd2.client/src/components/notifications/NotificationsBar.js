@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 const NotificationsBar = () => {
-
   const [msgNotifications, setMsgNotifications] = useState([]);
   const [reactNotifications, setReactNotifications] = useState([]);
   const [commentNotifications, setCommentNotifications] = useState([]);
@@ -12,22 +11,38 @@ const NotificationsBar = () => {
   const [reactCounts, setReactCounts] = useState(0);
   const [commentCounts, setCommentCounts] = useState(0);
 
+  const [msgNotificationsFetching, setMsgNotificationsFetching] =
+    useState(false);
+  const [reactNotificationsFetching, setReactNotificationsFetching] =
+    useState(false);
+  const [commentNotificationsFetching, setCommentNotificationsFetching] =
+    useState(false);
+
   const fetchNotificationCounts = async () => {
     const result = await axios.get(`/api/Notifications/Counts`);
 
-    console.log(JSON.stringify(result.data))
+    console.log(JSON.stringify(result.data));
 
     if (result && result.data && result.data.success) {
-      console.log(result.data.data);
       setMsgCounts(result.data.data.messages);
       setCommentCounts(result.data.data.comments);
       setReactCounts(result.data.data.reactions);
     }
   };
 
+  const fetchReactNotifications = async () => {
+    setReactNotificationsFetching(true);
+    const result = await axios.get(`/api/Notifications/reactions`);
+    if (result && result.data && result.data.success) {
+      console.log(result.data.data);
+      setReactNotifications(result.data.data);
+    }
+
+    setReactNotificationsFetching(false);
+  };
+
   const fetchNotifications = async () => {
     // const result = await axios.get(`/api/Notifications/${account.id}`);
-
     // if (result && result.data && result.data.success) {
     //   console.log(result.data.data);
     //   setMsgNotifications(result.data.messages);
@@ -36,7 +51,7 @@ const NotificationsBar = () => {
     // }
   };
   useEffect(() => {
-    fetchNotificationCounts()
+    fetchNotificationCounts();
   }, []);
 
   return (
@@ -71,7 +86,18 @@ const NotificationsBar = () => {
           )}
         </div>
         <div className="mx-1 nav-item dropdown position-static justify-content-start">
-          <button className="btn btn-sm  btn-outline-dark">
+          <button
+            className="btn btn-sm  btn-outline-dark"
+            onMouseEnter={() => {
+              if (
+                reactCounts >= 0 &&
+                reactCounts !== reactNotifications.length &&
+                !reactNotificationsFetching
+              ) {
+                fetchReactNotifications();
+              }
+            }}
+          >
             Reakcje{" "}
             <span class="badge small badge-pill badge-danger">
               {reactCounts}

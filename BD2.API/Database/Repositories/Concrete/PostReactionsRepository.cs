@@ -96,7 +96,15 @@ namespace BD2.API.Database.Repositories.Concrete
 
         public IQueryable<PostReactionNotification> GetNotifications(Guid userId)
         {
-            return _ctx.PostReactionNotifications.FromSqlRaw($"exec GetReactionsNotifications {userId}");
+            try
+            {
+                return _ctx.PostReactionNotifications.FromSqlInterpolated($"exec GetReactionsNotifications {userId}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
     }
 }
