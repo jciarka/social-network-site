@@ -53,8 +53,9 @@ namespace BD2.API.Controllers
                 Errors = (List<string>)null,
                 Data = new
                 {
-                    commentsCount,
-                    reactionsCount
+                    comments = commentsCount,
+                    reactions = reactionsCount,
+                    messages = 0,
                 }
             });
         }
@@ -79,7 +80,7 @@ namespace BD2.API.Controllers
         [Route("reactions")]
         public async Task<IActionResult> ReactionsNotifications()
         {
-            var found = await _cRepo
+            var found = await _rRepo
                 .GetNotifications((Guid)UserId)
                 .ToListAsync();
 
@@ -89,5 +90,7 @@ namespace BD2.API.Controllers
                 Data = found
             });
         }
+
+        // TO DO: chat Notifications
     }
 }

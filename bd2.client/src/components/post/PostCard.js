@@ -34,8 +34,38 @@ const PostCard = ({ postData, setPostData }) => {
     );
 
     if (result && result.data && result.data.success) {
+      const previous = postData.hasReacted;
+      let post = {...postData.post};
+
+      // remove previous count
+      switch (previous) {
+        case 1:
+          post.negativeReactionCount = postData.post.negativeReactionCount - 1
+          break;
+        case 2:
+          post.positiveReactionsCount = postData.post.positiveReactionsCount - 1
+          break;
+        default:
+          break;
+      }
+
+      // add new count
+      switch (type) {
+        case 1:
+          post.negativeReactionCount = postData.post.negativeReactionCount + 1
+          break;
+        case 2:
+          post.positiveReactionsCount = postData.post.positiveReactionsCount + 1
+          break;
+        default:
+          break;
+      }
+
+      // update reacted type
       postData.hasReacted = type;
-      setPostData(postData);
+
+      // save
+      setPostData({ ...postData, post });
     }
   };
 
@@ -99,8 +129,8 @@ const PostCard = ({ postData, setPostData }) => {
               type="button"
               className="btn btn-outline-danger rounded-circle btn-sm mt-1 mr-1"
               onClick={() => {
-                setDeletdPostId(postData.post.id)
-                handleDeletePostClickOpen()
+                setDeletdPostId(postData.post.id);
+                handleDeletePostClickOpen();
               }}
             >
               <i class="fa fa-times" aria-hidden="true"></i>
@@ -108,10 +138,8 @@ const PostCard = ({ postData, setPostData }) => {
           </div>
         )}
 
-        {!postData.isOwner && (
-          <div className="mt-3" />
-        )}
-        
+        {!postData.isOwner && <div className="mt-3" />}
+
         <div className="mx-4 mt-1">
           {postData.images && postData.images.length > 0 && (
             <ImageGallery

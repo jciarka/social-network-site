@@ -14,12 +14,12 @@ using System.Threading.Tasks;
 namespace BD2.API.Controllers
 {
     [Route("api/[controller]")]
-    public class PostAbusementsController : ExtendedControllerBase
+    public class AbusementsController : ExtendedControllerBase
     {
         private readonly IPostAbusementsRepository _repo;
         private readonly IMapper _mapper;
 
-        public PostAbusementsController(IPostAbusementsRepository repo, IMapper mapper)
+        public AbusementsController(IPostAbusementsRepository repo, IMapper mapper)
         {
             _repo = repo;
             _mapper = mapper;
