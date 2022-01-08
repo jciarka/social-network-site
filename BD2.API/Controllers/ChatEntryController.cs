@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BD2.API.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ChatEntryController : ExtendedControllerBase
     {
         private readonly IChatEntryRepository _repo;

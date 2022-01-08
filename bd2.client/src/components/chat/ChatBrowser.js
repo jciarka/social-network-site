@@ -1,19 +1,28 @@
 import React, { useState, useEffect } from "react";
+import ChatEditor, { editorTypes } from "components/chat/ChatEditor";
 import axios from "axios";
 import ChatCard from "components/chat/ChatCard";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 const ChatBrowser = ({ type }) => {
-  const [chats, setChats] = useState([]);
-  const account = useSelector((state) => state.account);
+  const [posts, setPosts] = useState([]);
+  const [group, setGroup] = useState(null);
+  const [canAddPosts, setCanAddPosts] = useState(true);
 
-  const fetchChats = async () => {
+  const account = useSelector((state) => state.account);
+  let { groupId } = useParams();
+
+  const fetchPosts = async () => {
     let result;
-    result = await axios.get(`/api/chats/list/user/${account.id}`);
+    if (type === "BOARD") {
+      result = await axios.get(`/api/posts/list/user/${account.id}`);
+    } else {
+      result = await axios.get(`/api/posts/list/group/${groupId}`);
+    }
 
     if (result && result.data && result.data.success) {
-      setChats(
+      setPosts(
         result.data.model.map((x) => {
           return { ...x, expanded: false, detailsFetched: false };
         })
@@ -21,17 +30,31 @@ const ChatBrowser = ({ type }) => {
     }
   };
 
+  const fetchGroup = async () => {
+    let result;
+    if (type !== "BOARD") {
+      setCanAddPosts(false);
+      result = await axios.get(`/api/groups/${groupId}`);
+
+      if (result && result.data && result.data.success) {
+        setGroup(result.data.data);
+        setCanAddPosts(result.data.canAddPosts);
+      }
+    }
+  };
+
   useEffect(() => {
-    fetchChats();
+    fetchGroup();
+    fetchPosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getChatDataSetter = (index) => {
+  const getPostDataSetter = (index) => {
     return (newData) => {
       if (newData) {
-        setChats(chats.map((x, i) => (i !== index ? x : newData)));
+        setPosts(posts.map((x, i) => (i !== index ? x : newData)));
       } else {
-        setChats(chats.filter((x, i) => (i !== index ? true : false)));
+        setPosts(posts.filter((x, i) => (i !== index ? true : false)));
       }
     };
   };
@@ -39,13 +62,22 @@ const ChatBrowser = ({ type }) => {
   return (
     <>
       <div className="container justify-content-center">
-        {chats.map((chatData, index) => {
+        {canAddPosts && (
+          <ChatEditor
+            type={editorTypes.EDIT}
+            onSuccess={(x) => fetchPosts()}
+            header="Stwórz nowy czat"
+            post={{ groupId }}
+          />
+        )}
+
+        {posts.map((postData, index) => {
           return (
             <div key={index} className="row justify-content-center">
               <ChatCard
                 key={index}
-                chatData={chatData}
-                setchatData={getChatDataSetter(index)}
+                postData={postData}
+                setPostData={getPostDataSetter(index)}
               />
             </div>
           );

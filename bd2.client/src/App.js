@@ -175,20 +175,19 @@ const App = () => {
         )}
       ></Route>
 
-      <Route
+        <Route
         path="/chats"
         exact
         render={(props) => (
           <>
-            {<ChatBrowser />}
-            {/* {account && account.isLoggedIn && <ChatBrowser />}
+            {account && account.isLoggedIn && <ChatBrowser type={"BOARD"} />}
             {(!account ||
               !account.isLoggedIn ||
               !account.roles ||
-              !account.roles.includes("USER")) && <Redirect to="/login" />} */}
+              !account.roles.includes("USER")) && <Redirect to="/login" />}
           </>
         )}
-      ></Route>
+      />
       
     </Router>
   );

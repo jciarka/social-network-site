@@ -54,7 +54,7 @@ const Header = () => {
                       Znajomi
                     </button>
                   </Link>
-                  <Link to="/">
+                  <Link to="/chats">
                     <button
                       className="btn btn-dark nav-button rounded-0"
                       style={{ position: "relative", top: "9px" }}
