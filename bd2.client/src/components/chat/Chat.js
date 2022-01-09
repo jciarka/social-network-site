@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { chatActionCreators } from "../../store/index";
 import { bindActionCreators } from "redux";
-import RefreshIcon from "icons/refresh.png";
 
 const Chat = ({ onSuccess = null }) => {
     let { chatId } = useParams();
@@ -31,6 +30,9 @@ const Chat = ({ onSuccess = null }) => {
       useEffect(() => {
         fetchChats();
         getEntries();
+        setInterval(() => {
+            getEntries();
+        }, 3000)
         // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
     
@@ -71,18 +73,30 @@ const Chat = ({ onSuccess = null }) => {
         let result;
         result = await axios.get(`/api/chatEntry/list/chat/${chatId}`);
         setEntries(result.data.model.map((x) => {
+            let d = new Date(x.postDate)
             if(account.id === x.accountId) {
                 return (
-                    <div id="single-entry-user">
-                        {x.text}
+                    <div className="single-entry-user">
+                        <div>
+                            {x.text}
+                        </div>
+                        <div id="entry-date-user">
+                            {d.getHours().toString().padStart(2,0)}:{d.getMinutes().toString().padStart(2,0)}   {d.getDate().toString().padStart(2,0)}.{(d.getMonth()+1).toString().padStart(2,0)}.{d.getFullYear()}
+                        </div>    
                     </div>
                 );
             }
             else {
                 return (
-                    <div id="single-entry-member">
-                        {x.text}
+                    <div className="single-entry-member">
+                        <div>
+                            {x.text}
+                        </div>
+                        <div id="entry-date-member">
+                            {d.getHours().toString().padStart(2,0)}:{d.getMinutes().toString().padStart(2,0)}   {d.getDate().toString().padStart(2,0)}.{(d.getMonth()+1).toString().padStart(2,0)}.{d.getFullYear()}
+                        </div>                        
                     </div>
+
                 );
             }
 
@@ -100,7 +114,6 @@ const Chat = ({ onSuccess = null }) => {
         >
             <div className="text-center mb-3">
                 <h4>{chat.name}</h4>
-                <img src={RefreshIcon} onClick={getEntries} width={24}></img>
             </div>
 
             <div id="entries-container">
