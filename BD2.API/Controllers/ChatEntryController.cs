@@ -73,7 +73,7 @@ namespace BD2.API.Controllers
 
             return Ok(new
             {
-                data = entries,
+                Model = entries,
                 Success = true,
             });
         }

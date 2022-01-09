@@ -72,7 +72,7 @@ namespace BD2.API.Controllers
             
             return Ok(new
             {
-                data = chats,
+                Model = chats,
                 Success = true,
             });
         }

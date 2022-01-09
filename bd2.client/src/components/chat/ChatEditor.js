@@ -19,9 +19,9 @@ const ChatEditor = ({
     else return "";
   };
 
-  const [member, setMember] = useState(chat ? chat.member : "");
+  const [memberName, setMember] = useState(chat ? chat.memberName : "");
   const validateMember = () => {
-    if ((member && member.length === 0) || member === "")
+    if ((memberName && memberName.length === 0) || memberName === "")
       return "Członek nie może być pusty";
     else return "";
   };
@@ -34,12 +34,9 @@ const ChatEditor = ({
     return true;
   };
 
-  const [files, setFiles] = useState([]);
-
   const submit = async () => {
     let fetchedMember;
-    fetchedMember = await axios.get(`api/Accounts/findByName/${member}`);
-    console.log(fetchedMember.data.data[0].id)
+    fetchedMember = await axios.get(`api/Accounts/findByName/${memberName}`);
     try {
       const result = await axios.post("/api/chat", {
         ...chat,
@@ -50,20 +47,15 @@ const ChatEditor = ({
       if (
         result &&
         result.data &&
-        result.data.success &&
-        result.data.model.chat.id
-      ) {
+        result.data.success) 
+        {
         setName("");
         setMember("");
-        setFiles([]);
       } else {
         setBackendErrors(result.data.errors);
         return;
       }
 
-      for (let index = 0; index < files.length; index++) {
-        const form = new FormData();
-      }
       if (onSuccess) {
         onSuccess(result.data.model);
       }
@@ -112,7 +104,7 @@ const ChatEditor = ({
             type="text"
             className="form-control"
             placeholder="Członek"
-            value={member}
+            value={memberName}
             style={validateMember() !== "" ? { borderColor: "red" } : {}}
             onChange={(e) => {
               setMember(e.target.value);

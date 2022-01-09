@@ -12,7 +12,8 @@ import AdminGroupBrowser from "pages/groups/administration/AdminGroupBrowser";
 import PacketSubcriptionsBrowser from "pages/subscriptions/PacketSubcriptionsBrowser";
 import AdminGroupUsersBrowser from "pages/groups/administration/AdminGroupUsersBrowser";
 import ChatBrowser from "components/chat/ChatBrowser";
-import AbusementsManager from 'pages/abusements/AbusementsManager'
+import AbusementsManager from 'pages/abusements/AbusementsManager';
+import Chat from 'components/chat/Chat';
 
 const App = () => {
   // const serverUrl = "http://localhost:8080/"
@@ -177,7 +178,7 @@ const App = () => {
         )}
       ></Route>
 
-        <Route
+      <Route
         path="/chats"
         exact
         render={(props) => (
@@ -190,6 +191,21 @@ const App = () => {
           </>
         )}
       />
+
+      <Route
+        path="/chats/:chatId"
+        exact
+        render={(props) => (
+          <>
+            {account && account.isLoggedIn && <Chat />}
+            {(!account ||
+              !account.isLoggedIn ||
+              !account.roles ||
+              !account.roles.includes("USER")) && <Redirect to="/login" />}
+          </>
+        )}
+      />
+
       
     </Router>
   );
