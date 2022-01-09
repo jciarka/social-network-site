@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Chat.css";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { chatActionCreators } from "../../store/index";
+import { bindActionCreators } from "redux";
+import RefreshIcon from "icons/refresh.png";
 
 const Chat = ({ onSuccess = null }) => {
     let { chatId } = useParams();
@@ -12,6 +15,9 @@ const Chat = ({ onSuccess = null }) => {
     const [backendErrors, setBackendErrors] = useState([]);
     
     const account = useSelector((state) => state.account);
+    const entriesRefresh = useSelector((state) => state.chat);
+    const dispatch = useDispatch();
+    const { initChat, setRefreshChat, setUpToDateChat } = bindActionCreators(chatActionCreators, dispatch);
 
     const fetchChats = async () => {
         let result;
@@ -65,7 +71,6 @@ const Chat = ({ onSuccess = null }) => {
         let result;
         result = await axios.get(`/api/chatEntry/list/chat/${chatId}`);
         setEntries(result.data.model.map((x) => {
-            console.log(x);
             if(account.id === x.accountId) {
                 return (
                     <div id="single-entry-user">
@@ -83,7 +88,7 @@ const Chat = ({ onSuccess = null }) => {
 
         }));
     }
-
+    
     return (
         <div
         className="container d-flex justify-content-center"
@@ -95,6 +100,7 @@ const Chat = ({ onSuccess = null }) => {
         >
             <div className="text-center mb-3">
                 <h4>{chat.name}</h4>
+                <img src={RefreshIcon} onClick={getEntries} width={24}></img>
             </div>
 
             <div id="entries-container">
