@@ -1,38 +1,25 @@
+import React, { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
 
-const ChatCard = ({ chatData, setChatData }) => {
-  const account = useSelector((state) => state.account); // get redux store values
-  const fetchChatsDetails = async () => {
-    const result = await axios.get(`/api/Chat/${chatData.chat.id}`);
-
-    if (result && result.data && result.data.success) {
-      setChatData({
-        ...chatData,
-        detailsFetched: true,
-        expanded: true,
-        ...result.data.model,
-      });
-    }
-  };
-  
+const ChatCard = ({key, chatData}) => {
   return (
-    <>
+    <Link to={`/chats/${chatData.id}`}>
+    <div
+      className="container d-flex justify-content-center"
+      style={{ "width": 600 }}
+    >
       <div
-        className="card m-4 pt-0 pb-0 rounded rounded-lg w-100 shadow border border-dark rounded-0"
-        style={{ border: "#8f8f8fb6", maxWidth: "800px" }}
+        className="card m-4 p-4 rounded rounded-lg w-100 shadow border rounded-0"
+        style={{ border: "#8f8f8fb6" }}
       >
-        {!chatData.isOwner && (
-          <div className="mt-3" />
-        )}
-        <div style={{ marginBottom: 10 }} />
-        <hr style={{ background: "black", marginBottom: 10, marginTop: 10 }} />
-        <div className="h5  mx-4  justify-content-center text-center">
-          {chatData.chat.title}
+        <div className="text-center">
+            <h5>{chatData.name}</h5>
         </div>
-
       </div>
-    </>
+    </div>
+    </Link>
   );
 };
 

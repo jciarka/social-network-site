@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BD2.API.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ChatController : ExtendedControllerBase
     {
         private readonly IChatRepository _repo;
@@ -72,7 +72,7 @@ namespace BD2.API.Controllers
             
             return Ok(new
             {
-                data = chats,
+                Model = chats,
                 Success = true,
             });
         }

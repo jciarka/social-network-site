@@ -14,11 +14,13 @@ namespace BD2.API.Controllers
     public class AccountsController : ExtendedControllerBase
     {
         private readonly IAccountRepository _repo;
+        private readonly IChatRepository _chrepo;
         private readonly IMapper _mapper;
 
-        public AccountsController(IAccountRepository repo, IMapper mapper)
+        public AccountsController(IAccountRepository repo, IChatRepository chrepo, IMapper mapper)
         {
             _repo = repo;
+            _chrepo = chrepo;
             _mapper = mapper;
         }
 
@@ -31,7 +33,6 @@ namespace BD2.API.Controllers
 
             return Ok(new { success = true, data });
         }
-
 
     }
 }

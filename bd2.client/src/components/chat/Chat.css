@@ -1,0 +1,56 @@
+#main-container {
+    height: 90vh;
+}
+
+#entry-form {
+    width: 900px;
+}
+
+#send-button {
+    margin-top: 4.5vh;
+}
+
+#entry-group {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+#entries-container {
+    height: 70vh;
+    overflow: auto;
+}
+
+.single-entry-user {
+    margin-left: 40%;
+    text-align: right;
+    margin-bottom: 15px;
+    width: auto;
+    max-width: 600px;
+    border-style: groove;
+    border-width: 2px;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.single-entry-member {
+    margin-right: 40%;
+    width: auto;
+    max-width: 600px;
+    margin-bottom: 15px;
+    border-style: groove;
+    border-width: 2px;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+#entry-date-user {
+    text-align: left;
+    margin-top: 0.5vh;
+    font-size: 1.2vh;
+}
+
+#entry-date-member {
+    text-align: right;
+    margin-top: 0.5vh;
+    font-size: 1.2vh;
+}
