@@ -199,6 +199,9 @@ namespace BD2.API.Migrations
                     b.Property<Guid>("ChatId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ChatId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("PostDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -212,6 +215,8 @@ namespace BD2.API.Migrations
                     b.HasIndex("AccountId");
 
                     b.HasIndex("ChatId");
+
+                    b.HasIndex("ChatId1");
 
                     b.ToTable("ChatEntries");
                 });
@@ -621,58 +626,6 @@ namespace BD2.API.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("BD2.API.Database.ViewEntities.PostCommentNotification", b =>
-                {
-                    b.Property<DateTime>("CommentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Firstname")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("GroupId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Lastname")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("PostId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("PostTitle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToView("NOPostCommentNotificationView");
-                });
-
-            modelBuilder.Entity("BD2.API.Database.ViewEntities.PostReactionNotification", b =>
-                {
-                    b.Property<string>("Firstname")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("GroupId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Lastname")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("PostId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("PostTitle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ReactionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.ToView("NOPostReactionNotificationView");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
@@ -832,6 +785,10 @@ namespace BD2.API.Migrations
                         .WithMany()
                         .HasForeignKey("ChatId")
                         .IsRequired();
+
+                    b.HasOne("BD2.API.Database.Entities.Chat", null)
+                        .WithMany("Entries")
+                        .HasForeignKey("ChatId1");
 
                     b.Navigation("Account");
 
@@ -1108,6 +1065,8 @@ namespace BD2.API.Migrations
 
             modelBuilder.Entity("BD2.API.Database.Entities.Chat", b =>
                 {
+                    b.Navigation("Entries");
+
                     b.Navigation("Members");
                 });
 
