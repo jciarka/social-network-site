@@ -30,5 +30,13 @@ namespace BD2.API.Database.Repositories.Concrete
         {
             return _ctx.Users.Where(x => x.Firstname.Contains(namePhrase) || x.Lastname.Contains(namePhrase) || (x.Firstname + " " + x.Lastname).Contains(namePhrase));
         }
+
+        public async Task<Account> FindChatMember(Guid chatId, Guid userId)
+        {
+            var chatAccounts = _ctx.ChatAccounts.Where(x => x.ChatId == chatId);
+            var memberId = chatAccounts.Where(x => x.AccountId != userId).First().AccountId;
+            var member = await _ctx.Accounts.FindAsync(memberId);
+            return member;
+        }
     }
 }

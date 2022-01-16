@@ -3,29 +3,27 @@ import axios from "axios";
 import "./Chat.css";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { chatActionCreators } from "../../store/index";
-import { bindActionCreators } from "redux";
 
 const Chat = ({ onSuccess = null }) => {
     let { chatId } = useParams();
     const [chat, setChat] = useState([]);
     const [entry, setEntry] = useState([]);
     const [entries, setEntries] = useState([]);
+    const [member, setMember] = useState([]);
     const [backendErrors, setBackendErrors] = useState([]);
     
     const account = useSelector((state) => state.account);
-    const entriesRefresh = useSelector((state) => state.chat);
-    const dispatch = useDispatch();
-    const { initChat, setRefreshChat, setUpToDateChat } = bindActionCreators(chatActionCreators, dispatch);
 
     const fetchChats = async () => {
-        let result;
-        result = await axios.get(`/api/chat/${chatId}`);
-    
-        if (result && result.data && result.data.success) {
-          setChat({ ...result.data.model.chat, expanded: false, detailsFetched: false });
+        let fetchedChat, fetchedMember;
+        fetchedChat = await axios.get(`/api/chat/${chatId}`);
+        fetchedMember = await axios.get(`/api/Accounts/findChatMember/${chatId}`);
+
+        if (fetchedChat && fetchedChat.data && fetchedChat.data.success) {
+          setChat({ ...fetchedChat.data.model.chat, expanded: false, detailsFetched: false });
+          setMember({...fetchedMember.data.member});
         }
-      };
+    };
     
       useEffect(() => {
         fetchChats();
@@ -33,6 +31,16 @@ const Chat = ({ onSuccess = null }) => {
         setInterval(() => {
             getEntries();
         }, 3000)
+        var scrollDownInterval = setInterval(() => {
+            var element = document.getElementById("entries-container");
+            if(element)
+            {
+                scrollDownMessages(element);
+                element.addEventListener('scroll', () => {
+                    clearInterval(scrollDownInterval);
+                })
+            }
+        }, 200);
         // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
     
@@ -102,6 +110,11 @@ const Chat = ({ onSuccess = null }) => {
 
         }));
     }
+
+    const scrollDownMessages = async (element) => {
+        var elementHeight = element.scrollHeight;
+        element.scrollTop = elementHeight;   
+    };
     
     return (
         <div
@@ -114,6 +127,7 @@ const Chat = ({ onSuccess = null }) => {
         >
             <div className="text-center mb-3">
                 <h4>{chat.name}</h4>
+                <h6>Użytkownik: {member.firstname} {member.lastname}</h6>
             </div>
 
             <div id="entries-container">

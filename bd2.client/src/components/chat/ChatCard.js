@@ -1,9 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 
 const ChatCard = ({key, chatData}) => {
+  const [member, setMember] = useState([]);
+
+  const fetchMember = async() => {
+    let fetchedMember;
+    fetchedMember = await axios.get(`/api/Accounts/findChatMember/${chatData.id}`);
+
+    if (fetchedMember && fetchedMember.data && fetchedMember.data.success) {
+      setMember({...fetchedMember.data.member});
+    }
+  };
+
+  useEffect(() => {
+    fetchMember();
+  }, []);
+
   return (
     <Link to={`/chats/${chatData.id}`}>
     <div
@@ -16,6 +31,7 @@ const ChatCard = ({key, chatData}) => {
       >
         <div className="text-center">
             <h5>{chatData.name}</h5>
+            <h6>Użytkownik: {member.firstname} {member.lastname}</h6>
         </div>
       </div>
     </div>

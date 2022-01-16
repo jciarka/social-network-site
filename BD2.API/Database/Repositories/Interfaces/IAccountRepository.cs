@@ -11,5 +11,6 @@ namespace BD2.API.Database.Repositories.Interfaces
         public Task<Account> FindAsync(Guid id);
         public IQueryable<Account> All();
         public IQueryable<Account> AllByPost(string namePhrase);
+        public Task<Account> FindChatMember(Guid chatId, Guid userId);
     }
 }
