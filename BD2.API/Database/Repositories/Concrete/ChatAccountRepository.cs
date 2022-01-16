@@ -38,9 +38,17 @@ namespace BD2.API.Database.Repositories.Concrete
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid chatId)
         {
-            throw new NotImplementedException();
+            var found = await _ctx.ChatAccounts.FindAsync(chatId);
+
+            if (found == null)
+            {
+                return false;
+            }
+
+            _ctx.ChatAccounts.Remove(found);
+            return (await _ctx.SaveChangesAsync()) > 0;
         }
 
         public async Task<ChatAccount> FindAsync(Guid id)

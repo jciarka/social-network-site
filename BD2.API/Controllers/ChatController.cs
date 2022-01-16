@@ -16,13 +16,15 @@ namespace BD2.API.Controllers
         private readonly IChatRepository _repo;
         private readonly IChatAccountRepository _acrepo;
         private readonly IAccountRepository _arepo;
+        private readonly IChatEntryRepository _erepo;
         private readonly IMapper _mapper;
 
-        public ChatController(IChatRepository repo, IChatAccountRepository acrepo, IAccountRepository arepo, IMapper mapper)
+        public ChatController(IChatRepository repo, IChatAccountRepository acrepo, IAccountRepository arepo, IChatEntryRepository erepo, IMapper mapper)
         {
             _repo = repo;
             _acrepo = acrepo;
-            _arepo = arepo; 
+            _arepo = arepo;
+            _erepo = erepo;
             _mapper = mapper;
         }
 
@@ -200,6 +202,12 @@ namespace BD2.API.Controllers
                     Success = false,
                     Errors = new List<string> { "Nie znaleziono czatu o podanym Id" }
                 });
+            }
+
+            var chatEntries = await _erepo.FindChatsEntries(id);
+            foreach(var entry in chatEntries)
+            {
+                await _erepo.DeleteAsync(entry.Id);
             }
 
             var result = await _repo.DeleteAsync(id);

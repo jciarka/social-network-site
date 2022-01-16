@@ -71,6 +71,13 @@ namespace BD2.API.Database.Repositories.Concrete
                 return false;
             }
 
+            var chatAccounts = _ctx.ChatAccounts.Where(x => x.ChatId == id);
+
+            foreach (var chatAccount in chatAccounts)
+            {
+                _ctx.ChatAccounts.Remove(chatAccount);
+            }
+
             _ctx.Chats.Remove(found);
             return (await _ctx.SaveChangesAsync()) > 0;
         }
