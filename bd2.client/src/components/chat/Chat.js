@@ -15,7 +15,7 @@ const Chat = ({ onSuccess = null }) => {
     const account = useSelector((state) => state.account);
 
     const fetchChats = async () => {
-        let fetchedChat, fetchedMember;
+        let fetchedChat, fetchedMember, updatedDate;
         fetchedChat = await axios.get(`/api/chat/${chatId}`);
         fetchedMember = await axios.get(`/api/Accounts/findChatMember/${chatId}`);
 
@@ -27,10 +27,11 @@ const Chat = ({ onSuccess = null }) => {
     
       useEffect(() => {
         fetchChats();
+        updateViewDate();
         getEntries();
         setInterval(() => {
             getEntries();
-        }, 3000)
+        }, 3000);
         var scrollDownInterval = setInterval(() => {
             var element = document.getElementById("entries-container");
             if(element)
@@ -104,10 +105,9 @@ const Chat = ({ onSuccess = null }) => {
                             {d.getHours().toString().padStart(2,0)}:{d.getMinutes().toString().padStart(2,0)}   {d.getDate().toString().padStart(2,0)}.{(d.getMonth()+1).toString().padStart(2,0)}.{d.getFullYear()}
                         </div>                        
                     </div>
-
+    
                 );
             }
-
         }));
     }
 
@@ -115,6 +115,10 @@ const Chat = ({ onSuccess = null }) => {
         var elementHeight = element.scrollHeight;
         element.scrollTop = elementHeight;   
     };
+
+    const updateViewDate = async () => {
+        let result = axios.put(`/api/ChatAccount/${chatId}`);
+    }
     
     return (
         <div

@@ -70,6 +70,16 @@ namespace BD2.API.Database.Repositories.Concrete
             return entries;
         }
 
+        public async Task<IEnumerable<ChatEntry>> FindUnseenChatsEntries(Guid chatId, Guid userId)
+        {
+            var lastViewDate = _ctx.ChatAccounts.Where(x => x.ChatId == chatId && x.AccountId == userId).First().LastViewDate;
+            var entries = await _ctx.ChatEntries
+                .Where(x => x.ChatId == chatId && x.PostDate > lastViewDate)
+                .ToListAsync();
+
+            return entries;
+        }
+
         public async Task<bool> UpdateAsync(ChatEntry entity)
         {
             var found = await _ctx.ChatEntries.FindAsync(entity.Id);

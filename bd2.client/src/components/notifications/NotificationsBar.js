@@ -24,7 +24,6 @@ const NotificationsBar = () => {
     console.log(JSON.stringify(result.data));
 
     if (result && result.data && result.data.success) {
-      setMsgCounts(result.data.data.messages);
       setCommentCounts(result.data.data.comments);
       setReactCounts(result.data.data.reactions);
     }
@@ -49,9 +48,14 @@ const NotificationsBar = () => {
     //   setCommentNotifications(result.data.comments);
     //   setReactNotifications(result.data.reactNotifications);
     // }
+    const msgCount = await axios.get(`/api/ChatAccount/unseenCount`);
+    if(msgCount) {
+      setMsgCounts(msgCount.data.model);  
+    }
   };
   useEffect(() => {
     fetchNotificationCounts();
+    fetchNotifications();
   }, []);
 
   return (

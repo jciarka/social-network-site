@@ -8,5 +8,6 @@ namespace BD2.API.Database.Repositories.Interfaces
 {
     public interface IChatAccountRepository : ICrudRepository<ChatAccount>
     {
+        public Task<int> UnseenEntriesCount(Guid userId);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BD2.API.Database.Entities;
 using BD2.API.Database.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,9 +57,30 @@ namespace BD2.API.Database.Repositories.Concrete
             return await _ctx.ChatAccounts.FindAsync(id);
         }
 
-        public Task<bool> UpdateAsync(ChatAccount entity)
+        public async Task<bool> UpdateAsync(ChatAccount entity)
         {
-            throw new NotImplementedException();
+            var found = _ctx.ChatAccounts.Where(x => x.AccountId == entity.AccountId && x.ChatId == entity.ChatId); 
+
+            if (found == null)
+            {
+                return false;
+            }
+
+            _ctx.Entry(found.First()).CurrentValues.SetValues(entity);
+            return await _ctx.SaveChangesAsync() > 0;
+        }
+
+        public async Task<int> UnseenEntriesCount(Guid userId)
+        {
+            var lastViewDate = _ctx.ChatAccounts.Where(x => x.AccountId == userId).First().LastViewDate;
+            var userChats = await _ctx.Chats
+                .Where(x => x.Members.Any(y => y.AccountId == userId))
+                .ToListAsync();
+            var entries = await _ctx.ChatEntries
+                .Where(x => userChats.Select(x => x.Id).Contains(x.ChatId) && x.PostDate > lastViewDate)
+                .ToListAsync();
+
+            return entries.Count;
         }
     }
 }
