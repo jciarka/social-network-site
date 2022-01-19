@@ -63,27 +63,27 @@ namespace BD2.API.Controllers
 
         }
 
-        [AllowAnonymous]
-        [HttpGet]
-        [Route("unseenCount")]
-        public async Task<IActionResult> UnseenChatsEntries()
-        {
-            if (UserId == null)
-            {
-                return Unauthorized(new
-                {
-                    Success = false,
-                    Errors = new List<string> { "Błąd uwierzytelniania, zaloguj się ponownie i spróbuj jeszcze raz" }
-                });
-            }
+        //[AllowAnonymous]
+        //[HttpGet]
+        //[Route("unseenCount")]
+        //public async Task<IActionResult> UnseenChatsEntries()
+        //{
+        //    if (UserId == null)
+        //    {
+        //        return Unauthorized(new
+        //        {
+        //            Success = false,
+        //            Errors = new List<string> { "Błąd uwierzytelniania, zaloguj się ponownie i spróbuj jeszcze raz" }
+        //        });
+        //    }
 
-            var count = await _repo.UnseenEntriesCount((Guid)UserId);
+        //    var count = await _repo.UnseenEntriesCount((Guid)UserId);
 
-            return Ok(new
-            {
-                Model = count,
-                Success = true,
-            });
-        }
+        //    return Ok(new
+        //    {
+        //        Model = count,
+        //        Success = true,
+        //    });
+        //}
     }
 }

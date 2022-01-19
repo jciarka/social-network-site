@@ -86,6 +86,7 @@ namespace BD2.API.Database.Repositories.Concrete
         {
             return _ctx.Chats.AsQueryable();
         }
+
         public async Task<IEnumerable<Chat>> FindUserChats(Guid userId, Guid? watcherId = null)
         {
             var chats = await _ctx.Chats
@@ -94,6 +95,7 @@ namespace BD2.API.Database.Repositories.Concrete
 
             return chats;
         }
+
     }
 
 }

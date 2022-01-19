@@ -26,6 +26,7 @@ const NotificationsBar = () => {
     if (result && result.data && result.data.success) {
       setCommentCounts(result.data.data.comments);
       setReactCounts(result.data.data.reactions);
+      setMsgCounts(result.data.data.messages);
     }
   };
 
@@ -40,6 +41,17 @@ const NotificationsBar = () => {
     setReactNotificationsFetching(false);
   };
 
+  const fetchMessagesNotifications = async () => {
+    setMsgNotificationsFetching(true);
+    const result = await axios.get(`/api/Notifications/messages`);
+    if (result && result.data && result.data.success) {
+      console.log(result.data.data);
+      setMsgNotifications(result.data.data);
+    }
+
+    setMsgNotificationsFetching(false);
+  };
+
   const fetchNotifications = async () => {
     // const result = await axios.get(`/api/Notifications/${account.id}`);
     // if (result && result.data && result.data.success) {
@@ -48,21 +60,27 @@ const NotificationsBar = () => {
     //   setCommentNotifications(result.data.comments);
     //   setReactNotifications(result.data.reactNotifications);
     // }
-    const msgCount = await axios.get(`/api/ChatAccount/unseenCount`);
-    if(msgCount) {
-      setMsgCounts(msgCount.data.model);  
-    }
+
   };
   useEffect(() => {
     fetchNotificationCounts();
     fetchNotifications();
+    document.addEventListener('click', () => {
+      fetchNotificationCounts();
+  });
   }, []);
 
   return (
     <>
       <div className="d-flex flex-row">
         <div className="mx-1 nav-item dropdown position-static justify-content-start">
-          <button className="btn btn-sm btn-outline-dark">
+          <button className="btn btn-sm btn-outline-dark"
+          onMouseEnter={() => {
+              if (!msgNotificationsFetching) {
+                fetchMessagesNotifications();
+              }
+            }}
+            >
             Wiadomości{" "}
             <span class="badge small badge-pill badge-danger">{msgCounts}</span>
           </button>
@@ -74,14 +92,14 @@ const NotificationsBar = () => {
                 style={{ height: "10px" }}
               ></div>
 
-              {msgNotifications.map((x, i) => {
+              {msgNotifications.map((x) => {
                 return (
                   <>
                     <Link
-                      to={`/groups/chats/${x.chatId}`}
+                      to={`/chats/${x.key.id}`}
                       className="rounded-0"
                     >
-                      <div key={i}>{x.chatName}</div>
+                      <div><span class="badge small badge-pill badge-danger">{x.value}</span> {" "} {x.key.name}</div>
                     </Link>
                   </>
                 );
@@ -109,7 +127,7 @@ const NotificationsBar = () => {
           </button>
 
           {reactCounts >= 1 && (
-            <div className="dropdown-content">
+            <div className="dropdown-content"> 
               <div
                 className="text-center bg-dark text-white "
                 style={{ height: "10px" }}

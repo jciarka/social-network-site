@@ -16,11 +16,11 @@ namespace BD2.API.Controllers
         private readonly IPostsRepository _repo;
         private readonly IPostCommentsRepository _cRepo;
         private readonly IPostReactionsRepository _rRepo;
-        private readonly IChatRepository _chRepo;
+        private readonly IChatAccountRepository _chRepo;
 
         private readonly IMapper _mapper;
 
-        public NotificationsController(IMapper mapper, IPostCommentsRepository cRepo, IPostReactionsRepository rRepo, IChatRepository chRepo, IPostsRepository repo)
+        public NotificationsController(IMapper mapper, IPostCommentsRepository cRepo, IPostReactionsRepository rRepo, IChatAccountRepository chRepo, IPostsRepository repo)
         {
             _mapper = mapper;
             _cRepo = cRepo;
@@ -45,7 +45,7 @@ namespace BD2.API.Controllers
                 .Where(x => x.LastReactionDate > x.LastOwnerViewDate)
                 .CountAsync();
 
-            // TO DO: chat counts
+            var chatCount = await _chRepo.UnseenEntriesCount((Guid)UserId);
 
             return Ok(new
             {
@@ -55,7 +55,7 @@ namespace BD2.API.Controllers
                 {
                     comments = commentsCount,
                     reactions = reactionsCount,
-                    messages = 0,
+                    messages = chatCount,
                 }
             });
         }
@@ -91,6 +91,19 @@ namespace BD2.API.Controllers
             });
         }
 
-        // TO DO: chat Notifications
+        [HttpGet]
+        [Route("messages")]
+        public async Task<IActionResult> MessagesNotifications()
+        {
+            var found = await _chRepo
+                .GetNotifications((Guid)UserId);
+
+            return Ok(new
+            {
+                Success = true,
+                Data = found
+            });
+        }
+
     }
 }

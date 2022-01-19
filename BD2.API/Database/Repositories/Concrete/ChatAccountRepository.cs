@@ -72,15 +72,31 @@ namespace BD2.API.Database.Repositories.Concrete
 
         public async Task<int> UnseenEntriesCount(Guid userId)
         {
-            var lastViewDate = _ctx.ChatAccounts.Where(x => x.AccountId == userId).First().LastViewDate;
+            var chatDict = await GetNotifications(userId);
+
+            return chatDict.Count();
+        }
+
+        public async Task<IEnumerable<KeyValuePair<Chat, int>>> GetNotifications(Guid userId)
+        {
             var userChats = await _ctx.Chats
                 .Where(x => x.Members.Any(y => y.AccountId == userId))
                 .ToListAsync();
-            var entries = await _ctx.ChatEntries
-                .Where(x => userChats.Select(x => x.Id).Contains(x.ChatId) && x.PostDate > lastViewDate)
-                .ToListAsync();
 
-            return entries.Count;
+            var chatDict = new List<KeyValuePair<Chat, int>> ();
+            
+            foreach (var chat in userChats)
+            {
+                var entries = await _ctx.ChatEntries
+                    .Where(x => chat.Id == x.ChatId && x.PostDate > _ctx.ChatAccounts.Where(y => y.AccountId == userId && y.ChatId == x.ChatId).First().LastViewDate)
+                    .ToListAsync();
+                if(entries.Count > 0)
+                {
+                    chatDict.Add(new KeyValuePair<Chat, int>(chat, entries.Count));
+                }
+            }
+
+            return chatDict;
         }
     }
 }
