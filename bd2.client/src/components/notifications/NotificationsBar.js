@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useLocation } from 'react-router-dom'
 import axios from "axios";
+import Dialog from "@mui/material/Dialog";
+
+import PostCard from "components/post/PostCard";
 
 const NotificationsBar = () => {
+  const location = useLocation();
+
   const [msgNotifications, setMsgNotifications] = useState([]);
   const [reactNotifications, setReactNotifications] = useState([]);
   const [commentNotifications, setCommentNotifications] = useState([]);
@@ -17,6 +23,9 @@ const NotificationsBar = () => {
     useState(false);
   const [commentNotificationsFetching, setCommentNotificationsFetching] =
     useState(false);
+
+  const [post, setPost] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
 
   const fetchNotificationCounts = async () => {
     const result = await axios.get(`/api/Notifications/Counts`);
@@ -41,21 +50,50 @@ const NotificationsBar = () => {
     setReactNotificationsFetching(false);
   };
 
-  const fetchNotifications = async () => {
-    // const result = await axios.get(`/api/Notifications/${account.id}`);
-    // if (result && result.data && result.data.success) {
-    //   console.log(result.data.data);
-    //   setMsgNotifications(result.data.messages);
-    //   setCommentNotifications(result.data.comments);
-    //   setReactNotifications(result.data.reactNotifications);
-    // }
+  const fetchCommentsNotifications = async () => {
+    setCommentNotificationsFetching(true);
+    const result = await axios.get(`/api/Notifications/comments`);
+    if (result && result.data && result.data.success) {
+      console.log(result.data.data);
+      setCommentNotifications(result.data.data);
+    }
+    setCommentNotificationsFetching(false);
   };
+
+  const fetchPost = async (id) => {
+    const result = await axios.get(`/api/Posts/${id}`);
+
+    if (result && result.data && result.data.success) {
+      setPost(result.data.model);
+    }
+  };
+
   useEffect(() => {
     fetchNotificationCounts();
-  }, []);
+  }, [location.pathname]);
+
+  const handleClose = () => {
+    setIsOpen(false);
+    fetchNotificationCounts();
+  };
 
   return (
     <>
+      <Dialog fullScreen="true" open={isOpen && post} onClose={handleClose}>
+        <div className="row justify-content-start mx-4 mt-4">
+          <button
+            type="button"
+            className="btn btn-secondary rounded-pill btn-sm mx-1"
+            onClick={handleClose}
+          >
+            <i className="fa fa-arrow-left" aria-hidden="true"></i> Powrót
+          </button>
+        </div>
+        <div className="row justify-content-center">
+          <PostCard postData={post} setPostData={setPost} />
+        </div>
+      </Dialog>
+
       <div className="d-flex flex-row">
         <div className="mx-1 nav-item dropdown position-static justify-content-start">
           <button className="btn btn-sm btn-outline-dark">
@@ -65,10 +103,7 @@ const NotificationsBar = () => {
 
           {msgCounts >= 1 && (
             <div className="dropdown-content">
-              <div
-                className="text-center bg-dark text-white "
-                style={{ height: "10px" }}
-              ></div>
+              <div className="text-center bg-dark text-white ">Wiadomości</div>
 
               {msgNotifications.map((x, i) => {
                 return (
@@ -106,15 +141,23 @@ const NotificationsBar = () => {
 
           {reactCounts >= 1 && (
             <div className="dropdown-content">
-              <div
-                className="text-center bg-dark text-white "
-                style={{ height: "10px" }}
-              ></div>
+              <div className="text-center bg-dark text-white ">Nowe reakcje</div>
 
               {reactNotifications.map((x, i) => {
                 return (
                   <>
-                    <div key={i}>{x.postTitle}</div>
+                    <div
+                      className="p-1 dropdown-item"
+                      onClick={() => {
+                        fetchPost(x.postId);
+                        setIsOpen(true);
+                      }}
+                    >
+                      <small className="d-block">
+                        {x.firstname} {x.lastname}
+                      </small>
+                      <label className="d-block">{x.postTitle}</label>
+                    </div>
                   </>
                 );
               })}
@@ -122,8 +165,20 @@ const NotificationsBar = () => {
           )}
         </div>
 
+        {/* COMMENTS */}
         <div className="mx-1 nav-item dropdown position-static justify-content-start">
-          <button className="btn btn-sm btn-outline-dark">
+        <button
+            className="btn btn-sm  btn-outline-dark"
+            onMouseEnter={() => {
+              if (
+                commentCounts >= 0 &&
+                commentCounts !== commentNotifications.length &&
+                !commentNotificationsFetching
+              ) {
+                fetchCommentsNotifications();
+              }
+            }}
+          >
             Komentarze{" "}
             <span class="badge small badge-pill badge-danger">
               {commentCounts}
@@ -132,15 +187,22 @@ const NotificationsBar = () => {
 
           {commentCounts >= 1 && (
             <div className="dropdown-content">
-              <div
-                className="text-center bg-dark text-white "
-                style={{ height: "10px" }}
-              ></div>
-
+              <div className="text-center bg-dark text-white ">Nowe komentarze</div>
               {commentNotifications.map((x, i) => {
                 return (
                   <>
-                    <div key={i}>{x.postTitle}</div>
+                    <div
+                      className="p-1 dropdown-item"
+                      onClick={() => {
+                        fetchPost(x.postId);
+                        setIsOpen(true);
+                      }}
+                    >
+                      <small className="d-block">
+                        {x.firstname} {x.lastname}
+                      </small>
+                      <label className="d-block">{x.postTitle}</label>
+                    </div>
                   </>
                 );
               })}

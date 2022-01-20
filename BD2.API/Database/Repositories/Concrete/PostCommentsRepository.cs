@@ -98,7 +98,14 @@ namespace BD2.API.Database.Repositories.Concrete
 
         public IQueryable<PostCommentNotification> GetNotifications(Guid userId)
         {
-            return _ctx.PostCommentNotifications.FromSqlRaw($"exec GetCommentsNotifications {userId}");
+            try
+            {
+                return _ctx.PostCommentNotifications.FromSqlInterpolated($"exec GetCommentsNotifications {userId}");
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }
