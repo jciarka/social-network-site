@@ -17,13 +17,15 @@ namespace BD2.API.Controllers
         private readonly IChatEntryRepository _repo;
         private readonly IChatRepository _crepo;
         private readonly IAccountRepository _arepo;
+        private readonly IChatAccountRepository _carepo;
         private readonly IMapper _mapper;
 
-        public ChatEntryController(IChatEntryRepository repo, IChatRepository crepo, IAccountRepository arepo, IMapper mapper)
+        public ChatEntryController(IChatEntryRepository repo, IChatRepository crepo, IAccountRepository arepo, IChatAccountRepository carepo, IMapper mapper)
         {
             _repo = repo;
             _crepo = crepo;
             _arepo = arepo;
+            _carepo = carepo;
             _mapper = mapper;
         }
 
@@ -32,6 +34,15 @@ namespace BD2.API.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
+            if (UserId == null)
+            {
+                return Unauthorized(new
+                {
+                    Success = false,
+                    Errors = new List<string> { "Błąd uwierzytelniania, zaloguj się ponownie i spróbuj jeszcze raz" }
+                });
+            }
+
             var entry = await _repo.FindAsync(id);
 
             if (entry == null)
@@ -60,7 +71,48 @@ namespace BD2.API.Controllers
         [Route("list/chat/{id}")]
         public async Task<IActionResult> ChatsEntries(Guid id)
         {
+            if (UserId == null)
+            {
+                return Unauthorized(new
+                {
+                    Success = false,
+                    Errors = new List<string> { "Błąd uwierzytelniania, zaloguj się ponownie i spróbuj jeszcze raz" }
+                });
+            }
+
             var entries = await _repo.FindChatsEntries(id);
+
+            if (entries == null)
+            {
+                return NotFound(new
+                {
+                    Success = false,
+                    Errors = new List<string> { $"Nie znaleziono postów użytkownika o id = {id}" }
+                });
+            }
+
+            return Ok(new
+            {
+                Model = entries,
+                Success = true,
+            });
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("list/chat/unseen/{id}")]
+        public async Task<IActionResult> UnseenChatsEntries(Guid id)
+        {
+            if (UserId == null)
+            {
+                return Unauthorized(new
+                {
+                    Success = false,
+                    Errors = new List<string> { "Błąd uwierzytelniania, zaloguj się ponownie i spróbuj jeszcze raz" }
+                });
+            }
+
+            var entries = await _repo.FindUnseenChatsEntries(id, (Guid)UserId);
 
             if (entries == null)
             {
@@ -104,6 +156,17 @@ namespace BD2.API.Controllers
 
             var result = await _repo.AddAsync(entry);
 
+            ChatAccount chatAccount = new()
+            {
+                AccountId = (Guid)UserId,
+                Account = await _arepo.FindAsync((Guid)UserId),
+                ChatId = model.ChatId,
+                Chat = await _crepo.FindAsync(model.ChatId),
+                IsAdmin = false,
+                LastViewDate = DateTime.Now
+            };
+            var dateUpdate = await _carepo.UpdateAsync(chatAccount);
+            
             if (!result)
             {
                 return BadRequest(new

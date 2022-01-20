@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Autocomplete, TextField } from "@mui/material";
 
 export const editorTypes = {
   EDIT: "EDIT",
@@ -19,9 +20,9 @@ const ChatEditor = ({
     else return "";
   };
 
-  const [memberName, setMember] = useState(chat ? chat.memberName : "");
+  const [member, setMember] = useState(chat ? chat.member : "");
   const validateMember = () => {
-    if ((memberName && memberName.length === 0) || memberName === "")
+    if ((member && member.length === 0) || member === "")
       return "Członek nie może być pusty";
     else return "";
   };
@@ -34,14 +35,24 @@ const ChatEditor = ({
     return true;
   };
 
+  const [open, setOpen] = React.useState(false);
+  const [people, setPeople] = React.useState([]);
+
+  const fetchPeopleByName = async (phrase) => {
+    const result = await axios.get(`/api/accounts/findByName/${phrase}`);
+
+    if (result && result.data && result.data.success) {
+      setPeople(result.data.data);
+    }
+  };
+
+
   const submit = async () => {
-    let fetchedMember;
-    fetchedMember = await axios.get(`api/Accounts/findByName/${memberName}`);
     try {
       const result = await axios.post("/api/chat", {
         ...chat,
         name: name,
-        memberId: fetchedMember.data.data[0].id,
+        memberId: member.id,
       });
 
       if (
@@ -82,6 +93,7 @@ const ChatEditor = ({
             <h4>{header}</h4>
           </div>
         )}
+
         <div className="form-group m-0">
           <label htmlFor="name">Nazwa</label>
           <input
@@ -89,28 +101,50 @@ const ChatEditor = ({
             className="form-control"
             placeholder="Nazwa"
             value={name}
-            style={validateName() !== "" ? { borderColor: "red" } : {}}
             onChange={(e) => {
               setName(e.target.value);
               validateName();
             }}
           />
-          <label className="text-danger text-sm-left">{validateName()}</label>
         </div>
 
         <div className="form-group m-0">
-          <label htmlFor="text">Członek</label>
-          <textarea
-            type="text"
-            className="form-control"
-            placeholder="Członek"
-            value={memberName}
-            style={validateMember() !== "" ? { borderColor: "red" } : {}}
-            onChange={(e) => {
-              setMember(e.target.value);
-            }}
-          />
-          <label className="text-danger text-sm-left">{validateMember()}</label>
+          <label htmlFor="member">Członek</label>    
+            <Autocomplete
+              fullWidth
+              noOptionsText="Wpisz frazę"
+              size="small"
+              open={open}
+              filter
+              onOpen={() => {
+                setOpen(true);
+              }}
+              onClose={() => {
+                setOpen(false);
+              }}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              getOptionLabel={(option) =>
+                option.firstname + " " + option.lastname
+              }
+              options={people}
+              renderInput={(params) => (
+                <TextField
+                  type="member"
+                  {...params}
+                  label=""
+                  InputProps={{
+                    ...params.InputProps,
+                  }}
+                  onInput={(e) => {
+                    if (e.target.value && e.target.value.length > 0)
+                      fetchPeopleByName(e.target.value);
+                  }}
+                />
+              )}
+              onChange={(event, newInputValue) => {
+                setMember(newInputValue);
+              }}
+              />
         </div>
 
         {backendErrors && backendErrors.length > 0 && (

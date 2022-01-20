@@ -9,5 +9,6 @@ namespace BD2.API.Database.Repositories.Interfaces
     public interface IChatEntryRepository : ICrudRepository<ChatEntry>
     {
         public Task<IEnumerable<ChatEntry>> FindChatsEntries(Guid entryId);
+        public Task<IEnumerable<ChatEntry>> FindUnseenChatsEntries(Guid chatId, Guid userId);
     }
 }

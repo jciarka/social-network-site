@@ -71,6 +71,13 @@ namespace BD2.API.Database.Repositories.Concrete
                 return false;
             }
 
+            var chatAccounts = _ctx.ChatAccounts.Where(x => x.ChatId == id);
+
+            foreach (var chatAccount in chatAccounts)
+            {
+                _ctx.ChatAccounts.Remove(chatAccount);
+            }
+
             _ctx.Chats.Remove(found);
             return (await _ctx.SaveChangesAsync()) > 0;
         }
@@ -79,6 +86,7 @@ namespace BD2.API.Database.Repositories.Concrete
         {
             return _ctx.Chats.AsQueryable();
         }
+
         public async Task<IEnumerable<Chat>> FindUserChats(Guid userId, Guid? watcherId = null)
         {
             var chats = await _ctx.Chats
@@ -87,6 +95,7 @@ namespace BD2.API.Database.Repositories.Concrete
 
             return chats;
         }
+
     }
 
 }
