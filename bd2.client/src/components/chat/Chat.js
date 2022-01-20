@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./Chat.css";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { BsFillArrowDownCircleFill } from "react-icons/bs";
 
 const Chat = ({ onSuccess = null }) => {
     let { chatId } = useParams();
@@ -13,6 +14,7 @@ const Chat = ({ onSuccess = null }) => {
     const [backendErrors, setBackendErrors] = useState([]);
     
     const account = useSelector((state) => state.account);
+    const messageContainer = useRef(null);
 
     const fetchChats = async () => {
         let fetchedChat, fetchedMember, updatedDate;
@@ -32,17 +34,12 @@ const Chat = ({ onSuccess = null }) => {
         setInterval(() => {
             getEntries();
         }, 3000);
-        var scrollDownInterval = setInterval(() => {
-            var element = document.getElementById("entries-container");
-            if(element)
-            {
-                scrollDownMessages(element);
-                element.addEventListener('scroll', () => {
-                    clearInterval(scrollDownInterval);
-                })
-            }
-        }, 200);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        if(messageContainer) {
+            messageContainer.current.addEventListener('DOMNodeInserted', event => {
+                scrollDownMessages();
+            });
+        }
+     // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
     
     const submit = async () => {
@@ -111,14 +108,32 @@ const Chat = ({ onSuccess = null }) => {
         }));
     }
 
-    const scrollDownMessages = async (element) => {
-        var elementHeight = element.scrollHeight;
-        element.scrollTop = elementHeight;   
+    const scrollDownMessages = () => {
+        if(messageContainer)
+        {
+            var elementHeight = messageContainer.current.scrollHeight;
+            messageContainer.current.scrollTop = elementHeight;   
+        }
     };
+
+    // const visibilityState = () => {
+    //     if(messageContainer) 
+    //     {
+    //         var elementHeight = messageContainer.current.scrollHeight;
+            
+    //         if(messageContainer.current.scrollTop !== elementHeight) 
+    //         {
+    //             return true;
+    //         }
+
+    //     }
+    //     return false;
+    // }
 
     const updateViewDate = async () => {
         let result = axios.put(`/api/ChatAccount/${chatId}`);
     }
+
     
     return (
         <div
@@ -134,8 +149,10 @@ const Chat = ({ onSuccess = null }) => {
                 <h6>Użytkownik: {member.firstname} {member.lastname}</h6>
             </div>
 
-            <div id="entries-container">
+            <div ref={messageContainer} id="entries-container">
                 {entries}
+                {/* {visibilityState ? <BsFillArrowDownCircleFill onClick={scrollDownMessages} id="scroll-down-button"/> : null} */}
+                
             </div>
 
             <div id="entry-group">            
