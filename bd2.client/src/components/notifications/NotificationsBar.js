@@ -69,6 +69,7 @@ const NotificationsBar = () => {
     //   setCommentNotifications(result.data.comments);
     //   setReactNotifications(result.data.reactNotifications);
     // }
+  }
 
   const fetchCommentsNotifications = async () => {
     setCommentNotificationsFetching(true);
