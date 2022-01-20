@@ -60,3 +60,7 @@
     bottom: 15%;
     left: 50%;
 }
+
+#removeButton:hover {
+    opacity: 50%;
+}

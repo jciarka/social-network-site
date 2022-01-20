@@ -22,11 +22,13 @@ const ChatCard = ({key, chatData}) => {
 
   const deleteChat = async() => {
     let result = await axios.delete(`/api/chat/${chatData.id}`);
+    var chatRemovedEvent = new CustomEvent("chatRemoved", {});
+    document.dispatchEvent(chatRemovedEvent);
   }
 
   return (
     <div>
-      <BiXCircle onClick={deleteChat}/>
+      <BiXCircle onClick={deleteChat} id="removeButton"/>
       <Link to={`/chats/${chatData.id}`}>
       <div
         className="container d-flex justify-content-center"
