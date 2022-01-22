@@ -91,7 +91,7 @@ const Header = () => {
                       className="btn btn-dark nav-button rounded-0"
                       style={{ position: "relative", top: "9px" }}
                     >
-                      Statystyki
+                      Statystyki wyświetleń
                     </button>
                   </Link>
                 </>
