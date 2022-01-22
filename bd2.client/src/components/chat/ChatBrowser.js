@@ -9,7 +9,6 @@ const ChatBrowser = ({}) => {
   const [chats, setChats] = useState([]);
 
   const account = useSelector((state) => state.account);
-  let { groupId } = useParams();
 
   const fetchChats = async () => {
     let result;
@@ -51,7 +50,6 @@ const ChatBrowser = ({}) => {
             type={editorTypes.EDIT}
             onSuccess={(x) => fetchChats()}
             header="Stwórz nowy czat"
-            post={{ groupId }}
           />
         }
 

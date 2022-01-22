@@ -28,6 +28,7 @@ namespace BD2.API.Controllers
             _irepo = irepo;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> Get(Guid id)
@@ -183,6 +184,29 @@ namespace BD2.API.Controllers
             return Ok(new
             {
                 Model = postsModel,
+                Success = true,
+            });
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("list/views/{postId}")]
+        public async Task<IActionResult> PostViews(Guid postId)
+        {
+            if (UserId == null)
+            {
+                return Unauthorized(new
+                {
+                    Success = false,
+                    Errors = new List<string> { "Błąd uwierzytelniania, zaloguj się ponownie i spróbuj jeszcze raz" }
+                });
+            }
+
+            var postViews = await _repo.GetPostViews(postId);
+
+            return Ok(new
+            {
+                Model = postViews,
                 Success = true,
             });
         }

@@ -37,6 +37,7 @@ const Chat = ({ onSuccess = null }) => {
         if(messageContainer) {
             messageContainer.current.addEventListener('DOMNodeInserted', event => {
                 scrollDownMessages();
+                updateViewDate();
             });
         }
      // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -132,9 +133,10 @@ const Chat = ({ onSuccess = null }) => {
 
     const updateViewDate = async () => {
         let result = axios.put(`/api/ChatAccount/${chatId}`);
+        var notificationsRefreshEvent = new CustomEvent("refreshNotifications", {});
+        document.dispatchEvent(notificationsRefreshEvent);
     }
 
-    
     return (
         <div
         className="container d-flex justify-content-center"

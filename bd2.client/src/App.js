@@ -14,6 +14,8 @@ import AdminGroupUsersBrowser from "pages/groups/administration/AdminGroupUsersB
 import ChatBrowser from "components/chat/ChatBrowser";
 import AbusementsManager from 'pages/abusements/AbusementsManager';
 import Chat from 'components/chat/Chat';
+import StatisticsBrowser from 'components/statistics/StatisticsBrowser';
+import GroupPostStatistics from 'components/statistics/GroupPostStatistics';
 
 const App = () => {
   // const serverUrl = "http://localhost:8080/"
@@ -202,6 +204,34 @@ const App = () => {
               !account.isLoggedIn ||
               !account.roles ||
               !account.roles.includes("USER")) && <Redirect to="/login" />}
+          </>
+        )}
+      />
+
+      <Route
+        path="/statistics"
+        exact
+        render={(props) => (
+          <>
+            {account && account.isLoggedIn && <StatisticsBrowser/>}
+            {(!account ||
+              !account.isLoggedIn ||
+              !account.roles ||
+              !account.roles.includes("MODERATOR")) && <Redirect to="/login" />}
+          </>
+        )}
+      />
+
+      <Route
+        path="/statistics/:groupId"
+        exact
+        render={(props) => (
+          <>
+            {account && account.isLoggedIn && <GroupPostStatistics/>}
+            {(!account ||
+              !account.isLoggedIn ||
+              !account.roles ||
+              !account.roles.includes("MODERATOR")) && <Redirect to="/login" />}
           </>
         )}
       />

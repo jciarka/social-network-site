@@ -244,6 +244,12 @@ namespace BD2.API.Database.Repositories.Concrete
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<int> GetPostViews(Guid postId)
+        {
+            var postViewsRecords = _ctx.PostViews.Where(x => x.PostId == postId);
+            return await postViewsRecords.CountAsync();
+        }
+
         private async Task track(IEnumerable<Post> posts, Guid? watcherId)
         {
             foreach (var post in posts)

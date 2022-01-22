@@ -83,6 +83,14 @@ const Header = () => {
                       style={{ position: "relative", top: "9px" }}
                     >
                       {/* <img src={FootballLogo} width="20" height="20" alt=""/> */}
+                      Statystyki zgłoszeń
+                    </button>
+                  </Link>
+                  <Link to="/statistics">
+                    <button
+                      className="btn btn-dark nav-button rounded-0"
+                      style={{ position: "relative", top: "9px" }}
+                    >
                       Statystyki
                     </button>
                   </Link>
