@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BD2.API.Configuration;
 using BD2.API.Database.Entities;
 using BD2.API.Database.Repositories.Interfaces;
 using BD2.API.Models.Auth;
@@ -80,6 +81,40 @@ namespace BD2.API.Controllers
             });
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> GetForModerator()
+        {
+            if (!User.IsInRole(AppRole.MODERATOR.ToString()))
+            {
+                return Unauthorized(new
+                {
+                    Success = false,
+                    Errors = new List<string>()
+                    {
+                        "Użytkownik nie ma uprawnienień do moderacji postów",
+                    }
+                });
+            }
+
+            var posts = await _repo.All().ToListAsync();
+
+            if (posts == null)
+            {
+                return NotFound(new
+                {
+                    Success = false,
+                    Errors = new List<string> { "Nie znaleziono postów" }
+                });
+            }
+
+            return Ok(new
+            {
+                Model = posts,
+                Success = true,
+            });
+        }
+
         [HttpGet]
         [Route("list/user/{id}")]
         public async Task<IActionResult> UserPosts(Guid id)
@@ -155,7 +190,7 @@ namespace BD2.API.Controllers
                 return Unauthorized(new
                 {
                     Success = false,
-                    Errors = new List<string> { "Błąd uwieżytelniania, zaloguj się ponownie i spróbuj jeszcze raz" }
+                    Errors = new List<string> { "Błąd uwierzytelniania, zaloguj się ponownie i spróbuj jeszcze raz" }
                 });
             }
 
@@ -219,7 +254,7 @@ namespace BD2.API.Controllers
                 return Unauthorized(new
                 {
                     Success = false,
-                    Errors = new List<string> { "Błąd uwieżytelniania, zaloguj się ponownie i spróbuj jeszcze raz" }
+                    Errors = new List<string> { "Błąd uwierzytelniania, zaloguj się ponownie i spróbuj jeszcze raz" }
                 });
             }
 
@@ -267,7 +302,7 @@ namespace BD2.API.Controllers
                 return Unauthorized(new
                 {
                     Success = false,
-                    Errors = new List<string> { "Błąd uwieżytelniania, zaloguj się ponownie i spróbuj jeszcze raz" }
+                    Errors = new List<string> { "Błąd uwierzytelniania, zaloguj się ponownie i spróbuj jeszcze raz" }
                 });
             }
 

@@ -5,6 +5,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 
 const PostAbusementStatisticsCard = () => {
   const [abusements, setAbusements] = useState([]);
+  const [post, setPost] = useState([]);
   const [chartData, setChartData] = useState([]);
 
   let { postId } = useParams();
@@ -18,12 +19,13 @@ const PostAbusementStatisticsCard = () => {
 
   const getUserAbusements = async () => {
     var result = await axios.get(`/api/Abusements/list/post/${postId}`);
-    var abusements = result.data.data;
+    var abusements = result.data.data.abusements;
     var abusementsArray = [];
     abusements.map((abusement) => {
       var viewDate = new Date(abusement.abusementDate);
       abusementsArray.push(viewDate);
     });
+    setPost(result.data.data.post);
     var result = setAbusements(abusementsArray);
     return result;
   };
@@ -101,7 +103,7 @@ const PostAbusementStatisticsCard = () => {
             id="stats-container"
         >
             <div className="text-center">
-                <h5>Zgłoszenia postu</h5>
+                <h5>Zgłoszenia postu {post.title}</h5>
                 <div class="btn-group" role="group" style={{"alignContent": "absolute"}}>
                   <button type="button" class="btn btn-secondary" onClick={generateChartDataForYear} style={{"font-size": 12}}>6 miesięcy</button>
                   <button type="button" class="btn btn-secondary" onClick={generateChartDataForMonth} style={{"font-size": 12}}>4 tygodnie</button>

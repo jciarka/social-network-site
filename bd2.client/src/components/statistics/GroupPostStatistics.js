@@ -11,7 +11,7 @@ const GroupPostStatistics = () => {
   const account = useSelector((state) => state.account);
 
   const fetchPosts = async () => {
-    let result = await axios.get(`/api/Posts/list/user/${account.id}`);
+    let result = await axios.get(`/api/Posts`);
     if(result) {
       setPosts(result.data.model);
     }

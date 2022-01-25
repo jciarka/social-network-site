@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 
 const PostStatisticsCard = (postData) => {
-  const post = postData.postData;
+  console.log(postData.postData.id);
   const [postViews, setPostViews] = useState([]);
   const [chartData, setChartData] = useState([]);
 
@@ -16,7 +16,8 @@ const PostStatisticsCard = (postData) => {
   }, []);
 
   const getPostViews = async () => {
-    var result = await axios.get(`/api/Posts/list/views/${post.post.id}`);
+    var result = await axios.get(`/api/Posts/list/views/${postData.postData.id}`);
+    console.log(result);
     var postViews = result.data.model;
     var postViewsArray = [];
     postViews.map((postView) => {
@@ -100,8 +101,8 @@ const PostStatisticsCard = (postData) => {
             id="stats-container"
         >
             <div className="text-center">
-                <h5>{post.post.title}</h5>
-                <h6>Post użytkownika</h6>
+                {console.log(postData.postData)}
+                <h5>{postData.postData.title}</h5>
                 <div class="btn-group" role="group" style={{"alignContent": "absolute"}}>
                   <button type="button" class="btn btn-secondary" onClick={generateChartDataForYear} style={{"font-size": 12}}>6 miesięcy</button>
                   <button type="button" class="btn btn-secondary" onClick={generateChartDataForMonth} style={{"font-size": 12}}>4 tygodnie</button>

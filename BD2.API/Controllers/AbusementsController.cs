@@ -53,7 +53,13 @@ namespace BD2.API.Controllers
                 .ProjectTo<PostAbusementModel>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
-            return Ok(new { Data = found, Success = true });
+            var foundModel = new
+            {
+                abusements = found,
+                user = await _arepo.FindAsync(accountId)
+            };
+
+            return Ok(new { Data = foundModel, Success = true });
         }
 
         [HttpGet]
@@ -66,7 +72,13 @@ namespace BD2.API.Controllers
                 .ProjectTo<PostAbusementModel>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
-            return Ok(new { Data = found, Success = true });
+            var foundModel = new
+            {
+                abusements = found,
+                post = await _prepo.FindAsync(postId)
+            };
+
+            return Ok(new { Data = foundModel, Success = true });
         }
 
         [HttpGet]

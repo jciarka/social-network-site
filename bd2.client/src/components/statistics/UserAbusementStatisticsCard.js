@@ -5,25 +5,27 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 
 const UserAbusementStatisticsCard = () => {
   const [abusements, setAbusements] = useState([]);
+  const [user, setUser] = useState([]);
   const [chartData, setChartData] = useState([]);
 
   let { userId } = useParams();
 
   useEffect(() => {
     (async () => {
-      var result = await getUserAbusements();
+      var abusementResult = await getUserAbusements();
       generateChartDataForWeek();
     })();
   }, []);
 
   const getUserAbusements = async () => {
     var result = await axios.get(`/api/Abusements/list/user/${userId}`);
-    var abusements = result.data.data;
+    var abusements = result.data.data.abusements;
     var abusementsArray = [];
     abusements.map((abusement) => {
       var viewDate = new Date(abusement.abusementDate);
       abusementsArray.push(viewDate);
     });
+    setUser(result.data.data.user);
     var result = setAbusements(abusementsArray);
     return result;
   };
@@ -101,7 +103,7 @@ const UserAbusementStatisticsCard = () => {
             id="stats-container"
         >
             <div className="text-center">
-                <h5>Zgłoszenia użytkownika</h5>
+                <h5>Zgłoszenia użytkownika {user.firstname} {user.lastname}</h5>
                 <div class="btn-group" role="group" style={{"alignContent": "absolute"}}>
                   <button type="button" class="btn btn-secondary" onClick={generateChartDataForYear} style={{"font-size": 12}}>6 miesięcy</button>
                   <button type="button" class="btn btn-secondary" onClick={generateChartDataForMonth} style={{"font-size": 12}}>4 tygodnie</button>

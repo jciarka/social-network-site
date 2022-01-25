@@ -34,7 +34,7 @@ const ViewsStatisticsBrowser = () => {
         })}
         <div className="row justify-content-center">
           <GroupStatisticsCard
-            groupData={{name: "Posty użytkownika", id: account.id}}
+            groupData={{name: "Posty dla moderatora", id: account.id}}
           />
         </div>
       </div>
