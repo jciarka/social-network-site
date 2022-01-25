@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import GroupStatisticsCard from "./GroupStatisticsCard";
 
-const StatisticsBrowser = () => {
+const ViewsStatisticsBrowser = () => {
   const [groups, setGroups] = useState([]);
 
   const account = useSelector((state) => state.account);
@@ -42,4 +42,4 @@ const StatisticsBrowser = () => {
   );
 };
 
-export default StatisticsBrowser;
+export default ViewsStatisticsBrowser;

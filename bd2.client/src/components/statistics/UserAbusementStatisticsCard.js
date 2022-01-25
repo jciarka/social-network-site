@@ -3,27 +3,28 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 
-const PostStatisticsCard = (postData) => {
-  const post = postData.postData;
-  const [postViews, setPostViews] = useState([]);
+const UserAbusementStatisticsCard = () => {
+  const [abusements, setAbusements] = useState([]);
   const [chartData, setChartData] = useState([]);
+
+  let { userId } = useParams();
 
   useEffect(() => {
     (async () => {
-      var result = await getPostViews();
+      var result = await getUserAbusements();
       generateChartDataForWeek();
     })();
   }, []);
 
-  const getPostViews = async () => {
-    var result = await axios.get(`/api/Posts/list/views/${post.post.id}`);
-    var postViews = result.data.model;
-    var postViewsArray = [];
-    postViews.map((postView) => {
-      var viewDate = new Date(postView.viewDate);
-      postViewsArray.push(viewDate);
+  const getUserAbusements = async () => {
+    var result = await axios.get(`/api/Abusements/list/user/${userId}`);
+    var abusements = result.data.data;
+    var abusementsArray = [];
+    abusements.map((abusement) => {
+      var viewDate = new Date(abusement.abusementDate);
+      abusementsArray.push(viewDate);
     });
-    var result = setPostViews(postViewsArray);
+    var result = setAbusements(abusementsArray);
     return result;
   };
 
@@ -33,9 +34,9 @@ const PostStatisticsCard = (postData) => {
       var curDate = new Date();
       curDate.setDate(curDate.getDate() - i);
       var amount = 0;
-      for(let j = 0; j < postViews.length; j++)
+      for(let j = 0; j < abusements.length; j++)
       {
-        var viewDate = new Date(postViews[j]);
+        var viewDate = new Date(abusements[j]);
         if(!(curDate.getDate() - viewDate.getDate())) {
           amount += 1;
         }
@@ -54,9 +55,9 @@ const PostStatisticsCard = (postData) => {
       curDateLow.setDate(curDateLow.getDate() - i * 7);
       curDateHigh.setDate(curDateHigh.getDate() - (i-1) * 7);
       var amount = 0;
-      for(let j = 0; j < postViews.length; j++)
+      for(let j = 0; j < abusements.length; j++)
       {
-        var viewDate = new Date(postViews[j]);
+        var viewDate = new Date(abusements[j]);
         if(curDateLow < viewDate && viewDate < curDateHigh) {
           amount += 1;
         }
@@ -76,9 +77,9 @@ const PostStatisticsCard = (postData) => {
       curDateLow.setDate(curDateLow.getDate() - i * 30);
       curDateHigh.setDate(curDateHigh.getDate() - (i-1) * 30);
       var amount = 0;
-      for(let j = 0; j < postViews.length; j++)
+      for(let j = 0; j < abusements.length; j++)
       {
-        var viewDate = new Date(postViews[j]);
+        var viewDate = new Date(abusements[j]);
         if(curDateLow < viewDate && viewDate < curDateHigh) {
           amount += 1;
         }
@@ -100,8 +101,7 @@ const PostStatisticsCard = (postData) => {
             id="stats-container"
         >
             <div className="text-center">
-                <h5>{post.post.title}</h5>
-                <h6>Post użytkownika</h6>
+                <h5>Zgłoszenia użytkownika</h5>
                 <div class="btn-group" role="group" style={{"alignContent": "absolute"}}>
                   <button type="button" class="btn btn-secondary" onClick={generateChartDataForYear} style={{"font-size": 12}}>6 miesięcy</button>
                   <button type="button" class="btn btn-secondary" onClick={generateChartDataForMonth} style={{"font-size": 12}}>4 tygodnie</button>
@@ -119,4 +119,4 @@ const PostStatisticsCard = (postData) => {
   );
 };
 
-export default PostStatisticsCard;
+export default UserAbusementStatisticsCard;

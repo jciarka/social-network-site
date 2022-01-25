@@ -17,16 +17,20 @@ namespace BD2.API.Controllers
     public class AbusementsController : ExtendedControllerBase
     {
         private readonly IPostAbusementsRepository _repo;
+        private readonly IPostsRepository _prepo;
+        private readonly IAccountRepository _arepo;
         private readonly IMapper _mapper;
 
-        public AbusementsController(IPostAbusementsRepository repo, IMapper mapper)
+        public AbusementsController(IPostAbusementsRepository repo, IPostsRepository prepo, IAccountRepository arepo, IMapper mapper)
         {
             _repo = repo;
+            _prepo = prepo;
+            _arepo = arepo;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<IActionResult> Get()
         {
             var found = await _repo
                 .All()
@@ -34,6 +38,56 @@ namespace BD2.API.Controllers
                 .Include(x => x.Post)
                 .Where(x => x.CheckedById == null)
                 .ProjectTo<PostAbusementModel>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return Ok(new { Data = found, Success = true });
+        }
+
+        [HttpGet]
+        [Route("list/user/{accountId}")]
+        public async Task<IActionResult> GetUsersAbusements(Guid accountId)
+        {
+            var found = await _repo
+                .All()
+                .Where(x => x.AccountId == accountId)
+                .ProjectTo<PostAbusementModel>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return Ok(new { Data = found, Success = true });
+        }
+
+        [HttpGet]
+        [Route("list/post/{postId}")]
+        public async Task<IActionResult> GetPostsAbusements(Guid postId)
+        {
+            var found = await _repo
+                .All()
+                .Where(x => x.PostId == postId)
+                .ProjectTo<PostAbusementModel>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return Ok(new { Data = found, Success = true });
+        }
+
+        [HttpGet]
+        [Route("list/posts")]
+        public async Task<IActionResult> GetPosts()
+        {
+            var found = await _prepo
+                .All()
+                .Where(x => _repo.All().Select(y => y.PostId).Contains(x.Id))
+                .ToListAsync();
+
+            return Ok(new { Data = found, Success = true });
+        }
+
+        [HttpGet]
+        [Route("list/users")]
+        public async Task<IActionResult> GetUsers()
+        {
+            var found = await _arepo
+                .All()
+                .Where(x => _repo.All().Select(y => y.AccountId).Contains(x.Id))
                 .ToListAsync();
 
             return Ok(new { Data = found, Success = true });

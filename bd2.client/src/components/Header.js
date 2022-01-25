@@ -73,17 +73,23 @@ const Header = () => {
                       className="btn btn-dark nav-button rounded-0"
                       style={{ position: "relative", top: "9px" }}
                     >
-                      {/* <img src={FootballLogo} width="20" height="20" alt=""/> */}
                       Zgłoszenia
                     </button>
                   </Link>
-                  <Link to="/abusements/stats">
+                  <Link to="/abusements/stats/users">
                     <button
                       className="btn btn-dark nav-button rounded-0"
                       style={{ position: "relative", top: "9px" }}
                     >
-                      {/* <img src={FootballLogo} width="20" height="20" alt=""/> */}
-                      Statystyki zgłoszeń
+                      Statystyki zgłoszeń użytkowników
+                    </button>
+                  </Link>
+                  <Link to="/abusements/stats/posts">
+                    <button
+                      className="btn btn-dark nav-button rounded-0"
+                      style={{ position: "relative", top: "9px" }}
+                    >
+                      Statystyki zgłoszeń postów
                     </button>
                   </Link>
                   <Link to="/statistics">
