@@ -46,7 +46,8 @@ const UserAbusementStatisticsCard = () => {
       curDate = curDate.toDateString();
       chartDataArray.push({name: curDate, ilość: amount});
     }
-    setChartData(chartDataArray);
+    var result = setChartData(chartDataArray);
+    return result;
   }
 
   const generateChartDataForMonth = async () => {

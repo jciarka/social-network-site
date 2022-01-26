@@ -21,6 +21,7 @@ const PostsAbusementBrowserCard = ({postData}) => {
         >
           <div className="text-center">
               <h5>{postData.name}</h5>
+              <h6>Użytkownik: {postData.firstname} {postData.lastname}</h6>
           </div>
         </div>
       </div>

@@ -27,7 +27,7 @@ const LoginForm = () => {
             onSubmit={(e) => {
               e.preventDefault();
               login(emial, password, () => {
-                history.push("/groups");
+                history.push("/");
               });
             }}
           >

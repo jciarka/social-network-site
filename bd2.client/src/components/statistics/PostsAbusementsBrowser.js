@@ -21,7 +21,8 @@ const PostsAbusementsBrowser = () => {
   const getPosts = async (abusements) => {
     let postsArray = [];
     abusements.data.map((abusement) => {
-      postsArray.push({"id": abusement.postId, "name": abusement.postTitle});
+      console.log(abusement);
+      postsArray.push({"id": abusement.postId, "name": abusement.postTitle, "firstname": abusement.firstname, "lastname": abusement.lastname});
     });
     setPosts(postsArray);
     return postsArray;
