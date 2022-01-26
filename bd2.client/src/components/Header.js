@@ -22,7 +22,7 @@ const Header = () => {
           <div className=" m-0 p-0">
             <div className="prompt">
               {" "}
-              <strong>New better facebook!</strong>
+              <strong>Nowy, lepszy facebook!</strong>
             </div>
             <div className="d-flex justify-content-start m-0 p-0">
               {account && account.roles && account.roles.includes("USER") && (
@@ -73,17 +73,31 @@ const Header = () => {
                       className="btn btn-dark nav-button rounded-0"
                       style={{ position: "relative", top: "9px" }}
                     >
-                      {/* <img src={FootballLogo} width="20" height="20" alt=""/> */}
                       Zgłoszenia
                     </button>
                   </Link>
-                  <Link to="/abusements/stats">
+                  <Link to="/abusements/stats/users">
                     <button
                       className="btn btn-dark nav-button rounded-0"
                       style={{ position: "relative", top: "9px" }}
                     >
-                      {/* <img src={FootballLogo} width="20" height="20" alt=""/> */}
-                      Statystyki
+                      Statystyki zgłoszeń użytkowników
+                    </button>
+                  </Link>
+                  <Link to="/abusements/stats/posts">
+                    <button
+                      className="btn btn-dark nav-button rounded-0"
+                      style={{ position: "relative", top: "9px" }}
+                    >
+                      Statystyki zgłoszeń postów
+                    </button>
+                  </Link>
+                  <Link to="/statistics">
+                    <button
+                      className="btn btn-dark nav-button rounded-0"
+                      style={{ position: "relative", top: "9px" }}
+                    >
+                      Statystyki wyświetleń
                     </button>
                   </Link>
                 </>

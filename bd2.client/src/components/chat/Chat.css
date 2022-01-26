@@ -3,7 +3,7 @@
 }
 
 #entry-form {
-    width: 900px;
+    width: 48vw;
 }
 
 #send-button {
@@ -53,4 +53,14 @@
     text-align: right;
     margin-top: 0.5vh;
     font-size: 1.2vh;
+}
+
+#scroll-down-button {
+    position: absolute;
+    bottom: 15%;
+    left: 50%;
+}
+
+#removeButton:hover {
+    opacity: 50%;
 }

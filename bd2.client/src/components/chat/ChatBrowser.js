@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ChatEditor, { editorTypes } from "components/chat/ChatEditor";
 import axios from "axios";
 import ChatCard from "components/chat/ChatCard";
@@ -9,7 +9,6 @@ const ChatBrowser = ({}) => {
   const [chats, setChats] = useState([]);
 
   const account = useSelector((state) => state.account);
-  let { groupId } = useParams();
 
   const fetchChats = async () => {
     let result;
@@ -27,6 +26,9 @@ const ChatBrowser = ({}) => {
 
   useEffect(() => {
     fetchChats();
+    document.addEventListener('chatRemoved', event => {
+        fetchChats();
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -48,7 +50,6 @@ const ChatBrowser = ({}) => {
             type={editorTypes.EDIT}
             onSuccess={(x) => fetchChats()}
             header="Stwórz nowy czat"
-            post={{ groupId }}
           />
         }
 

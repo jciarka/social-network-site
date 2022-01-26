@@ -14,6 +14,12 @@ import AdminGroupUsersBrowser from "pages/groups/administration/AdminGroupUsersB
 import ChatBrowser from "components/chat/ChatBrowser";
 import AbusementsManager from 'pages/abusements/AbusementsManager';
 import Chat from 'components/chat/Chat';
+import ViewsStatisticsBrowser from 'components/statistics/ViewsStatisticsBrowser';
+import GroupPostStatistics from 'components/statistics/GroupPostStatistics';
+import UsersAbusementsBrowser from 'components/statistics/UsersAbusementsBrowser';
+import UserAbusementStatisticsCard from 'components/statistics/UserAbusementStatisticsCard';
+import PostsAbusementsBrowser from 'components/statistics/PostsAbusementsBrowser';
+import PostAbusementStatisticsCard from "components/statistics/PostAbusementStatisticsCard";
 
 const App = () => {
   // const serverUrl = "http://localhost:8080/"
@@ -135,18 +141,59 @@ const App = () => {
       ></Route>
 
       <Route
-        path="/abusements/stats"
+        path="/abusements/stats/users"
         exact
         render={(props) => (
           <>
-            TO DO: abusements stats
-            {/* {account && account.isLoggedIn && <PacketSubcriptionsBrowser />} */}
+            {account && account.isLoggedIn && <UsersAbusementsBrowser />}
             {(!account ||
               !account.isLoggedIn ||
               !account.roles ||
               !account.roles.includes("MODERATOR")) && <Redirect to="/login" />}
           </>
-        )}
+      )}
+      ></Route>
+
+      <Route
+        path="/abusements/stats/users/:userId"
+        exact
+        render={(props) => (
+          <>
+            {account && account.isLoggedIn && <UserAbusementStatisticsCard />}
+            {(!account ||
+              !account.isLoggedIn ||
+              !account.roles ||
+              !account.roles.includes("MODERATOR")) && <Redirect to="/login" />}
+          </>
+      )}
+      ></Route>
+
+      <Route
+        path="/abusements/stats/posts"
+        exact
+        render={(props) => (
+          <>
+            {account && account.isLoggedIn && <PostsAbusementsBrowser />}
+            {(!account ||
+              !account.isLoggedIn ||
+              !account.roles ||
+              !account.roles.includes("MODERATOR")) && <Redirect to="/login" />}
+          </>
+      )}
+      ></Route>
+
+      <Route
+        path="/abusements/stats/posts/:postId"
+        exact
+        render={(props) => (
+          <>
+            {account && account.isLoggedIn && <PostAbusementStatisticsCard />}
+            {(!account ||
+              !account.isLoggedIn ||
+              !account.roles ||
+              !account.roles.includes("MODERATOR")) && <Redirect to="/login" />}
+          </>
+      )}
       ></Route>
 
       <Route
@@ -202,6 +249,34 @@ const App = () => {
               !account.isLoggedIn ||
               !account.roles ||
               !account.roles.includes("USER")) && <Redirect to="/login" />}
+          </>
+        )}
+      />
+
+      <Route
+        path="/statistics"
+        exact
+        render={(props) => (
+          <>
+            {account && account.isLoggedIn && <ViewsStatisticsBrowser/>}
+            {(!account ||
+              !account.isLoggedIn ||
+              !account.roles ||
+              !account.roles.includes("MODERATOR")) && <Redirect to="/login" />}
+          </>
+        )}
+      />
+
+      <Route
+        path="/statistics/:groupId"
+        exact
+        render={(props) => (
+          <>
+            {account && account.isLoggedIn && <GroupPostStatistics/>}
+            {(!account ||
+              !account.isLoggedIn ||
+              !account.roles ||
+              !account.roles.includes("MODERATOR")) && <Redirect to="/login" />}
           </>
         )}
       />

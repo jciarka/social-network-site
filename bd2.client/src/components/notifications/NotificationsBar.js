@@ -94,7 +94,10 @@ const NotificationsBar = () => {
     fetchNotifications();
     document.addEventListener('click', () => {
       fetchNotificationCounts();
-  });
+    });
+    document.addEventListener('refreshNotifications', () => {
+      fetchNotificationCounts();
+    });
   }, [location.pathname]);
 
   const handleClose = () => {
