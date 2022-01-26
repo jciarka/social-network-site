@@ -58,13 +58,13 @@ const ChooseSubscription = ({
 
   return (
     <>
-      <DialogTitle>Dodaj grupę</DialogTitle>
+      <DialogTitle>Wybierz subskrypcję</DialogTitle>
       <DialogContent style={{ minWidth: "450px" }}>
         <DialogContentText>
           <div className="p-1">
             <FormControl className="my-2" fullWidth>
               <InputLabel size="small" id="demo-simple-select-label">
-                Temat
+                Nazwa
               </InputLabel>
               <Select
                 size="small"
