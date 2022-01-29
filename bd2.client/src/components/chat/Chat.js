@@ -27,23 +27,25 @@ const Chat = ({ onSuccess = null }) => {
         }
     };
     
-      useEffect(() => {
-        fetchChats();
-        updateViewDate();
-        getEntries();
-        scrollDownMessages();
-        var entriesRefresh = setInterval(() => {
-            getEntries();
-            if(!document.getElementById("entries-container"))
-                clearInterval(entriesRefresh)
-        }, 3000);
-        if(messageContainer) {
-            messageContainer.current.addEventListener('DOMNodeInserted', event => {
-                scrollDownMessages();
-                updateViewDate();
-            });
-        }
-      }, []);
+    useEffect(() => {
+        (async () => {
+            fetchChats();
+            updateViewDate();
+            await getEntries();
+            scrollDownMessages();
+            var entriesRefresh = setInterval(() => {
+                getEntries();
+                if(!document.getElementById("entries-container"))
+                    clearInterval(entriesRefresh)
+            }, 3000);
+            if(messageContainer) {
+                messageContainer.current.addEventListener('DOMNodeInserted', event => {
+                    scrollDownMessages();
+                    updateViewDate();
+                });
+            }
+        })();
+    }, []);
     
     const submit = async () => {
     try {
@@ -109,6 +111,7 @@ const Chat = ({ onSuccess = null }) => {
                 );
             }
         }));
+        return;
     }
 
     const scrollDownMessages = () => {
