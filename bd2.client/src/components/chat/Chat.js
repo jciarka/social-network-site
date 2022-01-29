@@ -31,8 +31,11 @@ const Chat = ({ onSuccess = null }) => {
         fetchChats();
         updateViewDate();
         getEntries();
-        setInterval(() => {
+        scrollDownMessages();
+        var entriesRefresh = setInterval(() => {
             getEntries();
+            if(!document.getElementById("entries-container"))
+                clearInterval(entriesRefresh)
         }, 3000);
         if(messageContainer) {
             messageContainer.current.addEventListener('DOMNodeInserted', event => {
@@ -40,7 +43,6 @@ const Chat = ({ onSuccess = null }) => {
                 updateViewDate();
             });
         }
-     // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
     
     const submit = async () => {
@@ -117,20 +119,6 @@ const Chat = ({ onSuccess = null }) => {
         }
     };
 
-    // const visibilityState = () => {
-    //     if(messageContainer) 
-    //     {
-    //         var elementHeight = messageContainer.current.scrollHeight;
-            
-    //         if(messageContainer.current.scrollTop !== elementHeight) 
-    //         {
-    //             return true;
-    //         }
-
-    //     }
-    //     return false;
-    // }
-
     const updateViewDate = async () => {
         let result = axios.put(`/api/ChatAccount/${chatId}`);
         var notificationsRefreshEvent = new CustomEvent("refreshNotifications", {});
@@ -152,9 +140,7 @@ const Chat = ({ onSuccess = null }) => {
             </div>
 
             <div ref={messageContainer} id="entries-container">
-                {entries}
-                {/* {visibilityState ? <BsFillArrowDownCircleFill onClick={scrollDownMessages} id="scroll-down-button"/> : null} */}
-                
+                {entries}                
             </div>
 
             <div id="entry-group">            

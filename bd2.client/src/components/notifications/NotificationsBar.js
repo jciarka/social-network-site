@@ -92,13 +92,13 @@ const NotificationsBar = () => {
   useEffect(() => {
     fetchNotificationCounts();
     fetchNotifications();
+  }, [location.pathname]);
+
+  useEffect(() => {
     document.addEventListener('click', () => {
       fetchNotificationCounts();
     });
-    document.addEventListener('refreshNotifications', () => {
-      fetchNotificationCounts();
-    });
-  }, [location.pathname]);
+  }, []);
 
   const handleClose = () => {
     setIsOpen(false);
